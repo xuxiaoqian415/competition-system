@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="zust.competition.sys.dao.TeamDao">
+<!--    <resultMap id="BaseResultMap" type="com.info.competition.model.Team">-->
+<!--        <result column="id" jdbcType="INTEGER" property="id"/>-->
+<!--        <result column="cp_id" jdbcType="INTEGER" property="cpId"/>-->
+<!--        <result column="team_name" jdbcType="VARCHAR" property="teamName"/>-->
+<!--        <result column="lead_id" jdbcType="INTEGER" property="leaderId"/>-->
+<!--        <result column="team_intro" jdbcType="VARCHAR" property="teamIntro"/>-->
+<!--        <result column="member" jdbcType="VARCHAR" property="member"/>-->
+<!--    </resultMap>-->
+    <sql id="Base_Column_List">
+        id,cp_id,`team_name`,leader_id,`team_intro`,`member`
+    </sql>
+
+    <insert id="insertTeam" parameterType="Team"  useGeneratedKeys="true" keyProperty="id">
+        insert into team (cp_id,team_name,leader_id,team_intro,member)
+        values (#{cpId},#{teamName},#{leaderId},#{teamIntro},#{member})
+    </insert>
+
+    <select id="selectTeamId" resultType="int">
+        select id
+        from team
+        where cp_id=#{cpId} and leader_id=#{leaderId}
+    </select>
+
+    <select id="selectTeamList" resultType="TeamDto" parameterType="Query">
+        select t.*, c.cp_name as cpName, u.name as leaderName
+        from team t LEFT JOIN user u on u.id = t.leader_id
+            LEFT JOIN competition c on t.cp_id= c.id
+        <where>
+            <if test="leaderId != null">
+                t.leader_id = #{leaderId}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                <bind name="_keyword" value="'%' + keyword + '%'"/>
+                AND (t.team_name LIKE #{_keyword} or c.cp_name LIKE #{_keyword})
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteTeam" parameterType="int">
+        delete from team
+        where id = #{id}
+    </delete>
+
+    <delete id="deleteTeamByCpiD" parameterType="int">
+        delete from team
+        where cp_id = #{cpId}
+    </delete>
+
+    <update id="updateTeam" parameterType="Team">
+        update team
+        <set>
+            <if test="teamName != null">
+                `team_name` = #{teamName},
+            </if>
+            <if test="leaderId != null">
+                `leader_id` = #{leaderId},
+            </if>
+            <if test="teamIntro != null">
+                `team_intro` = #{teamIntro},
+            </if>
+            <if test="member != null">
+                `member` = #{member}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="selectTeamById" resultType="TeamDto">
+        select t.*, c.cp_name as cpName, u.name as leaderName
+        from team t LEFT JOIN user u on u.id = t.leader_id
+                    LEFT JOIN competition c on t.cp_id= c.id
+        where t.id = #{id}
+    </select>
+
+    <delete id="deleteStuCompByTeamId" parameterType="int">
+        delete from student_competition
+        where team_id = #{teamId}
+    </delete>
+
+    <delete id="deleteStuCompByCompId" parameterType="int">
+        delete from student_competition
+        where competition_id = #{compId}
+    </delete>
+
+    <delete id="deleteStuCompByStuId" parameterType="StuComp">
+        delete from student_competition
+        where student_id = #{studentId} and competition_id = #{competitionId}
+    </delete>
+
+</mapper>

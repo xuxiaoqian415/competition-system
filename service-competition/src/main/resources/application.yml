@@ -12,6 +12,13 @@ spring:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
+  redis:
+    password: 123456
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+  thymeleaf:
+    cache: false
 
 mybatis:
   #  config-location: classpath:mybatis/mybatis-config.xml

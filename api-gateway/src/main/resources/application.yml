@@ -1,0 +1,50 @@
+server:
+  port: 7000
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: user-route
+          uri: lb://service-user
+          order: 1
+          predicates:
+            - Path=/user-serv/**
+          filters:
+            - StripPrefix=1
+        - id: team-route
+          uri: lb://service-team
+          order: 1
+          predicates:
+            - Path=/team-serv/**
+          filters:
+            - StripPrefix=1
+        - id: competition-route
+          uri: lb://service-competition
+          order: 1
+          predicates:
+            - Path=/competition-serv/**
+          filters:
+            - StripPrefix=1
+        - id: select-route
+          uri: lb://service-select
+          order: 1
+          predicates:
+            - Path=/select-serv/**
+          filters:
+            - StripPrefix=1
+  redis:
+    password: 123456
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+  thymeleaf:
+    cache: false

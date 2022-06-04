@@ -1,5 +1,6 @@
 package zust.competition.sys.dao;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import zust.competition.sys.dto.TeamDto;
 import zust.competition.sys.entity.Query;
@@ -8,11 +9,17 @@ import zust.competition.sys.entity.Team;
 
 import java.util.List;
 
+@Mapper
 public interface TeamDao {
     /**
      * 增加团队
      */
     Integer insertTeam(Team team);
+
+    /**
+     * 根据学生id获取已创建/加入的团队
+     */
+    List<TeamDto> getTeamList(@Param("id") Integer id);
 
     /**
      * 根据竞赛id与队长id查询团队id

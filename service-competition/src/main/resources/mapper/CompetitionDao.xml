@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="zust.competition.sys.dao.CompetitionDao">
+
+    <sql id="Base_Column_List">
+        id,`cp_name`,`cp_content`,apply_start,apply_end,cp_start,cp_end
+    </sql>
+
+    <select id="getCompetitionList" resultType="Competition" parameterType="Query">
+        select
+        <include refid="Base_Column_List" />
+        from competition
+        <where>
+            <if test="startTime != null">
+                apply_end &gt;= #{startTime}
+            </if>
+            <if test="endTime != null">
+                AND apply_end &lt;= #{endTime}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                <bind name="_keyword" value="'%' + keyword + '%'"/>
+                AND (cp_name LIKE #{_keyword} or cp_content LIKE #{_keyword})
+            </if>
+        </where>
+    </select>
+
+    <select id="getCompetitionByApply" resultType="Competition">
+        select
+        <include refid="Base_Column_List" />
+        from competition
+        where apply_start &lt;= #{currentTime}
+          and apply_end &gt;= #{currentTime}
+    </select>
+
+    <insert id="addCompetition" parameterType="Competition">
+        insert into competition(cp_name,cp_content,apply_start,apply_end,cp_start,cp_end)
+        values(#{cpName},#{cpContent},#{applyStart},#{applyEnd},#{cpStart},#{cpEnd})
+    </insert>
+
+    <select id="getCompetitionDetail" parameterType="int" resultType="CompetitionDto">
+        select
+        <include refid="Base_Column_List" />
+        from competition
+        where id = #{id}
+    </select>
+
+    <delete id="deleteCompetition" parameterType="java.lang.Integer">
+        delete from competition
+        where id = #{id}
+    </delete>
+
+    <update id="updateCompetition" parameterType="Competition">
+        update competition
+        <set>
+            <if test="cpName != null">
+                `cp_name` = #{cpName},
+            </if>
+            <if test="cpContent != null">
+                `cp_content` = #{cpContent},
+            </if>
+            <if test="applyStart != null">
+                apply_start = #{applyStart},
+            </if>
+            <if test="applyEnd != null">
+                apply_end = #{applyEnd},
+            </if>
+            <if test="cpStart != null">
+                cp_start = #{cpStart},
+            </if>
+            <if test="cpEnd != null">
+                cp_end = #{cpEnd}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <insert id="insertStuComp" parameterType="StuComp">
+        insert into student_competition(student_id, competition_id, team_id)
+        values (#{studentId}, #{competitionId}, #{teamId})
+    </insert>
+
+    <select id="getApplyList" parameterType="int" resultType="CompetitionDto">
+        select c.id as id, c.cp_name as cpName, t.id as teamId, t.team_name as teamName, u.name as leaderName
+        from student_competition sc left join competition c on sc.competition_id = c.id
+                                    left join team t on sc.team_id = t.id
+                                    left join user u on t.leader_id = u.id
+        where sc.student_id = #{id}
+    </select>
+
+    <select id="ifHaveApply" parameterType="StuComp" resultType="StuComp">
+        select *
+        from student_competition
+        where student_id = #{studentId} and competition_id = #{competitionId}
+    </select>
+
+</mapper>

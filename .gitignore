@@ -1,0 +1,7 @@
+# 项目排除路径
+/api-gateway/target/
+/common/target/
+/service-competition/target/
+/service-select/target/
+/service-team/target/
+/service-user/target/

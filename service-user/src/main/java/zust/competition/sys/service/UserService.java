@@ -58,4 +58,9 @@ public interface UserService {
      */
     List<UserDto> searchUser(Query query);
 
+    /**
+     * 根据Id查找用户
+     */
+    UserDto selectUserById(Integer id);
+
 }

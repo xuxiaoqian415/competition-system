@@ -3,9 +3,11 @@ package zust.competition.sys.dto;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
 
+import java.io.Serializable;
+
 @Data
 @Alias("UserDto")
-public class UserDto {
+public class UserDto implements Serializable {
     private Integer id;
     private String number;
     private String name;

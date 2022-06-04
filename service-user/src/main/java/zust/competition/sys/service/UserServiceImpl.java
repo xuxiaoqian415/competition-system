@@ -45,16 +45,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<UserDto> getStudentList() {
-        return userDao.getStudentList();
-    }
-
-    @Override
-    public List<UserDto> getTeacherList(){
-        return userDao.getTeacherList();
-    }
-
-    @Override
     public Integer updateUser(UserDto userDto) {
         User user = new User();
         user.setId(userDto.getId());
@@ -129,5 +119,20 @@ public class UserServiceImpl implements UserService {
     public List<UserDto> searchUser(Query query) {
         List<UserDto> list = userDao.selectUsers(query);
         return list;
+    }
+
+    @Override
+    public List<UserDto> getStudentList() {
+        return userDao.getStudentList();
+    }
+
+    @Override
+    public List<UserDto> getTeacherList(){
+        return userDao.getTeacherList();
+    }
+
+    @Override
+    public UserDto selectUserById(Integer id) {
+        return userDao.selectUserById(id);
     }
 }

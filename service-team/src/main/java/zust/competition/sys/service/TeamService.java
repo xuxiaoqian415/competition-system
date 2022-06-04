@@ -1,5 +1,6 @@
 package zust.competition.sys.service;
 
+import org.apache.ibatis.annotations.Param;
 import zust.competition.sys.dto.TeamDto;
 import zust.competition.sys.entity.Query;
 
@@ -45,5 +46,20 @@ public interface TeamService {
      * 获取自己负责的团队
      */
     List<TeamDto> getOwnTeam(Integer id);
+
+    /**
+     * 根据compId删除原来的成员关系
+     */
+    Integer deleteStuCompByCompId(Integer compId);
+
+    /**
+     * 获取所有团队信息
+     */
+    List<TeamDto> selectTeamList(Query query);
+
+    /**
+     * 根据cpId删除团队
+     */
+    Integer deleteTeamByCpiD(Integer cpId);
 
 }
