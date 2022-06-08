@@ -20,16 +20,44 @@ public class TeamDto {
 
     private Integer newLeaderId;
 
-    private String teamIntro;
+    private String introduction;
 
-    private String member;
 
-    private List<Integer> memberList;
+    /**
+     * 当前人数
+     */
+    private Integer nowNumber;
+    /**
+     * 邀请码
+     */
+    private Integer invitationCode;
+    /**
+     * 是否评奖： 0-未评奖 1-已评奖
+     */
+    private Integer isAwarded;
+    /**
+     * 是否获奖：0-未获奖 1-获奖
+     */
+    private Integer isWin;
+    /**
+     * 获奖情况
+     */
+    private String result;
+    /**
+     * 状态：0-组队中 1-组队完成 2-报名成功
+     */
+    private Integer status;
 
-    private Integer member1Id;
-    private Integer member2Id;
-    private Integer member3Id;
-    private Integer member4Id;
+//    private String member;
+//
+//    private List<Integer> memberList;
+//
+//    private Integer member1Id;
+//    private Integer member2Id;
+//    private Integer member3Id;
+//    private Integer member4Id;
+//
+//    private String memberNames;
 
-    private String memberNames;
+
 }
