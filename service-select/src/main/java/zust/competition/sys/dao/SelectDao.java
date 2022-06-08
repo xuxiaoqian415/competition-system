@@ -4,7 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import zust.competition.sys.dto.SelectDto;
 import zust.competition.sys.dto.TeamDto;
-import zust.competition.sys.entity.Select;
+import zust.competition.sys.entity.TeamTeacher;
 
 import java.util.List;
 
@@ -13,7 +13,7 @@ public interface SelectDao {
     /**
      * 添加一条互选记录
      */
-    Integer insertSelect(Select select);
+    Integer insertSelect(TeamTeacher teamTeacher);
 
     /**
      * 根据老师id查找申请指导记录
@@ -31,7 +31,7 @@ public interface SelectDao {
     /**
      * 根据id查询互选记录
      */
-    Select selectById(Integer id);
+    TeamTeacher selectById(Integer id);
 
     /**
      * 获取已反选团队

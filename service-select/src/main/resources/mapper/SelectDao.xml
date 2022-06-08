@@ -6,53 +6,53 @@
     </sql>
 
     <insert id="insertSelect" parameterType="Select">
-        insert into `select` (team_id,teacher_id,select_type,flag)
+        insert into `team_teacher` (team_id,teacher_id,select_type,flag)
         values (#{teamId},#{teacherId},#{selectType},#{flag})
     </insert>
 
     <select id="noSelectTeams" parameterType="Integer" resultType="TeamDto" >
         select *
-        from `select`
+        from `team_teacher`
                  LEFT JOIN
              (	select team.id as team_id,cp_id,team_name,cp_name,leader_id, name as leaderName ,member,team_intro
                   from team LEFT JOIN user on user.id=leader_id
                             LEFT JOIN competition on cp_id=competition.id ) as teamDto
-             on `select`.team_id=teamDto.team_id
+             on `team_teacher`.team_id=teamDto.team_id
         where teacher_id=#{id} and flag = 0
     </select>
 
     <update id="updateSelectType" parameterType="Integer">
-        UPDATE `select` SET select_type=1 WHERE id=#{id}
+        UPDATE `team_teacher` SET select_type=1 WHERE id=#{id}
     </update>
 
     <update id="updateSelectFlag" parameterType="Integer">
-        UPDATE `select` SET flag=1 WHERE team_id=#{id}
+        UPDATE `team_teacher` SET flag=1 WHERE team_id=#{id}
     </update>
     <select id="selectById" resultType="Select" parameterType="Integer">
     select *
-    from `select`
+    from `team_teacher`
     where id=#{id}
     </select>
 
     <select id="selectTeams" resultType="TeamDto" parameterType="Integer">
         select *
-        from `select`
+        from `team_teacher`
                  LEFT JOIN
              (	select team.id as t_id,cp_id,team_name,cp_name,leader_id, name as leaderName ,member,team_intro
                   from team LEFT JOIN user on user.id=leader_id
                             LEFT JOIN competition on cp_id=competition.id ) as teamDto
-             on `select`.team_id=teamDto.t_id
+             on `team_teacher`.team_id=teamDto.t_id
         where teacher_id=#{id} and select_type=1;
     </select>
 
     <delete id="deleteByTeamId" parameterType="int">
-        delete from `select`
+        delete from `team_teacher`
         where team_id = #{teamId}
     </delete>
 
     <select id="getTeacherByTeamId" parameterType="int" resultType="SelectDto">
         select s.*, u.name as teacherName
-        from `select` s left join user u on u.id = s.teacher_id
+        from `team_teacher` s left join user u on u.id = s.teacher_id
         where team_id = #{teamId} and select_type = 1
     </select>
 

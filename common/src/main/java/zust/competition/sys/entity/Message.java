@@ -6,40 +6,35 @@ import org.apache.ibatis.type.Alias;
 import java.util.Date;
 
 @Data
-@Alias("User")
-public class User {
+@Alias("Message")
+public class Message {
 
     private Integer id;
 
-    private String number;
-
-    private String name;
-
-    private String password;
-
-    private String mobile;
-
-    private String email;
+    /**
+     * 消息发送方id
+     */
+    private Integer senderId;
 
     /**
-     * 个人简介
+     * 消息接收方id
      */
-    private String intro;
+    private Integer receiverId;
 
     /**
-     * 0-管理员 1-教师 2-学生
+     * 消息内容
      */
-    private Integer type;
+    private String content;
 
     /**
-     * 0-在读 1-毕业
+     * 0-未读 1-已读
      */
-    private Integer status;
+    private Integer isRead;
 
     /**
-     * 所在学院
+     * 0-无跳转 1-学生组队请求页面 2-老师指导请求页面
      */
-    private String academy;
+    private Integer jumpType;
 
     /**
      * 是否删除：0-未删除 1-已删除

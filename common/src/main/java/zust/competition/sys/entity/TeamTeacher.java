@@ -6,40 +6,24 @@ import org.apache.ibatis.type.Alias;
 import java.util.Date;
 
 @Data
-@Alias("User")
-public class User {
+@Alias("TeamTeacher")
+public class TeamTeacher {
 
     private Integer id;
 
-    private String number;
+    private Integer teamId;
 
-    private String name;
-
-    private String password;
-
-    private String mobile;
-
-    private String email;
+    private Integer teacherId;
 
     /**
-     * 个人简介
-     */
-    private String intro;
-
-    /**
-     * 0-管理员 1-教师 2-学生
-     */
-    private Integer type;
-
-    /**
-     * 0-在读 1-毕业
+     * 状态：0-待处理 1-已拒绝 2-已同意
      */
     private Integer status;
 
     /**
-     * 所在学院
+     * 是否待定：0-有效 1-已被其他老师选择
      */
-    private String academy;
+    private Integer flag;
 
     /**
      * 是否删除：0-未删除 1-已删除

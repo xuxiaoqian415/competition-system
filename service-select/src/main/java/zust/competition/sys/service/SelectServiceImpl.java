@@ -6,7 +6,7 @@ import zust.competition.sys.dao.SelectDao;
 import zust.competition.sys.dto.SelectDto;
 import zust.competition.sys.dto.TeamDto;
 import zust.competition.sys.dto.UserDto;
-import zust.competition.sys.entity.Select;
+import zust.competition.sys.entity.TeamTeacher;
 
 import java.util.List;
 
@@ -20,26 +20,25 @@ public class SelectServiceImpl implements SelectService {
 
     @Override
     public Integer insertSelect(SelectDto selectDto) {
-        Select select = new Select();
-        select.setSelectType(0);
-        select.setFlag(0);
-        select.setTeamId(selectDto.getTeamId());
+        TeamTeacher teamTeacher = new TeamTeacher();
+        teamTeacher.setFlag(0);
+        teamTeacher.setTeamId(selectDto.getTeamId());
         Integer i;
-        select.setTeacherId(selectDto.getTeacher1Id());
+        teamTeacher.setTeacherId(selectDto.getTeacher1Id());
         try {
-            i = selectDao.insertSelect(select);
+            i = selectDao.insertSelect(teamTeacher);
         } catch (Exception e) {
             i = -1;
         }
-        select.setTeacherId(selectDto.getTeacher2Id());
+        teamTeacher.setTeacherId(selectDto.getTeacher2Id());
         try {
-            i = selectDao.insertSelect(select);
+            i = selectDao.insertSelect(teamTeacher);
         } catch (Exception e) {
             i = -1;
         }
-        select.setTeacherId(selectDto.getTeacher3Id());
+        teamTeacher.setTeacherId(selectDto.getTeacher3Id());
         try {
-            i = selectDao.insertSelect(select);
+            i = selectDao.insertSelect(teamTeacher);
         } catch (Exception e) {
             i = -1;
         }
