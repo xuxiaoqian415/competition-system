@@ -52,21 +52,21 @@ public class SelectServiceImpl implements SelectService {
     }
 
     public List<TeamDto> getMember(List<TeamDto> list) {
-        for (TeamDto t : list) {
-            StringBuffer memberNames = new StringBuffer();
-            if (t.getMember() != null && !t.getMember().equals("")) {
-                String[] members = t.getMember().split(";");
-                for (String m : members) {
-                    UserDto u = userService.selectUserById(Integer.parseInt(m));
-                    if (u != null) {
-                        memberNames.append(u.getName() + ",");
-                    }
-                }
-                t.setMemberNames(memberNames.toString());
-            }
-            else
-                t.setMemberNames("");
-        }
+//        for (TeamDto t : list) {
+//            StringBuffer memberNames = new StringBuffer();
+//            if (t.getMember() != null && !t.getMember().equals("")) {
+//                String[] members = t.getMember().split(";");
+//                for (String m : members) {
+//                    UserDto u = userService.selectUserById(Integer.parseInt(m));
+//                    if (u != null) {
+//                        memberNames.append(u.getName() + ",");
+//                    }
+//                }
+//                t.setMemberNames(memberNames.toString());
+//            }
+//            else
+//                t.setMemberNames("");
+//        }
         return list;
     }
 
