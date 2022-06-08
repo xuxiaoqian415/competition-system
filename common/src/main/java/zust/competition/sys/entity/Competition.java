@@ -12,9 +12,9 @@ public class Competition {
 
     private Integer id;
 
-    private String cpName;
+    private String title;
 
-    private String cpContent;
+    private String content;
 
     //报名起止时间
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -25,8 +25,32 @@ public class Competition {
 
     //竞赛起止时间
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date cpStart;
+    private Date start;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date cpEnd;
+    private Date end;
+
+    //竞赛图片
+    private String picture;
+
+    //竞赛组织机构
+    private String organizer;
+
+    //竞赛附件
+    private String supplement;
+
+    //团队人员上限
+    private Integer limit;
+
+    //是否删除：0未删除;1已删除
+    private Integer isDelete;
+
+    //创建时间
+    private Date createTime;
+
+    //更新时间
+    private Date updateTime;
+
+    //操作人id
+    private Integer operatorId;
 }
