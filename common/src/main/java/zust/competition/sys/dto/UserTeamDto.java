@@ -11,10 +11,24 @@ public class UserTeamDto {
 
     private Integer teamId;
     /**
+     * 学生名字
+     */
+    private String studentName;
+    /**
+     * 竞赛id
+     */
+    private Integer cpId;
+    /**
      * 可担任职务
      */
     //
     private String role;
+
+    /**
+     * 邀请码
+     */
+    private String invitationCode;
+
     /**
      * 状态：0-待处理1-已同意 2-已拒绝
      */

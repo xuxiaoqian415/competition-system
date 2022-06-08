@@ -25,7 +25,7 @@ public class Team {
     /**
      * 邀请码
      */
-    private Integer invitationCode;
+    private String invitationCode;
 
     private Integer teacherId;
     /**

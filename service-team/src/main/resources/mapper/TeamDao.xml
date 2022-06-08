@@ -9,6 +9,22 @@
 <!--        <result column="team_intro" jdbcType="VARCHAR" property="teamIntro"/>-->
 <!--        <result column="member" jdbcType="VARCHAR" property="member"/>-->
 <!--    </resultMap>-->
+    <insert id="insertUserTeam" parameterType="UserTeam"  useGeneratedKeys="true" keyProperty="id">
+        insert into user_team (student_id,team_id,`role`,operator_id)
+        values (#{studentId},#{teamId},#{role},#{operatorId})
+    </insert>
+
+    <insert id="studentRequest" parameterType="Message"  useGeneratedKeys="true" keyProperty="id">
+        insert into message (send_id,receive_id,content,operator_id,jump_type)
+        values (#{sendId},#{receiveId},#{content},#{operatorId},#{jumpType})
+    </insert>
+
+    <select id="selectByCode" resultType="Team">
+        SELECT *
+        FROM team
+        WHERE invitation_code=#{invitationCode}
+    </select>
+
     <sql id="Base_Column_List">
         id,cp_id,`team_name`,leader_id,`team_intro`,`member`
     </sql>
@@ -21,7 +37,7 @@
     <select id="selectTeamId" resultType="int">
         select id
         from team
-        where cp_id=#{cpId} and leader_id=#{leaderId}
+        where cp_id=#{cpId} and leader_id=#{leaderId}n
     </select>
 
     <select id="selectTeamList" resultType="TeamDto" parameterType="Query">

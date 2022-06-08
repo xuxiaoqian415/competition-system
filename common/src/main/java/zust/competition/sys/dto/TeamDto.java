@@ -30,7 +30,7 @@ public class TeamDto {
     /**
      * 邀请码
      */
-    private Integer invitationCode;
+    private String invitationCode;
     /**
      * 是否评奖： 0-未评奖 1-已评奖
      */
