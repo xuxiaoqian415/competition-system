@@ -53,6 +53,26 @@ public class CompetitionServiceImpl implements CompetitionService {
         return competitionDtoList;
     }
 
+    @Override
+    public CompetitionDto getCompetitionDetail(Integer id) {
+        Competition competition = competitionDao.getCompetitionDetail(id);
+        Date currentTime = new Date();
+        CompetitionDto competitionDto = new CompetitionDto();
+        BeanUtils.copyProperties(competition, competitionDto);
+        if (currentTime.compareTo(competitionDto.getApplyStart()) < 0) {
+            competitionDto.setStatus(1);
+        } else if (currentTime.compareTo(competitionDto.getApplyStart()) >= 0 &&
+                currentTime.compareTo(competitionDto.getApplyEnd()) <= 0) {
+            competitionDto.setStatus(2);
+        } else if (currentTime.compareTo(competitionDto.getStart()) >= 0 &&
+                currentTime.compareTo(competitionDto.getEnd()) <= 0) {
+            competitionDto.setStatus(3);
+        } else {
+            competitionDto.setStatus(4);
+        }
+        return competitionDto;
+    }
+
     //    @Override
 //    public List<Competition> getCompetitionList() {
 //        Query query = new Query();

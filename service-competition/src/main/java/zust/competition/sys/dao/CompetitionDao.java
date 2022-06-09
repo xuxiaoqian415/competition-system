@@ -17,17 +17,17 @@ public interface CompetitionDao {
     List<Competition> getCompetitionList();
 
     /**
+     * 根据Id获取竞赛详情
+     */
+    Competition getCompetitionDetail(@Param("id") Integer id);
+
+    /**
      *获取当前时间内可报名的竞赛信息
      */
     List<Competition> getCompetitionByApply(Date currentTime);
 
     //竞赛发布
     int addCompetition(Competition competition);
-
-    /**
-     * 根据Id获取竞赛详情
-     */
-    CompetitionDto getCompetitionDetail(@Param("id") Integer id);
 
     /**
      * 删除竞赛

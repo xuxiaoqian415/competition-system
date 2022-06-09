@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import zust.competition.sys.dto.CompetitionDto;
 import zust.competition.sys.dto.ResponseVo;
+import zust.competition.sys.dto.TableVo;
 import zust.competition.sys.dto.UserDto;
 import zust.competition.sys.entity.Competition;
 import zust.competition.sys.service.CompetitionService;
@@ -21,15 +22,33 @@ public class UserController {
     CompetitionService competitionService;
 
     /**
-     *
+     * 访问竞赛信息列表
      */
-    @GetMapping("/inform/list/{status}")
-    public String competitionInformList(@PathVariable("status") Integer status, Model model) {
-        List<CompetitionDto> competitionDtoList = competitionService.getCompetitionList(status);
-        model.addAttribute("competitionList",competitionDtoList);
+    @GetMapping("/inform")
+    public String toCompetitionInformList() {
         return "student/competitionList";
     }
 
+    /**
+     * 竞赛信息列表
+     */
+    @ResponseBody
+    @GetMapping("/inform/{status}")
+    public TableVo competitionInformList(@PathVariable("status") Integer status) {
+        List<CompetitionDto> competitionDtoList = competitionService.getCompetitionList(status);
+        TableVo tableVo = new TableVo(0,competitionDtoList);
+        return tableVo;
+    }
+
+    /**
+     * 竞赛信息详情
+     */
+    @GetMapping("/detail/{id}")
+    public String competitionDetail(@PathVariable("id") Integer id, Model model) {
+        CompetitionDto detail = competitionService.getCompetitionDetail(id);
+        model.addAttribute("detail", detail);
+        return "user/competitionDetail";
+    }
 
 //    @GetMapping("/detail/{id}")
 //    public String toCompetitionDetail(@PathVariable("id") Integer id, @RequestParam("back") String back,

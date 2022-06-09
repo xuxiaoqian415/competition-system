@@ -16,30 +16,54 @@
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
             <div class="layui-card">
-                <button class="layui-btn layui-btn-primary"><a th:href="${back}">返回</a></button>
-                <div class="layui-card-body">
-                    <div style="text-align:center;margin: 5px;line-height: 40px; border: 1px solid gainsboro;">
-                        <ul style="text-align:left;border: 1px solid gainsboro; ">
-                            [[${detail.cpName}]]</ul>
-                        <ul style="text-align:left;border: 1px solid gainsboro">
-                            <h3 th:text="'报名起止时间：'+${#dates.format(detail.applyStart,'yyyy-MM-dd')}+
-                    '————'+${#dates.format(detail.applyEnd,'yyyy-MM-dd')}"></h3>
-                        </ul>
-                        <ul style="text-align:left ;border: 1px solid gainsboro">
-                            <h3 th:text="'竞赛起止时间：'+${#dates.format(detail.cpStart,'yyyy-MM-dd')}+
-                    '————'+${#dates.format(detail.cpEnd,'yyyy-MM-dd')}"></h3>
-                        </ul>
-                        <ul style="text-align:left;border: 1px solid gainsboro">
-                            [[${detail.cpContent}]]</ul>
-                    </div>
-                    <div class="layui-form-item" th:if="${session.thisUser.type == 2}">
-                        <button class="layui-btn layui-btn-primary" th:if="${detail.haveApply == 0}">
-                            <a th:href="@{/team-serv/team/build/}+${detail.id}">进入报名</a>
+                <div>
+                    <a class="layui-btn layui-btn-primary" lay-event="detail" th:href="${back}" style="float: left">
+                        <i class="layui-icon layui-icon-return"></i>
+                        返回
+                    </a>
+                    <div style="margin-right:10px;float:right;">
+                        参赛方式：
+                        <button type="button" class="layui-btn layui-btn-primary layui-btn-radius"
+                                th:if="${session.thisUser.type == 2}">
+                            <a th:herf="@{/team-serv/team/build/}+${detail.id}"></a>
+                            创建团队
                         </button>
-                        <button class="layui-btn layui-btn-primary" th:if="${detail.haveApply == 1}">
-                            您已报名该竞赛
+                        <button type="button" class="layui-btn layui-btn-primary layui-btn-radius"
+                                th:if="${session.thisUser.type == 2}">
+                            <a th:herf="@{/team-serv/team/join/}+${detail.id}"></a>
+                            加入团队
+                        </button>
+                        <button type="button" class="layui-btn layui-btn-primary layui-btn-radius"
+                                th:if="${session.thisUser.type == 2}">
+                            <a th:herf="@{/team-serv/team/own/}+${detail.id}"></a>
+                            已有团队
                         </button>
                     </div>
+                    <div style="clear:both"></div>
+                </div>
+                <div class="layui-card-body" style="text-align:center;margin: 5px;">
+                    <ul style="text-align:center;">
+                        <h2>[[${detail.title}]]</h2>
+                    </ul>
+                    <ul style="text-align:right;margin-right: 300px;">
+                        举办方：
+                        [[${detail.organizer}]]
+                    </ul>
+                    <ul style="display:flex;justify-content:space-around;">
+                        <h3 th:text="'报名起止时间：'+${#dates.format(detail.applyStart,'yyyy-MM-dd')}+
+                            '————'+${#dates.format(detail.applyEnd,'yyyy-MM-dd')}"></h3>
+                        <h3 th:text="'竞赛起止时间：'+${#dates.format(detail.start,'yyyy-MM-dd')}+
+                            '————'+${#dates.format(detail.end,'yyyy-MM-dd')}"></h3>
+                    </ul>
+                    <ul style="text-align:center;" th:if='${detail.pictures != ""}'>
+                        <img th:src="${detail.pictures}" />
+                    </ul>
+                    <ul style="text-align:center; margin-bottom: 5px">
+                        [[${detail.content}]]
+                    </ul>
+                    <ul th:if='${detail.supplement != ""}'>
+                        附件：
+                    </ul>
                 </div>
             </div>
         </div>

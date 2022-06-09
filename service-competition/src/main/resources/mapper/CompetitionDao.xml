@@ -15,6 +15,14 @@
         order by create_time
     </select>
 
+    <select id="getCompetitionDetail" parameterType="Integer" resultType="Competition">
+        select
+        <include refid="Base_Column_List" />
+        from competition
+        where id = #{id}
+        and is_delete = 0
+    </select>
+
     <select id="getCompetitionByApply" resultType="Competition">
         select
         <include refid="Base_Column_List" />
@@ -27,13 +35,6 @@
         insert into competition(cp_name,cp_content,apply_start,apply_end,cp_start,cp_end)
         values(#{cpName},#{cpContent},#{applyStart},#{applyEnd},#{cpStart},#{cpEnd})
     </insert>
-
-    <select id="getCompetitionDetail" parameterType="int" resultType="CompetitionDto">
-        select
-        <include refid="Base_Column_List" />
-        from competition
-        where id = #{id}
-    </select>
 
     <delete id="deleteCompetition" parameterType="java.lang.Integer">
         delete from competition

@@ -12,6 +12,11 @@ public interface CompetitionService {
      */
     List<CompetitionDto> getCompetitionList(Integer status);
 
+    /**
+     * 获取竞赛详情
+     */
+    CompetitionDto getCompetitionDetail(Integer id);
+
 //    /**
 //     * 管理员获取竞赛列表
 //     */
