@@ -37,7 +37,7 @@ public class Competition {
     /**
      * 竞赛图片
      */
-    private String picture;
+    private String pictures;
 
     /**
      * 竞赛组织机构
