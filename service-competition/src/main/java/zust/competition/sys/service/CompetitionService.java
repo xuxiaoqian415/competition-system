@@ -10,39 +10,44 @@ import java.util.List;
 public interface CompetitionService {
 
     /**
-     * 管理员获取竞赛列表
-     */
-    List<CompetitionDto> getCompetitionList();
-
-    /**
-     * 根据条件查询竞赛列表
-     */
-    List<CompetitionDto> searchCompetition(Query query);
-
-    /**
-     * 获取当前时间可报名竞赛
-     */
-    List<Competition> getCompetitionByApply();
-
-    /**
      * 管理员发布竞赛
      */
     Integer addCompetition(Competition competition);
 
     /**
-     * 根据Id获取竞赛详情
+     * 管理员竞赛信息更新
      */
-    CompetitionDto getCompetitionDetail(Integer id);
+    Integer updateCompetition(CompetitionDto competitionDto);
 
     /**
-     * 删除竞赛
+     * 管理员获取全部竞赛列表
+     */
+    List<CompetitionDto> getCompetitionList();
+
+    /**
+     * 管理员根据条件查询竞赛列表
+     */
+    List<CompetitionDto> searchCompetition(Query query);
+
+    /**
+     * 管理员删除竞赛
      */
     Integer deleteCompetition(Integer id);
 
     /**
-     * 竞赛更新
+     * 管理员根据Id获取竞赛详情
      */
-    Integer updateCompetition(CompetitionDto competitionDto);
+    CompetitionDto detail(Integer id);
+
+    /**
+     * 用户根据状态获取竞赛列表
+     */
+    List<CompetitionDto> getInformList(Integer status);
+
+    /**
+     * 用户根据Id获取竞赛详情
+     */
+    CompetitionDto getCompetitionDetail(Integer id);
 
     /**
      * 根据学生id获取已报名竞赛

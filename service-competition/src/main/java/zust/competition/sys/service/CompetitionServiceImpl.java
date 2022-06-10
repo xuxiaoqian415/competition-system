@@ -26,6 +26,28 @@ public class CompetitionServiceImpl implements CompetitionService {
     SelectService selectService;
 
     @Override
+    public Integer addCompetition(Competition competition) {
+        try {
+            competitionDao.addCompetition(competition);
+        } catch (Exception e) {
+            return -1;
+        }
+        return competition.getId();
+    }
+
+    @Override
+    public Integer updateCompetition(CompetitionDto dto) {
+        Competition competition = new Competition();
+        BeanUtils.copyProperties(dto, competition);
+        try {
+            competitionDao.updateCompetition(competition);
+        } catch (Exception e) {
+            return -1;
+        }
+        return 1;
+    }
+
+    @Override
     public List<CompetitionDto> getCompetitionList() {
         Query query = new Query();
         List<Competition> list = competitionDao.getCompetitionList(query);
@@ -53,29 +75,6 @@ public class CompetitionServiceImpl implements CompetitionService {
     }
 
     @Override
-    public Integer addCompetition(Competition competition) {
-        try {
-            competitionDao.addCompetition(competition);
-        } catch (Exception e) {
-            return -1;
-        }
-        return competition.getId();
-    }
-
-    @Override
-    public List<Competition> getCompetitionByApply() {
-        return competitionDao.getCompetitionByApply(new Date());
-    }
-
-    @Override
-    public CompetitionDto getCompetitionDetail(Integer id) {
-        Competition competition = competitionDao.getCompetitionDetail(id);
-        CompetitionDto dto = new CompetitionDto();
-        BeanUtils.copyProperties(competition, dto);
-        return dto;
-    }
-
-    @Override
     public Integer deleteCompetition(Integer id) {
         Query query = new Query();
         query.setCpId(id);
@@ -87,15 +86,62 @@ public class CompetitionServiceImpl implements CompetitionService {
     }
 
     @Override
-    public Integer updateCompetition(CompetitionDto dto) {
-        Competition competition = new Competition();
-        BeanUtils.copyProperties(dto, competition);
-        try {
-            competitionDao.updateCompetition(competition);
-        } catch (Exception e) {
-            return -1;
+    public CompetitionDto detail(Integer id) {
+        Competition competition = competitionDao.getCompetitionDetail(id);
+        CompetitionDto dto = new CompetitionDto();
+        BeanUtils.copyProperties(competition, dto);
+        return dto;
+    }
+
+    @Override
+    public List<CompetitionDto> getInformList(Integer status) {
+        Query query = new Query();
+        List<Competition> competitionList = competitionDao.getCompetitionList(query);
+        System.out.println("===competitionList" + competitionList);
+        Date currentTime = new Date();
+        List<CompetitionDto> competitionDtoList = new ArrayList<>();
+        for(Competition competition : competitionList)  {
+            CompetitionDto competitionDto = new CompetitionDto();
+            BeanUtils.copyProperties(competition,competitionDto);
+            if (currentTime.compareTo(competitionDto.getApplyStart()) < 0) {
+                competitionDto.setStatus(1);
+            }
+            else if (currentTime.compareTo(competitionDto.getApplyStart()) >= 0 &&
+                    currentTime.compareTo(competitionDto.getApplyEnd()) <= 0) {
+                competitionDto.setStatus(2);
+            }
+            else if (currentTime.compareTo(competitionDto.getStart()) >= 0 &&
+                    currentTime.compareTo(competitionDto.getEnd()) <= 0) {
+                competitionDto.setStatus(3);
+            }
+            else {
+                competitionDto.setStatus(4);
+            }
+            if (status.equals(0) || status.equals(competitionDto.getStatus())) {
+                competitionDtoList.add(competitionDto);
+            }
         }
-        return 1;
+        return competitionDtoList;
+    }
+
+    @Override
+    public CompetitionDto getCompetitionDetail(Integer id) {
+        Competition competition = competitionDao.getCompetitionDetail(id);
+        Date currentTime = new Date();
+        CompetitionDto competitionDto = new CompetitionDto();
+        BeanUtils.copyProperties(competition, competitionDto);
+        if (currentTime.compareTo(competitionDto.getApplyStart()) < 0) {
+            competitionDto.setStatus(1);
+        } else if (currentTime.compareTo(competitionDto.getApplyStart()) >= 0 &&
+                currentTime.compareTo(competitionDto.getApplyEnd()) <= 0) {
+            competitionDto.setStatus(2);
+        } else if (currentTime.compareTo(competitionDto.getStart()) >= 0 &&
+                currentTime.compareTo(competitionDto.getEnd()) <= 0) {
+            competitionDto.setStatus(3);
+        } else {
+            competitionDto.setStatus(4);
+        }
+        return competitionDto;
     }
 
     @Override

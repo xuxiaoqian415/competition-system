@@ -3,6 +3,7 @@ package zust.competition.sys.dao;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import zust.competition.sys.dto.TeamDto;
+import zust.competition.sys.entity.Message;
 import zust.competition.sys.entity.Query;
 import zust.competition.sys.entity.Team;
 import zust.competition.sys.entity.UserTeam;
@@ -11,6 +12,21 @@ import java.util.List;
 
 @Mapper
 public interface TeamDao {
+    /**
+     * 加入团队
+     */
+    Integer insertUserTeam(UserTeam userTeam);
+
+    /**
+     * 学生发送组队申请 message
+     */
+    Integer studentRequest(Message message);
+
+    /**
+     * 根据邀请码查找团队信息
+     */
+    Team selectByCode(String invitation_code);
+
     /**
      * 增加团队
      */

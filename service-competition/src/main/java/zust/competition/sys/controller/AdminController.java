@@ -142,7 +142,7 @@ public class AdminController {
      */
     @GetMapping("/update/{id}")
     public String toUpdateCompetition(@PathVariable("id") Integer id,Model model){
-        CompetitionDto competition = competitionService.getCompetitionDetail(id);
+        CompetitionDto competition = competitionService.detail(id);
         model.addAttribute("data",competition);
         model.addAttribute("cpId",id);
         return "admin/updateCompetition";

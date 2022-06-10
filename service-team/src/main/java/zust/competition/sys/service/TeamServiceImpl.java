@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import zust.competition.sys.dao.TeamDao;
 import zust.competition.sys.dto.TeamDto;
 import zust.competition.sys.dto.UserDto;
+import zust.competition.sys.dto.UserTeamDto;
+import zust.competition.sys.entity.Message;
 import zust.competition.sys.entity.Query;
 import zust.competition.sys.entity.Team;
 import zust.competition.sys.entity.UserTeam;
@@ -24,32 +26,26 @@ public class TeamServiceImpl implements TeamService {
     SelectService selectService;
 
     @Override
-    public Integer buildTeam(TeamDto teamDto) {
-//        Team team = new Team();
-//        team.setCpId(teamDto.getCpId());
-//        team.setTeamName(teamDto.getTeamName());
-//        team.setLeaderId(teamDto.getLeaderId());
-//        team.setTeamIntro(teamDto.getTeamIntro());
-//        List<Integer> memberList = teamDto.getMemberList();
-//        StringBuffer memberBuffer = new StringBuffer();
-//        for (Integer mId : memberList) {
-//            memberBuffer.append(mId + ";");
-//        }
-//        String member = memberBuffer.toString();
-//        team.setMember(member);
-//        if(1 == teamDao.insertTeam(team)){
-//            Integer teamId = team.getId();
-//            StuComp stuComp = new StuComp();
-//            stuComp.setCompetitionId(teamDto.getCpId());
-//            stuComp.setTeamId(teamId);
-//            for (Integer mId : memberList) {
-//                stuComp.setStudentId(mId);
-//                competitionService.insertStuComp(stuComp);
-//            }
-//            stuComp.setStudentId(teamDto.getLeaderId());
-//            competitionService.insertStuComp(stuComp);
-//            return teamId;
-//        }
+    public Integer joinTeam(UserTeamDto dto) {
+        UserTeam userTeam=new UserTeam();
+        Team team=teamDao.selectByCode(dto.getInvitationCode());
+        Integer thisId= dto.getStudentId();
+        userTeam.setTeamId(team.getId());
+        userTeam.setStudentId(thisId);
+        userTeam.setRole(dto.getRole());
+        userTeam.setOperatorId(thisId);
+        if(1 == teamDao.insertUserTeam(userTeam)){
+            Message message=new Message();
+            message.setSenderId(thisId);
+            message.setOperatorId(thisId);
+            message.setReceiverId(team.getLeaderId());
+            String content= dto.getStudentName()+"同学申请加入您所带领的"+
+                    team.getTeamName()+"团队,一起参加***比赛,希望得到您的同意!";
+            message.setContent(content);
+            message.setJumpType(1);
+            if(1==teamDao.studentRequest(message)) return 1;
+
+        }
         return -1;
     }
 
@@ -80,47 +76,6 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public Integer updateTeam(TeamDto teamDto) {
-//        Team team = new Team();
-//        team.setId(teamDto.getId());
-//        team.setTeamName(teamDto.getTeamName());
-//        team.setTeamIntro(teamDto.getTeamIntro());
-//        ArrayList<Integer> memberList = new ArrayList<>();
-//        StringBuffer memberBuffer = new StringBuffer();
-//        if(teamDto.getMember1Id() != null){
-//            memberList.add(teamDto.getMember1Id());
-//            memberBuffer.append(teamDto.getMember1Id() + ";");
-//        }
-//        if(teamDto.getMember2Id() != null){
-//            memberList.add(teamDto.getMember2Id());
-//            memberBuffer.append(teamDto.getMember2Id() + ";");
-//        }
-//        if(teamDto.getMember3Id() != null){
-//            memberList.add(teamDto.getMember3Id());
-//            memberBuffer.append(teamDto.getMember3Id() + ";");
-//        }
-//        if(teamDto.getMember4Id() != null){
-//            memberList.add(teamDto.getMember4Id());
-//            memberBuffer.append(teamDto.getMember4Id() + ";");
-//        }
-//        if (memberList.size() != 0) {
-//            team.setMember(memberBuffer.toString());
-//            teamDao.deleteStuCompByTeamId(teamDto.getId());
-//            UserTeam stuComp = new UserTeam();
-//            stuComp.setCompetitionId(teamDto.getCpId());
-//            stuComp.setTeamId(teamDto.getId());
-//            for (Integer mId : memberList) {
-//                stuComp.setStudentId(mId);
-//                competitionService.insertStuComp(stuComp);
-//            }
-//            stuComp.setStudentId(teamDto.getLeaderId());
-//            competitionService.insertStuComp(stuComp);
-//        }
-//        return teamDao.updateTeam(team);
-        return null;
-    }
-
-    @Override
     public Integer adminUpdateTeam(TeamDto teamDto) {
 //        Team team = new Team();
 //        team.setId(teamDto.getId());
@@ -128,65 +83,6 @@ public class TeamServiceImpl implements TeamService {
 //        team.setTeamIntro(teamDto.getTeamIntro());
 //        ArrayList<Integer> memberList = new ArrayList<>();
 //        StringBuffer memberBuffer = new StringBuffer();
-//        if(teamDto.getMember1Id() != null){
-//            memberList.add(teamDto.getMember1Id());
-//            memberBuffer.append(teamDto.getMember1Id() + ";");
-//        }
-//        if(teamDto.getMember2Id() != null){
-//            memberList.add(teamDto.getMember2Id());
-//            memberBuffer.append(teamDto.getMember2Id() + ";");
-//        }
-//        if(teamDto.getMember3Id() != null){
-//            memberList.add(teamDto.getMember3Id());
-//            memberBuffer.append(teamDto.getMember3Id() + ";");
-//        }
-//        if(teamDto.getMember4Id() != null){
-//            memberList.add(teamDto.getMember4Id());
-//            memberBuffer.append(teamDto.getMember4Id() + ";");
-//        }
-//        // 如果改了负责人、成员都没改
-//        if (teamDto.getNewLeaderId() == null && memberList.size() == 0) {
-//            return teamDao.updateTeam(team);
-//        }
-//        UserTeam stuComp = new UserTeam();
-//        stuComp.setCompetitionId(teamDto.getCpId());
-//        stuComp.setTeamId(teamDto.getId());
-//        // 如果改了负责人，没改成员
-//        if (teamDto.getNewLeaderId() != null && memberList.size() == 0) {
-//            team.setLeaderId(teamDto.getNewLeaderId());
-//            // 删除原负责人的StuComp
-//            UserTeam delet = new UserTeam();
-//            delet.setCompetitionId(teamDto.getCpId());
-//            delet.setStudentId(teamDto.getLeaderId());
-//            teamDao.deleteStuCompByStuId(delet);
-//            stuComp.setStudentId(teamDto.getNewLeaderId());
-//            competitionService.insertStuComp(stuComp);
-//            return teamDao.updateTeam(team);
-//        }
-//        // 如果改了负责人，改了成员
-//        if (teamDto.getNewLeaderId() != null && memberList.size() != 0) {
-//            team.setLeaderId(teamDto.getNewLeaderId());
-//            team.setMember(memberBuffer.toString());
-//            teamDao.deleteStuCompByTeamId(teamDto.getId());
-//            for (Integer mId : memberList) {
-//                stuComp.setStudentId(mId);
-//                competitionService.insertStuComp(stuComp);
-//            }
-//            stuComp.setStudentId(teamDto.getNewLeaderId());
-//            competitionService.insertStuComp(stuComp);
-//            return teamDao.updateTeam(team);
-//        }
-//        // 如果没改负责人，改了成员
-//        if (teamDto.getNewLeaderId() == null && memberList.size() != 0) {
-//            team.setMember(memberBuffer.toString());
-//            teamDao.deleteStuCompByTeamId(teamDto.getId());
-//            for (Integer mId : memberList) {
-//                stuComp.setStudentId(mId);
-//                competitionService.insertStuComp(stuComp);
-//            }
-//            stuComp.setStudentId(teamDto.getLeaderId());
-//            competitionService.insertStuComp(stuComp);
-//        }
 //        return teamDao.updateTeam(team);
         return null;
     }

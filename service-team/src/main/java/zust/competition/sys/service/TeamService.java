@@ -2,40 +2,16 @@ package zust.competition.sys.service;
 
 import org.apache.ibatis.annotations.Param;
 import zust.competition.sys.dto.TeamDto;
+import zust.competition.sys.dto.UserTeamDto;
 import zust.competition.sys.entity.Query;
 
 import java.util.List;
 
 public interface TeamService {
     /**
-     * 创建团队
+     * 加入团队
      */
-    Integer buildTeam(TeamDto teamDto);
-
-    /**
-     * 获取所有团队信息
-     */
-    List<TeamDto> getAllTeam();
-
-    /**
-     * 根据条件查询团队列表
-     */
-    List<TeamDto> searchTeam(Query query);
-
-    /**
-     * 根据id删除团队
-     */
-    Integer deleteTeam(Integer id);
-
-    /**
-     * 更新团队
-     */
-    Integer updateTeam(TeamDto teamDto);
-
-    /**
-     * 更新团队
-     */
-    Integer adminUpdateTeam(TeamDto teamDto);
+    Integer joinTeam(UserTeamDto userTeamDto);
 
     /**
      * 根据团队id查询团队
@@ -56,5 +32,13 @@ public interface TeamService {
      * 根据cpId删除团队
      */
     Integer deleteTeamByCpiD(Integer cpId);
+
+    Integer adminUpdateTeam(TeamDto teamDto);
+
+    List<TeamDto> getAllTeam();
+
+    List<TeamDto> searchTeam(Query query);
+
+    Integer deleteTeam(Integer id);
 
 }
