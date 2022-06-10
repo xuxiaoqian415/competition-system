@@ -9,6 +9,8 @@ import java.util.List;
 
 @FeignClient("service-user")
 public interface UserService {
+    @RequestMapping("/user/getTeacherList")
+    List<UserDto> getTeacherList();
 
     @RequestMapping("/user/getStudentList")
     List<UserDto> getStudentList();

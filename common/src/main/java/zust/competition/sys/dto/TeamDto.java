@@ -16,12 +16,20 @@ public class TeamDto {
     private String teamName;
 
     private Integer leaderId;
+
     private String leaderName;
 
     private Integer newLeaderId;
 
     private String introduction;
 
+
+    /**
+     * 指导老师名字
+     */
+    private String teacherName;
+
+    private Integer teacherId;
 
     /**
      * 当前人数
@@ -47,6 +55,7 @@ public class TeamDto {
      * 状态：0-组队中 1-组队完成 2-报名成功
      */
     private Integer status;
+
 
 //    private String member;
 //

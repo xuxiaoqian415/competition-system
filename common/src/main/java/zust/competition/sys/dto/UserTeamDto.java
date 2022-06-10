@@ -10,6 +10,8 @@ public class UserTeamDto {
     private Integer studentId;
 
     private Integer teamId;
+
+    private String teamName;
     /**
      * 学生名字
      */

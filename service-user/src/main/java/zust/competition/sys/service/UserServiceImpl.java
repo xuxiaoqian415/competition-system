@@ -1,13 +1,19 @@
 package zust.competition.sys.service;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import zust.competition.sys.dao.UserDao;
 import zust.competition.sys.dto.LoginDto;
+import zust.competition.sys.dto.MessageDto;
+import zust.competition.sys.dto.TeamDto;
 import zust.competition.sys.dto.UserDto;
+import zust.competition.sys.entity.Message;
 import zust.competition.sys.entity.Query;
+import zust.competition.sys.entity.Team;
 import zust.competition.sys.entity.User;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -16,6 +22,51 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserDao userDao;
+
+    private MessageDto Message2d(Message m){
+        if(m==null)
+            return null;
+        MessageDto dto=new MessageDto();
+        BeanUtils.copyProperties(m,dto);
+        return dto;
+    }
+
+    @Override
+    public List<MessageDto> getReceive(Integer id) {
+        List<MessageDto> dtos=new ArrayList<>();
+        List<Message> messages=new ArrayList<>();
+        messages=userDao.receiveMessage(id);
+        for (Message m: messages) {
+            MessageDto dto=Message2d(m);
+            dto.setName(userDao.selectUserById(m.getSenderId()).getName());
+            dtos.add(dto);
+        }
+        return dtos;
+    }
+
+    @Override
+    public List<MessageDto> getSend(Integer id) {
+        List<MessageDto> dtos=new ArrayList<>();
+        List<Message> messages=new ArrayList<>();
+        messages=userDao.sendMessage(id);
+        for (Message m: messages) {
+            dtos.add(Message2d(m));
+        }
+        return dtos;
+    }
+
+    /**
+     * 收件详情
+     * @param id
+     * @return
+     */
+    @Override
+    public MessageDto getMessage(Integer id) {
+        Message m= userDao.getMessage(id);
+        MessageDto dto=Message2d(m);
+        dto.setName(userDao.selectUserById(m.getSenderId()).getName());
+        return dto;
+    }
 
     @Override
     public Integer login(LoginDto loginDto){

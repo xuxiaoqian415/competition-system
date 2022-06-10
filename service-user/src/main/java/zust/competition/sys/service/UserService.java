@@ -1,12 +1,27 @@
 package zust.competition.sys.service;
 
 import zust.competition.sys.dto.LoginDto;
+import zust.competition.sys.dto.MessageDto;
 import zust.competition.sys.dto.UserDto;
 import zust.competition.sys.entity.Query;
 
 import java.util.List;
 
 public interface UserService {
+    /**
+     * 收件箱
+     */
+    List<MessageDto> getReceive(Integer id);
+    /**
+     * 发件箱
+     */
+    List<MessageDto> getSend(Integer id);
+    /**
+     * 根据主键查找Message
+     */
+    MessageDto getMessage(Integer id);
+
+
 
     /**
      * 用户登录

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import zust.competition.sys.dto.LoginDto;
+import zust.competition.sys.dto.MessageDto;
 import zust.competition.sys.dto.UserDto;
 import zust.competition.sys.service.UserService;
 
@@ -17,6 +18,47 @@ public class UserController {
 
     @Autowired
     UserService userService;
+
+    @GetMapping("/receive/{id}")
+    public String toReceive(@PathVariable Integer id, Model model){
+        String msg="";
+        List<MessageDto> dtos=userService.getReceive(id);
+        if(dtos.size()==0) msg="当前没有消息";
+        model.addAttribute("messageDtos",dtos);
+        model.addAttribute("msg",msg);
+        return "user/toReceive";
+    }
+
+    @GetMapping("/send/{id}")
+    public String toSend(@PathVariable Integer id, Model model){
+        String msg="";
+        List<MessageDto> dtos=userService.getSend(id);
+        if(dtos.size()==0) msg="当前没有消息";
+        model.addAttribute("messageDtos",dtos);
+        model.addAttribute("msg",msg);
+        return "user/toSend";
+    }
+
+
+    @GetMapping("/detail/{id}")
+    public String toDetail(@PathVariable Integer id, Model model){
+        MessageDto dto= userService.getMessage(id);
+        model.addAttribute("message",dto);
+        return "user/messageDetail";
+    }
+
+    @GetMapping("/jump/{type}/{id}")
+    public String toDeal(@PathVariable Integer type,@PathVariable Integer id,Model model){
+        if(type==1) return "student/request";
+        else if(type==2) return "teacher/requestList";
+        else {
+            MessageDto dto= userService.getMessage(id);
+            model.addAttribute("message",dto);
+            return "user/messageDetail";
+        }
+    }
+
+
 
     @PostMapping("/login")
     public String login(LoginDto loginDto, HttpSession session, Model model) {

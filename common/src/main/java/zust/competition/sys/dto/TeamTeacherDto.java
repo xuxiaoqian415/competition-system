@@ -3,40 +3,28 @@ package zust.competition.sys.dto;
 import lombok.Data;
 
 import java.util.Date;
-
 @Data
-public class MessageDto {
-
+public class TeamTeacherDto {
     private Integer id;
+
+    private Integer teamId;
+
+    private Integer teacherId;
+
+    private String leaderName;
     /**
-     * 发件人或收件人姓名
+     * 竞赛id
      */
-    private String name;
+    private Integer cpId;
+    /**
+     * 状态：0-待处理 1-已拒绝 2-已同意
+     */
+    private Integer status;
 
     /**
-     * 消息发送方id
+     * 是否待定：0-有效 1-已被其他老师选择
      */
-    private Integer senderId;
-
-    /**
-     * 消息接收方id
-     */
-    private Integer receiverId;
-
-    /**
-     * 消息内容
-     */
-    private String content;
-
-    /**
-     * 0-未读 1-已读
-     */
-    private Integer isRead;
-
-    /**
-     * 0-无跳转 1-学生组队请求页面 2-老师指导请求页面
-     */
-    private Integer jumpType;
+    private Integer flag;
 
     /**
      * 是否删除：0-未删除 1-已删除
@@ -57,5 +45,4 @@ public class MessageDto {
      * 操作人id
      */
     private Integer operatorId;
-
 }

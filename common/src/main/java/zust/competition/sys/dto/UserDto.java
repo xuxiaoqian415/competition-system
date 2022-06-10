@@ -18,6 +18,10 @@ public class UserDto implements Serializable {
     private String email;
     private String intro;
     /**
+     * 学生在团队中的职位
+     */
+    private String role;
+    /**
      * 0管理员 1教师 2学生
      */
     private Integer type;

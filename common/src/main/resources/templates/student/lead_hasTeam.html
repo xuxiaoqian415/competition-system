@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>我负责的竞赛</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="stylesheet" th:href="@{/css/font.css}">
+    <link rel="stylesheet" th:href="@{/css/xadmin.css}">
+    <script th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>
+    <script type="text/javascript" th:src="@{/js/xadmin.js}"></script>
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <table class="layui-table layui-form">
+                        <thead>
+                        <tr>
+                            <th>团队名称</th><th>当前人数</th><th>状态</th><th>指导老师</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <td th:text="${t.teamName}"></td>
+                        <td th:text="${t.nowNumber}"></td>
+                        <td th:if="${t.status eq 0}">组队中</td>
+                        <td th:if="${t.status eq 1}">组队完成</td>
+                        <td th:if="${t.status eq 0}">报名成功</td>
+                        <td th:text="${t.teacherName}"></td>
+
+<!--                        还差选择老师的选择框-->
+
+<!--                        <tr th:each="t:${leadTeamList}">-->
+<!--                            <td>-->
+<!--                                <a th:text="${t.cpName}" th:href="@{/competition-serv/competition/detail/}+${t.cpId}+'?back=leadTeamList'"></a>-->
+<!--                            </td>-->
+<!--                            <td th:text="${t.teamName}"></td>-->
+<!--                            <td th:text="${t.leaderName}"></td>-->
+<!--                            <td th:text="${t.memberNames}"></td>-->
+<!--                            <td class="td-manage">-->
+<!--                                <a th:href="@{/team-serv/team/update/}+${t.id}">编辑团队</a>-->
+<!--                            </td>-->
+<!--                        </tr>-->
+                        </tbody>
+                    </table>
+                </div>
+                <!--                <div class="layui-card-body ">-->
+                <!--                    <div class="page">-->
+                <!--                        <div>-->
+                <!--                            <a class="prev" href="">&lt;&lt;</a>-->
+                <!--                            <a class="num" href="">1</a>-->
+                <!--                            <span class="current">2</span>-->
+                <!--                            <a class="num" href="">3</a>-->
+                <!--                            <a class="num" href="">489</a>-->
+                <!--                            <a class="next" href="">&gt;&gt;</a></div>-->
+                <!--                    </div>-->
+                <!--                </div>-->
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script th:src="@{/lib/layui/layui.js}"></script>
+<script>
+    layui.use(['laydate', 'form'],
+        function() {
+            var laydate = layui.laydate;
+
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#start' //指定元素
+            });
+
+            //执行一个laydate实例
+            laydate.render({
+                elem: '#end' //指定元素
+            });
+        });
+</script>
+</html>
+</body>
+</html>
