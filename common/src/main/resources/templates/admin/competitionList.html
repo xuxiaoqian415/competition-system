@@ -21,7 +21,7 @@
                         <div class="layui-input-inline layui-show-xs-block">
                             <input type="text" name="keyword" placeholder="搜索关键词" autocomplete="off" class="layui-input">
                         </div>
-                        <label>报名结束日期：</label>
+                        <label>竞赛结束日期：</label>
                         <div class="layui-input-inline layui-show-xs-block">
                             <input type="date" name="startTime" lay-verify="required" class="layui-input">
                         </div>
@@ -33,6 +33,7 @@
                             <button class="layui-btn">
                                 <i class="layui-icon">&#xe615;</i></button>
                         </div>
+                        <label>之间</label>
                     </form>
                 </div>
                 <div class="layui-card-body">
@@ -46,11 +47,11 @@
                         <tbody>
                         <tr th:each="c:${competitionList}">
                             <td th:text="${c.id}"></td>
-                            <td th:text="${c.cpName}"></td>
+                            <td th:text="${c.title}"></td>
                             <td th:text="${#dates.format(c.applyStart,'yyyy-MM-dd HH:MM:SS')}"></td>
                             <td th:text="${#dates.format(c.applyEnd,'yyyy-MM-dd HH:MM:SS')}"></td>
-                            <td th:text="${#dates.format(c.cpStart,'yyyy-MM-dd HH:MM:SS')}"></td>
-                            <td th:text="${#dates.format(c.cpEnd,'yyyy-MM-dd HH:MM:SS')}"></td>
+                            <td th:text="${#dates.format(c.start,'yyyy-MM-dd HH:MM:SS')}"></td>
+                            <td th:text="${#dates.format(c.end,'yyyy-MM-dd HH:MM:SS')}"></td>
                             <td class="td-manage">
                                 <a title="编辑" th:href="@{/competition-serv/admin/competition/update/}+${c.id}">
                                     <i class="layui-icon">&#xe63c;</i>编辑

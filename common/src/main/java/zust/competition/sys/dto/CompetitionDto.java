@@ -11,33 +11,76 @@ import java.util.Date;
 public class CompetitionDto {
 
     private Integer id;
-    private String cpName;
-    private String cpContent;
 
-    private Integer teamId;
-    private String teamName;
-    private String leaderName;
+    private String title;
+
+    private String content;
 
     /**
-     * 0未报名 1已报名
+     * 竞赛图片
      */
-    private Integer haveApply;
+    private String picture;
 
     /**
-     * 0待处理 1老师已选
+     * 竞赛组织机构
      */
-    private Integer haveChoose;
-    private String teacherName;
+    private String organizer;
 
-    //报名起止时间
+    /**
+     * 附件名称
+     */
+    private String supplement;
+
+    /**
+     * 附件上地址
+     */
+    private String supplementPath;
+
+    /**
+     * 团队人员上限
+     */
+    private Integer limit;
+
+    /**
+     * 报名起止时间
+     */
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date applyStart;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date applyEnd;
 
-    //竞赛起止时间
+    /**
+     * 竞赛起止时间
+     */
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date cpStart;
+    private Date start;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date cpEnd;
+    private Date end;
+
+    /**
+     * 是否删除：0-未删除 1-已删除
+     */
+    private Integer isDelete;
+
+    /**
+     * 创建时间
+     */
+    private Date createTime;
+
+    /**
+     * 更新时间
+     */
+    private Date updateTime;
+
+    /**
+     * 操作人id
+     */
+    private Integer operatorId;
+
+    /**
+     * 竞赛状态：1-即将开始报名 2-报名进行中 3-比赛进行中 4-比赛已结束
+     */
+    private Integer status;
 }

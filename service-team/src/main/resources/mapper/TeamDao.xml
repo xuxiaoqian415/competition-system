@@ -25,6 +25,9 @@
         WHERE invitation_code=#{invitationCode}
     </select>
 
+    <sql id="Base_Column_List">
+        id,cp_id,`team_name`,leader_id,`team_intro`,`member`
+    </sql>
     <select id="getTeamById" resultType="Team">
         SELECT *
         FROM team
@@ -42,16 +45,47 @@
         values (#{teamId},#{teacherId},#{operatorId})
     </insert>
 
+    <insert id="insertTeam" parameterType="Team"  useGeneratedKeys="true" keyProperty="id">
+        insert into team (cp_id,team_name,leader_id,team_intro,member)
+        values (#{cpId},#{teamName},#{leaderId},#{teamIntro},#{member})
+    </insert>
+
     <select id="getMember" resultType="UserTeam">
         select user_team.*
         from user_team
-            LEFT JOIN team on team.id=team_id WHERE team_id=#{id}
+                 LEFT JOIN team on team.id=team_id WHERE team_id=#{id}
+    </select>
+
+    <select id="selectTeamId" resultType="int">
+        select id
+        from team
+        where cp_id=#{cpId} and leader_id=#{leaderId}
+          AND is_delete = 0
     </select>
 
     <select id="myJoin" resultType="Team">
         select team.*
         from user_team
-            LEFT JOIN team on team.id=team_id WHERE student_id=#{id}
+                 LEFT JOIN team on team.id=team_id WHERE student_id=#{id}
+    </select>
+
+    <select id="selectTeamList" resultType="TeamDto" parameterType="Query">
+        select *
+        from team t LEFT JOIN user u on u.id = t.leader_id
+            LEFT JOIN competition c on t.cp_id= c.id
+        <where>
+            <if test="cpId != null">
+                t.cp_id = #{cpId}
+            </if>
+            <if test="leaderId != null">
+                AND t.leader_id = #{leaderId}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                <bind name="_keyword" value="'%' + keyword + '%'"/>
+                AND (t.team_name LIKE #{_keyword} or c.title LIKE #{_keyword})
+            </if>
+            AND t.is_delete = 0
+        </where>
     </select>
     <select id="ownLead" resultType="Team">
         SELECT *
@@ -75,6 +109,12 @@
         where id = #{id}
     </update>
 
+    <select id="selectTeamById" resultType="TeamDto">
+        select t.*, c.title as cpName, u.name as leaderName
+        from team t LEFT JOIN user u on u.id = t.leader_id
+                    LEFT JOIN competition c on t.cp_id= c.id
+        where t.id = #{id}
+        AND t.is_delete = 0
 
     <select id="requestTeam" resultType="UserTeam">
         SELECT *
@@ -82,86 +122,14 @@
         WHERE leader_id=#{id}
     </select>
 
+    <delete id="deleteUserTeamByTeamId" parameterType="int">
+        delete from user_team
+        where team_id = #{teamId}
+    </delete>
 
-<!--    <sql id="Base_Column_List">-->
-<!--        id,cp_id,`team_name`,leader_id,`team_intro`,`member`-->
-<!--    </sql>-->
-
-<!--    <insert id="insertTeam" parameterType="Team"  useGeneratedKeys="true" keyProperty="id">-->
-<!--        insert into team (cp_id,team_name,leader_id,team_intro,member)-->
-<!--        values (#{cpId},#{teamName},#{leaderId},#{teamIntro},#{member})-->
-<!--    </insert>-->
-
-<!--    <select id="selectTeamId" resultType="int">-->
-<!--        select id-->
-<!--        from team-->
-<!--        where cp_id=#{cpId} and leader_id=#{leaderId}n-->
-<!--    </select>-->
-
-<!--    <select id="selectTeamList" resultType="TeamDto" parameterType="Query">-->
-<!--        select t.*, c.cp_name as cpName, u.name as leaderName-->
-<!--        from team t LEFT JOIN user u on u.id = t.leader_id-->
-<!--            LEFT JOIN competition c on t.cp_id= c.id-->
-<!--        <where>-->
-<!--            <if test="leaderId != null">-->
-<!--                t.leader_id = #{leaderId}-->
-<!--            </if>-->
-<!--            <if test="keyword != null and keyword != ''">-->
-<!--                <bind name="_keyword" value="'%' + keyword + '%'"/>-->
-<!--                AND (t.team_name LIKE #{_keyword} or c.cp_name LIKE #{_keyword})-->
-<!--            </if>-->
-<!--        </where>-->
-<!--    </select>-->
-
-<!--    <delete id="deleteTeam" parameterType="int">-->
-<!--        delete from team-->
-<!--        where id = #{id}-->
-<!--    </delete>-->
-
-<!--    <delete id="deleteTeamByCpiD" parameterType="int">-->
-<!--        delete from team-->
-<!--        where cp_id = #{cpId}-->
-<!--    </delete>-->
-
-<!--    <update id="updateTeam" parameterType="Team">-->
-<!--        update team-->
-<!--        <set>-->
-<!--            <if test="teamName != null">-->
-<!--                `team_name` = #{teamName},-->
-<!--            </if>-->
-<!--            <if test="leaderId != null">-->
-<!--                `leader_id` = #{leaderId},-->
-<!--            </if>-->
-<!--            <if test="teamIntro != null">-->
-<!--                `team_intro` = #{teamIntro},-->
-<!--            </if>-->
-<!--            <if test="member != null">-->
-<!--                `member` = #{member}-->
-<!--            </if>-->
-<!--        </set>-->
-<!--        where id = #{id}-->
-<!--    </update>-->
-
-<!--    <select id="selectTeamById" resultType="TeamDto">-->
-<!--        select t.*, c.cp_name as cpName, u.name as leaderName-->
-<!--        from team t LEFT JOIN user u on u.id = t.leader_id-->
-<!--                    LEFT JOIN competition c on t.cp_id= c.id-->
-<!--        where t.id = #{id}-->
-<!--    </select>-->
-
-<!--    <delete id="deleteStuCompByTeamId" parameterType="int">-->
-<!--        delete from student_competition-->
-<!--        where team_id = #{teamId}-->
-<!--    </delete>-->
-
-<!--    <delete id="deleteStuCompByCompId" parameterType="int">-->
-<!--        delete from student_competition-->
-<!--        where competition_id = #{compId}-->
-<!--    </delete>-->
-
-<!--    <delete id="deleteStuCompByStuId" parameterType="StuComp">-->
-<!--        delete from student_competition-->
-<!--        where student_id = #{studentId} and competition_id = #{competitionId}-->
-<!--    </delete>-->
+    <delete id="deleteTeam" parameterType="int">
+        delete from team
+        where id = #{id}
+    </delete>
 
 </mapper>
