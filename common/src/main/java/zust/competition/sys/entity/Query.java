@@ -4,11 +4,12 @@ import lombok.Data;
 import org.apache.ibatis.type.Alias;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
 @Alias("Query")
-public class Query {
+public class Query  implements Serializable {
 
     private String number;
 

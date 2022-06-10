@@ -58,7 +58,7 @@ public class UserController {
     public String index(HttpSession session, Model model) {
         UserDto thisUser = (UserDto)session.getAttribute("thisUser");
         model.addAttribute("thisUser",thisUser);
-        return "index";
+        return "index2";
     }
 
 

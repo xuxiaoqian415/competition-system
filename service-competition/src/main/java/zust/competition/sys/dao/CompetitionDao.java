@@ -5,7 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import zust.competition.sys.dto.CompetitionDto;
 import zust.competition.sys.entity.Competition;
 import zust.competition.sys.entity.Query;
-import zust.competition.sys.entity.StuComp;
+import zust.competition.sys.entity.UserTeam;
 
 import java.util.Date;
 import java.util.List;
@@ -28,7 +28,7 @@ public interface CompetitionDao {
     /**
      * 根据Id获取竞赛详情
      */
-    CompetitionDto getCompetitionDetail(@Param("id") Integer id);
+    Competition getCompetitionDetail(@Param("id") Integer id);
 
     /**
      * 删除竞赛
@@ -43,7 +43,7 @@ public interface CompetitionDao {
     /**
      * 增加一条student-competition记录
      */
-    void insertStuComp(StuComp stuComp);
+    void insertUserTeam(UserTeam stuComp);
 
     /**
      * 根据学生id获取已报名竞赛
@@ -53,6 +53,6 @@ public interface CompetitionDao {
     /**
      * 查看学生是否已报名某竞赛
      */
-    List<StuComp> ifHaveApply(StuComp stuComp);
+    List<UserTeam> ifHaveApply(UserTeam stuComp);
 
 }

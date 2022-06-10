@@ -15,17 +15,17 @@
     <div class="layui-fluid">
         <div class="layui-row">
             <h1>发布竞赛</h1>
-            <form class="layui-form" th:action="@{/competition-serv/admin/competition/add}" method="post">
+            <form class="layui-form" th:action="@{/competition-serv/admin/competition/post/info}" method="post">
                 <div class="layui-form-item">
                     <label class="layui-form-label">竞赛名称：</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="cpName" required  lay-verify="required" class="layui-input">
+                        <input type="text" name="title" required  lay-verify="required" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">内容简介：</label>
                     <div class="layui-input-inline">
-                        <textarea name="cpContent" rows="5" cols="30" required  lay-verify="required" class="layui-input"></textarea>
+                        <textarea name="content" rows="10" cols="100" required  lay-verify="required" class="layui-input"></textarea>
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -43,13 +43,26 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">竞赛开始时间：</label>
                     <div class="layui-input-inline">
-                        <input type="date" name="cpStart" required  lay-verify="required" class="layui-input">
+                        <input type="date" name="start" required  lay-verify="required" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label">竞赛结束时间：</label>
                     <div class="layui-input-inline">
-                        <input type="date" name="cpEnd" required  lay-verify="required" class="layui-input">
+                        <input type="date" name="end" required  lay-verify="required" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">组织机构：</label>
+                    <div class="layui-input-inline">
+                        <textarea name="organizer" rows="5" cols="50" required  lay-verify="required" class="layui-input"></textarea>
+<!--                        <input type="text" name="organizer" required  lay-verify="required" class="layui-input">-->
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">人员上限：</label>
+                    <div class="layui-input-inline">
+                        <input type="number" name="limit" required  lay-verify="required" class="layui-input">
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -58,7 +71,39 @@
                     <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                 </div>
             </form>
-            <p style="color: red" th:text = "${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
+            <p style="color: red" th:text = "${msg1}" th:if="${not #strings.isEmpty(msg1)}"></p>
+        </div>
+        <div class="layui-row">
+            <h1>上传宣传图片</h1>
+            <form class="layui-form" th:action="@{/competition-serv/admin/competition/post/pic}" enctype="multipart/form-data" method="post">
+                <input type="hidden" name="cpId" th:value="${cpId}" th:if="${cpId != null}">
+                <div class="layui-form-item">
+                    <div class="layui-input-inline">
+                        <input type="file" name="pic" lay-verify="required" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label"></label>
+                    <button class="layui-btn">上传</button>
+                </div>
+            </form>
+            <p style="color: red" th:text = "${msg2}" th:if="${not #strings.isEmpty(msg2)}"></p>
+        </div>
+        <div class="layui-row">
+            <h1>上传附件</h1>
+            <form class="layui-form" th:action="@{/competition-serv/admin/competition/post/supplement}" enctype="multipart/form-data" method="post">
+                <input type="hidden" name="cpId" th:value="${cpId}" th:if="${cpId != null}">
+                <div class="layui-form-item">
+                    <div class="layui-input-inline">
+                        <input type="text" name="supplement" required  lay-verify="required" class="layui-input">
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label"></label>
+                    <button class="layui-btn">上传</button>
+                </div>
+            </form>
+            <p style="color: red" th:text = "${msg3}" th:if="${not #strings.isEmpty(msg3)}"></p>
         </div>
     </div>
     <script th:src="@{/lib/layui/layui.js}"></script>

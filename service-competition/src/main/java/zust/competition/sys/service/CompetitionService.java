@@ -3,7 +3,7 @@ package zust.competition.sys.service;
 import zust.competition.sys.dto.CompetitionDto;
 import zust.competition.sys.entity.Competition;
 import zust.competition.sys.entity.Query;
-import zust.competition.sys.entity.StuComp;
+import zust.competition.sys.entity.UserTeam;
 
 import java.util.List;
 
@@ -12,12 +12,12 @@ public interface CompetitionService {
     /**
      * 管理员获取竞赛列表
      */
-    List<Competition> getCompetitionList();
+    List<CompetitionDto> getCompetitionList();
 
     /**
      * 根据条件查询竞赛列表
      */
-    List<Competition> searchCompetition(Query query);
+    List<CompetitionDto> searchCompetition(Query query);
 
     /**
      * 获取当前时间可报名竞赛
@@ -27,7 +27,7 @@ public interface CompetitionService {
     /**
      * 管理员发布竞赛
      */
-    int addCompetition(Competition competition);
+    Integer addCompetition(Competition competition);
 
     /**
      * 根据Id获取竞赛详情
@@ -52,11 +52,11 @@ public interface CompetitionService {
     /**
      * 查看学生是否已报名某竞赛
      */
-    Integer ifHaveApply(StuComp stuComp);
+    Integer ifHaveApply(UserTeam stuComp);
 
     /**
      * 增加一条student-competition记录
      */
-    void insertStuComp(StuComp stuComp);
+    void insertUserTeam(UserTeam stuComp);
 
 }

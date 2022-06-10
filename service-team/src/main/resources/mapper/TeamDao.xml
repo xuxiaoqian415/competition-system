@@ -22,20 +22,25 @@
         select id
         from team
         where cp_id=#{cpId} and leader_id=#{leaderId}
+        AND is_delete = 0
     </select>
 
     <select id="selectTeamList" resultType="TeamDto" parameterType="Query">
-        select t.*, c.cp_name as cpName, u.name as leaderName
+        select *
         from team t LEFT JOIN user u on u.id = t.leader_id
             LEFT JOIN competition c on t.cp_id= c.id
         <where>
+            <if test="cpId != null">
+                t.cp_id = #{cpId}
+            </if>
             <if test="leaderId != null">
-                t.leader_id = #{leaderId}
+                AND t.leader_id = #{leaderId}
             </if>
             <if test="keyword != null and keyword != ''">
                 <bind name="_keyword" value="'%' + keyword + '%'"/>
-                AND (t.team_name LIKE #{_keyword} or c.cp_name LIKE #{_keyword})
+                AND (t.team_name LIKE #{_keyword} or c.title LIKE #{_keyword})
             </if>
+            AND t.is_delete = 0
         </where>
     </select>
 
@@ -69,25 +74,16 @@
     </update>
 
     <select id="selectTeamById" resultType="TeamDto">
-        select t.*, c.cp_name as cpName, u.name as leaderName
+        select t.*, c.title as cpName, u.name as leaderName
         from team t LEFT JOIN user u on u.id = t.leader_id
                     LEFT JOIN competition c on t.cp_id= c.id
         where t.id = #{id}
+        AND t.is_delete = 0
     </select>
 
-    <delete id="deleteStuCompByTeamId" parameterType="int">
-        delete from student_competition
+    <delete id="deleteUserTeamByTeamId" parameterType="int">
+        delete from user_team
         where team_id = #{teamId}
-    </delete>
-
-    <delete id="deleteStuCompByCompId" parameterType="int">
-        delete from student_competition
-        where competition_id = #{compId}
-    </delete>
-
-    <delete id="deleteStuCompByStuId" parameterType="StuComp">
-        delete from student_competition
-        where student_id = #{studentId} and competition_id = #{competitionId}
     </delete>
 
 </mapper>

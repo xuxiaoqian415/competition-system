@@ -48,11 +48,6 @@ public interface TeamService {
     List<TeamDto> getOwnTeam(Integer id);
 
     /**
-     * 根据compId删除原来的成员关系
-     */
-    Integer deleteStuCompByCompId(Integer compId);
-
-    /**
      * 获取所有团队信息
      */
     List<TeamDto> selectTeamList(Query query);

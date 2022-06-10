@@ -1,5 +1,6 @@
 package zust.competition.sys.service;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import zust.competition.sys.dao.CompetitionDao;
@@ -8,8 +9,9 @@ import zust.competition.sys.dto.SelectDto;
 import zust.competition.sys.dto.TeamDto;
 import zust.competition.sys.entity.Competition;
 import zust.competition.sys.entity.Query;
-import zust.competition.sys.entity.StuComp;
+import zust.competition.sys.entity.UserTeam;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -24,18 +26,41 @@ public class CompetitionServiceImpl implements CompetitionService {
     SelectService selectService;
 
     @Override
-    public List<Competition> getCompetitionList() {
+    public List<CompetitionDto> getCompetitionList() {
         Query query = new Query();
-        return competitionDao.getCompetitionList(query);
+        List<Competition> list = competitionDao.getCompetitionList(query);
+        ArrayList<CompetitionDto> dtos = new ArrayList<>();
+        int i=0;
+        for (Competition c : list) {
+            CompetitionDto dto = new CompetitionDto();
+            BeanUtils.copyProperties(c, dto);
+            dtos.add(i++, dto);
+        }
+        return dtos;
     }
 
     @Override
-    public List<Competition> searchCompetition(Query query) {
-        return competitionDao.getCompetitionList(query);
+    public List<CompetitionDto> searchCompetition(Query query) {
+        List<Competition> list = competitionDao.getCompetitionList(query);
+        ArrayList<CompetitionDto> dtos = new ArrayList<>();
+        int i=0;
+        for (Competition c : list) {
+            CompetitionDto dto = new CompetitionDto();
+            BeanUtils.copyProperties(c, dto);
+            dtos.add(i++, dto);
+        }
+        return dtos;
     }
 
     @Override
-    public int addCompetition(Competition competition) { return competitionDao.addCompetition(competition); }
+    public Integer addCompetition(Competition competition) {
+        try {
+            competitionDao.addCompetition(competition);
+        } catch (Exception e) {
+            return -1;
+        }
+        return competition.getId();
+    }
 
     @Override
     public List<Competition> getCompetitionByApply() {
@@ -44,62 +69,54 @@ public class CompetitionServiceImpl implements CompetitionService {
 
     @Override
     public CompetitionDto getCompetitionDetail(Integer id) {
-        return competitionDao.getCompetitionDetail(id);
+        Competition competition = competitionDao.getCompetitionDetail(id);
+        CompetitionDto dto = new CompetitionDto();
+        BeanUtils.copyProperties(competition, dto);
+        return dto;
     }
 
     @Override
     public Integer deleteCompetition(Integer id) {
-        Integer i;
-        try {
-            i = competitionDao.deleteCompetition(id);
-            teamService.deleteStuCompByCompId(id);
-            Query query = new Query();
-            query.setCpId(id);
-            List<TeamDto> teamList = teamService.selectTeamList(query);
-            if (teamList != null) {
-                for (TeamDto t : teamList) {
-                    selectService.deleteByTeamId(t.getId());
-                }
-                teamService.deleteTeamByCpiD(id);
-            }
-        } catch (Exception e) {
-            i = -1;
+        Query query = new Query();
+        query.setCpId(id);
+        List<TeamDto> teamList = teamService.selectTeamList(query);
+        if (teamList.size() != 0) {
+            return -1; // 该竞赛下已有报名团队，不能删除
         }
-        return i;
+        return competitionDao.deleteCompetition(id);
     }
 
     @Override
-    public Integer updateCompetition(CompetitionDto competitionDto) {
+    public Integer updateCompetition(CompetitionDto dto) {
         Competition competition = new Competition();
-        competition.setId(competitionDto.getId());
-        competition.setCpName(competitionDto.getCpName());
-        competition.setCpContent(competitionDto.getCpContent());
-        competition.setApplyStart(competitionDto.getApplyStart());
-        competition.setApplyEnd(competitionDto.getApplyEnd());
-        competition.setCpStart(competitionDto.getCpStart());
-        competition.setApplyEnd(competitionDto.getApplyEnd());
-        return competitionDao.updateCompetition(competition);
+        BeanUtils.copyProperties(dto, competition);
+        try {
+            competitionDao.updateCompetition(competition);
+        } catch (Exception e) {
+            return -1;
+        }
+        return 1;
     }
 
     @Override
     public List<CompetitionDto> getApplyList(Integer id) {
         List<CompetitionDto> list = competitionDao.getApplyList(id);
-        for (CompetitionDto c : list) {
-            Integer teamId = c.getTeamId();
-            List<SelectDto> teachers = selectService.getTeacherByTeamId(teamId);
-            if (teachers!=null && teachers.size()!=0) {
-                c.setHaveChoose(1);
-                c.setTeacherName(teachers.get(0).getTeacherName());
-            }
-            else {
-                c.setHaveChoose(0);
-            }
-        }
+//        for (CompetitionDto c : list) {
+//            Integer teamId = c.getTeamId();
+//            List<SelectDto> teachers = selectService.getTeacherByTeamId(teamId);
+//            if (teachers!=null && teachers.size()!=0) {
+//                c.setHaveChoose(1);
+//                c.setTeacherName(teachers.get(0).getTeacherName());
+//            }
+//            else {
+//                c.setHaveChoose(0);
+//            }
+//        }
         return list;
     }
 
     @Override
-    public Integer ifHaveApply(StuComp stuComp) {
+    public Integer ifHaveApply(UserTeam stuComp) {
         if (competitionDao.ifHaveApply(stuComp) == null || competitionDao.ifHaveApply(stuComp).size() == 0)
             return 0;
         else
@@ -107,7 +124,7 @@ public class CompetitionServiceImpl implements CompetitionService {
     }
 
     @Override
-    public void insertStuComp(StuComp stuComp) {
-        competitionDao.insertStuComp(stuComp);
+    public void insertUserTeam(UserTeam stuComp) {
+        competitionDao.insertUserTeam(stuComp);
     }
 }

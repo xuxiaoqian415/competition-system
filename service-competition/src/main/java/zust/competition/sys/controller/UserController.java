@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import zust.competition.sys.dto.CompetitionDto;
 import zust.competition.sys.dto.UserDto;
 import zust.competition.sys.entity.Competition;
-import zust.competition.sys.entity.StuComp;
+import zust.competition.sys.entity.UserTeam;
 import zust.competition.sys.service.CompetitionService;
 
 import javax.servlet.http.HttpSession;
@@ -33,10 +33,10 @@ public class UserController {
         CompetitionDto detail = competitionService.getCompetitionDetail(id);
         UserDto thisUser = (UserDto) session.getAttribute("thisUser");
         if (thisUser.getType() == 2) {
-            StuComp stuComp = new StuComp();
+            UserTeam stuComp = new UserTeam();
             stuComp.setStudentId(thisUser.getId());
-            stuComp.setCompetitionId(id);
-            detail.setHaveApply(competitionService.ifHaveApply(stuComp));
+//            stuComp.setCompetitionId(id);
+//            detail.setHaveApply(competitionService.ifHaveApply(stuComp));
         }
         model.addAttribute("detail",detail);
         if (back.equals("requestList")) {
@@ -69,9 +69,9 @@ public class UserController {
     }
 
     @ResponseBody
-    @RequestMapping("/insertStuComp")
-    public void insertStuComp(@RequestBody StuComp stuComp) {
-        competitionService.insertStuComp(stuComp);
+    @RequestMapping("/insertUserTeam")
+    public void insertUserTeam(@RequestBody UserTeam stuComp) {
+        competitionService.insertUserTeam(stuComp);
     }
 
 }

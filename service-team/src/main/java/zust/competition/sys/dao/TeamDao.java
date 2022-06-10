@@ -4,8 +4,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import zust.competition.sys.dto.TeamDto;
 import zust.competition.sys.entity.Query;
-import zust.competition.sys.entity.StuComp;
 import zust.competition.sys.entity.Team;
+import zust.competition.sys.entity.UserTeam;
 
 import java.util.List;
 
@@ -54,15 +54,6 @@ public interface TeamDao {
     /**
      * 根据teamId删除原来的成员关系
      */
-    Integer deleteStuCompByTeamId(@Param("teamId") Integer teamId);
+    Integer deleteUserTeamByTeamId(@Param("teamId") Integer teamId);
 
-    /**
-     * 根据compId删除原来的成员关系
-     */
-    Integer deleteStuCompByCompId(@Param("compId") Integer compId);
-
-    /**
-     * 根据stuId和竞赛id删除原来的成员关系
-     */
-    Integer deleteStuCompByStuId(StuComp stuComp);
 }

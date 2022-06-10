@@ -41,32 +41,32 @@ public class StudentController {
         ArrayList<Integer> memberList = new ArrayList<>();
         Map<Integer,Integer> memberMap = new HashMap<>();
         memberMap.put(id,id);
-        if(teamDto.getMember1Id() != null){
-            memberMap.put(teamDto.getMember1Id(),teamDto.getMember1Id());
-        }
-        if(teamDto.getMember2Id() != null){
-            memberMap.put(teamDto.getMember2Id(),teamDto.getMember2Id());
-        }
-        if(teamDto.getMember3Id() != null){
-            memberMap.put(teamDto.getMember3Id(),teamDto.getMember3Id());
-        }
-        if(teamDto.getMember4Id() != null){
-            memberMap.put(teamDto.getMember4Id(),teamDto.getMember4Id());
-        }
-        memberMap.remove(id);
-        Iterator<Integer> it = memberMap.keySet().iterator();
-        while(it.hasNext()){
-            memberList.add(memberMap.get(it.next()));
-        }
-        teamDto.setMemberList(memberList);
-        teamDto.setLeaderId(((UserDto)session.getAttribute("thisUser")).getId());
-        Integer teamId = teamService.buildTeam(teamDto);
-        if(-1 == teamId){
-            msg = "报名失败";
-            model.addAttribute("msg",msg);
-            return toBuildTeam(teamDto.getCpId(), model);
-        }
-        session.setAttribute("teamId",teamId);
+//        if(teamDto.getMember1Id() != null){
+//            memberMap.put(teamDto.getMember1Id(),teamDto.getMember1Id());
+//        }
+//        if(teamDto.getMember2Id() != null){
+//            memberMap.put(teamDto.getMember2Id(),teamDto.getMember2Id());
+//        }
+//        if(teamDto.getMember3Id() != null){
+//            memberMap.put(teamDto.getMember3Id(),teamDto.getMember3Id());
+//        }
+//        if(teamDto.getMember4Id() != null){
+//            memberMap.put(teamDto.getMember4Id(),teamDto.getMember4Id());
+//        }
+//        memberMap.remove(id);
+//        Iterator<Integer> it = memberMap.keySet().iterator();
+//        while(it.hasNext()){
+//            memberList.add(memberMap.get(it.next()));
+//        }
+//        teamDto.setMemberList(memberList);
+//        teamDto.setLeaderId(((UserDto)session.getAttribute("thisUser")).getId());
+//        Integer teamId = teamService.buildTeam(teamDto);
+//        if(-1 == teamId){
+//            msg = "报名失败";
+//            model.addAttribute("msg",msg);
+//            return toBuildTeam(teamDto.getCpId(), model);
+//        }
+//        session.setAttribute("teamId",teamId);
         return "student/build_team_success";
     }
 
@@ -108,7 +108,7 @@ public class StudentController {
 
     @ResponseBody
     @RequestMapping("/selectTeamList")
-    public List<TeamDto> selectTeamList(Query query) {
+    public List<TeamDto> selectTeamList(@RequestBody Query query) {
         return teamService.selectTeamList(query);
     }
 

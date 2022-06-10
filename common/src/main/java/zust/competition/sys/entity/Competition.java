@@ -45,9 +45,14 @@ public class Competition {
     private String organizer;
 
     /**
-     * 竞赛附件
+     * 附件名称
      */
     private String supplement;
+
+    /**
+     * 附件上地址
+     */
+    private String supplementPath;
 
     /**
      * 团队人员上限

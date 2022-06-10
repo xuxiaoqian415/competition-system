@@ -2,61 +2,59 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="zust.competition.sys.dao.CompetitionDao">
 
-    <sql id="Base_Column_List">
-        id,`cp_name`,`cp_content`,apply_start,apply_end,cp_start,cp_end
-    </sql>
-
     <select id="getCompetitionList" resultType="Competition" parameterType="Query">
-        select
-        <include refid="Base_Column_List" />
+        select *
         from competition
         <where>
             <if test="startTime != null">
-                apply_end &gt;= #{startTime}
+                `end` &gt;= #{startTime}
             </if>
             <if test="endTime != null">
-                AND apply_end &lt;= #{endTime}
+                AND `end` &lt;= #{endTime}
             </if>
             <if test="keyword != null and keyword != ''">
                 <bind name="_keyword" value="'%' + keyword + '%'"/>
-                AND (cp_name LIKE #{_keyword} or cp_content LIKE #{_keyword})
+                AND (title LIKE #{_keyword} or content LIKE #{_keyword} or organizer LIKE #{_keyword})
             </if>
+            AND is_delete = 0
         </where>
+        ORDER BY update_time DESC
     </select>
 
     <select id="getCompetitionByApply" resultType="Competition">
-        select
-        <include refid="Base_Column_List" />
+        select *
         from competition
         where apply_start &lt;= #{currentTime}
           and apply_end &gt;= #{currentTime}
+          AND is_delete = 0
     </select>
 
-    <insert id="addCompetition" parameterType="Competition">
-        insert into competition(cp_name,cp_content,apply_start,apply_end,cp_start,cp_end)
-        values(#{cpName},#{cpContent},#{applyStart},#{applyEnd},#{cpStart},#{cpEnd})
+    <insert id="addCompetition" parameterType="Competition" useGeneratedKeys="true" keyProperty="id">
+        insert into competition(title, content, apply_start, apply_end, start, end, organizer, `limit`, operator_id)
+        values(#{title}, #{content}, #{applyStart}, #{applyEnd}, #{start}, #{end}, #{organizer}, #{limit}, #{operatorId})
     </insert>
 
-    <select id="getCompetitionDetail" parameterType="int" resultType="CompetitionDto">
-        select
-        <include refid="Base_Column_List" />
+    <select id="getCompetitionDetail" parameterType="int" resultType="Competition">
+        select *
         from competition
         where id = #{id}
+        AND is_delete = 0
     </select>
 
-    <delete id="deleteCompetition" parameterType="java.lang.Integer">
-        delete from competition
+    <update id="deleteCompetition" parameterType="int">
+        update competition
+        set is_delete = 1
         where id = #{id}
-    </delete>
+    </update>
 
     <update id="updateCompetition" parameterType="Competition">
         update competition
         <set>
-            <if test="cpName != null">
-                `cp_name` = #{cpName},
+            <if test="title != null and title != ''">
+                title = #{title},
             </if>
-            <if test="cpContent != null">
-                `cp_content` = #{cpContent},
+            <if test="content != null and content != ''">
+                content = #{content},
             </if>
             <if test="applyStart != null">
                 apply_start = #{applyStart},
@@ -64,33 +62,35 @@
             <if test="applyEnd != null">
                 apply_end = #{applyEnd},
             </if>
-            <if test="cpStart != null">
-                cp_start = #{cpStart},
+            <if test="start != null">
+                `start` = #{start},
             </if>
-            <if test="cpEnd != null">
-                cp_end = #{cpEnd}
+            <if test="end != null">
+                `end` = #{end},
             </if>
+            <if test="organizer != null and organizer != ''">
+                organizer = #{organizer},
+            </if>
+            <if test="limit != null">
+                `limit` = #{limit},
+            </if>
+            <if test="picture != null and picture != ''">
+                picture = #{picture},
+            </if>
+            <if test="supplement != null and supplement != ''">
+                supplement = #{supplement},
+            </if>
+            operator_id = #{operatorId}
         </set>
         where id = #{id}
     </update>
 
-    <insert id="insertStuComp" parameterType="StuComp">
-        insert into student_competition(student_id, competition_id, team_id)
-        values (#{studentId}, #{competitionId}, #{teamId})
-    </insert>
-
-    <select id="getApplyList" parameterType="int" resultType="CompetitionDto">
-        select c.id as id, c.cp_name as cpName, t.id as teamId, t.team_name as teamName, u.name as leaderName
-        from student_competition sc left join competition c on sc.competition_id = c.id
-                                    left join team t on sc.team_id = t.id
-                                    left join user u on t.leader_id = u.id
-        where sc.student_id = #{id}
-    </select>
-
-    <select id="ifHaveApply" parameterType="StuComp" resultType="StuComp">
-        select *
-        from student_competition
-        where student_id = #{studentId} and competition_id = #{competitionId}
-    </select>
+<!--    <select id="getApplyList" parameterType="int" resultType="CompetitionDto">-->
+<!--        select c.id as id, c.cp_name as cpName, t.id as teamId, t.team_name as teamName, u.name as leaderName-->
+<!--        from student_competition sc left join competition c on sc.competition_id = c.id-->
+<!--                                    left join team t on sc.team_id = t.id-->
+<!--                                    left join user u on t.leader_id = u.id-->
+<!--        where sc.student_id = #{id}-->
+<!--    </select>-->
 
 </mapper>

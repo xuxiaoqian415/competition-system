@@ -11,23 +11,35 @@ import java.util.Date;
 public class CompetitionDto {
 
     private Integer id;
-    private String cpName;
-    private String cpContent;
 
-    private Integer teamId;
-    private String teamName;
-    private String leaderName;
+    private String title;
+
+    private String content;
 
     /**
-     * 0未报名 1已报名
+     * 竞赛图片
      */
-    private Integer haveApply;
+    private String picture;
 
     /**
-     * 0待处理 1老师已选
+     * 竞赛组织机构
      */
-    private Integer haveChoose;
-    private String teacherName;
+    private String organizer;
+
+    /**
+     * 附件名称
+     */
+    private String supplement;
+
+    /**
+     * 附件上地址
+     */
+    private String supplementPath;
+
+    /**
+     * 团队人员上限
+     */
+    private Integer limit;
 
     //报名起止时间
     @DateTimeFormat(pattern = "yyyy-MM-dd")
@@ -37,7 +49,9 @@ public class CompetitionDto {
 
     //竞赛起止时间
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date cpStart;
+    private Date Start;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date cpEnd;
+    private Date End;
+
+    private Integer operatorId;
 }

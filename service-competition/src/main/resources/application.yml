@@ -1,11 +1,12 @@
 server:
   port: 8061
+
 spring:
   application:
     name: service-competition
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/competition?useSSL=false&useUnicode=true&characterEncoding=UTF-8
+    url: jdbc:mysql://localhost:3306/competition2.0?useSSL=false&useUnicode=true&characterEncoding=UTF-8
     username: root
     password: 12345678
   cloud:
@@ -27,3 +28,17 @@ mybatis:
     map-underscore-to-camel-case: on  #驼峰命名
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
   type-aliases-package: zust.competition.sys
+
+upload:
+  # 上传图片的路径
+  location:
+    pics: F:/JavaEEPro/upload/pictures/
+    files: F:/JavaEEPro/upload/files/
+  # 访问图片图片的路径
+  route:
+    pics: /upload-image/**
+    files: /upload-file/**
+
+gateway:
+  route:
+    name: /competition-serv
