@@ -2,6 +2,8 @@ package zust.competition.sys.service;
 
 import org.apache.ibatis.annotations.Param;
 import zust.competition.sys.dto.TeamDto;
+import zust.competition.sys.dto.TeamTeacherDto;
+import zust.competition.sys.dto.UserDto;
 import zust.competition.sys.dto.UserTeamDto;
 import zust.competition.sys.entity.Query;
 
