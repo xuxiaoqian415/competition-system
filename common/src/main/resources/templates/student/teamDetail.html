@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>竞赛信息详情</title>
+    <title>团队详情页面</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -20,18 +20,43 @@
                 <div class="layui-card-body">
                     <div style="text-align:center;margin: 5px;line-height: 40px; border: 1px solid gainsboro;">
                         <ul style="text-align:left;border: 1px solid gainsboro">
-                            <h4 th:text="'发件人：'+${message.name}"></h4></ul>
-                        <ul style="text-align:left;border: 1px solid gainsboro">
-                            <h4 th:text="'发送时间：'+${#dates.format(message.createTime,'yyyy-MM-dd')}"></h4>
+                            <span th:text="'团队名：'+${detail.teamName}"></span>
+                            <span th:text="'负责人：'+${detail.leaderName}"></span>
+                            <span th:text="'指导老师：'+${detail.teacherName}"></span>
+                            <span th:text="'竞赛名：'+${detail.cpName}"></span>
                         </ul>
                         <ul style="text-align:left;border: 1px solid gainsboro">
-                            <h4 th:text="'收件人：'+${session.thisUser.name}"></h4></ul>
-                        <ul style="text-align:left;border: 1px solid gainsboro">
-                            [[${message.content}]]</ul>
-                        <ul th:if="${message.jumpType ne 0}">
-                            <a th:text="'去处理 >>'" th:href="@{/user/jump/}+${message.jumpType}+'?back=informList'"></a>
+                            <h4 th:text="'团队介绍：'+${detail.introduction}"></h4>
                         </ul>
+                        <ul style="text-align:left;border: 1px solid gainsboro">
+                            <h4 th:text="'获奖情况：'+${detail.result}"></h4></ul>
                     </div>
+
+                    <div class="layui-form-item" th:if="${detail.isLeader == 1}">
+                        <button class="layui-btn layui-btn-primary" >
+                            <a th:href="@{/team-serv/team/updateStatus/}+${detail.id}">组队完成</a>
+                        </button>
+                    </div>
+
+                    <div class="layui-form-item" th:if="${member.size() != 0}">
+                        <h4>成员详情：</h4>
+                        <table class="layui-table layui-form">
+                            <thead>
+                            <tr>
+                                <th>姓名</th><th></th><th>学院</th><th>联系方式</th><th>职务</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="a:${member}">
+                                <td th:text="${a.name}"></td>
+                                <td th:text="${a.academy}"></td>
+                                <td th:text="${a.mobile}"></td>
+                                <td th:text="${a.role}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
 <!--                    <div class="layui-form-item" th:if="${session.thisUser.type == 2}">-->
 <!--                        <button class="layui-btn layui-btn-primary" th:if="${detail.haveApply == 0}">-->
 <!--                            <a th:href="@{/team-serv/team/build/}+${detail.id}">进入报名</a>-->

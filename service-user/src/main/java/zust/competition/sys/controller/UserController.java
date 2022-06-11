@@ -50,12 +50,7 @@ public class UserController {
     @GetMapping("/jump/{type}/{id}")
     public String toDeal(@PathVariable Integer type,@PathVariable Integer id,Model model){
         if(type==1) return "student/request";
-        else if(type==2) return "teacher/requestList";
-        else {
-            MessageDto dto= userService.getMessage(id);
-            model.addAttribute("message",dto);
-            return "user/messageDetail";
-        }
+        else  return "teacher/requestList";
     }
 
 

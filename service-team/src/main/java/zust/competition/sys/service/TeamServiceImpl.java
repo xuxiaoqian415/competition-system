@@ -29,6 +29,14 @@ public class TeamServiceImpl implements TeamService {
     SelectService selectService;
 
     @Override
+    public Integer updateStatus(Integer id) {
+        Team team=new Team();
+        team.setId(id);
+        team.setStatus(2);
+        return teamDao.updateTeam(team);
+    }
+
+    @Override
     public Integer joinTeam(UserTeamDto dto) {
         UserTeam userTeam=new UserTeam();
         Team team=teamDao.selectByCode(dto.getInvitationCode());
@@ -118,6 +126,9 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public TeamDto getTeamDetail(Integer id) {
         Team t= teamDao.getTeamById(id);
+//        竞赛名称还没取出来
+        if(t.getIsAwarded()==0) t.setResult("暂无");
+        if(t.getTeacherId()==0) t.setTeamName("待定");
         return Te2d(t);
     }
 
@@ -128,7 +139,7 @@ public class TeamServiceImpl implements TeamService {
         if(dtos.size()>=0&&dtos!=null) {
             for (UserTeam ut : dtos) {
                 UserDto u = userService.selectUserById(ut.getStudentId());
-                u.setRole(ut.getRole());
+                if(ut.getRole()!=null) u.setRole(ut.getRole());
                 users.add(u);
             }
         }

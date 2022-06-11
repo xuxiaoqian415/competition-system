@@ -11,6 +11,11 @@ import java.util.List;
 
 public interface TeamService {
     /**
+     * 更新团队status
+     */
+    Integer updateStatus(Integer id);
+
+    /**
      * 加入团队
      */
     Integer joinTeam(UserTeamDto userTeamDto);
