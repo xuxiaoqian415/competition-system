@@ -35,7 +35,7 @@ public interface UserDao {
     /**
      * 根据Id查找用户
      */
-    UserDto selectUserById(Integer id);
+    User selectUserById(Integer id);
 
     /**
      * 根据学号或工号查询用户

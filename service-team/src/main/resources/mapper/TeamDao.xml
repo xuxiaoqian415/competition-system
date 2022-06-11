@@ -115,7 +115,7 @@
                     LEFT JOIN competition c on t.cp_id= c.id
         where t.id = #{id}
         AND t.is_delete = 0
-
+    </select>
     <select id="requestTeam" resultType="UserTeam">
         SELECT *
         FROM user_team LEFT JOIN team ON team.id=team_id

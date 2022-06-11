@@ -15,13 +15,13 @@
 <div class="layui-fluid">
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
-            <div class="layui-card">
+            <div class="layui-card"  style="height: 610px">
                 <div>
                     <a class="layui-btn layui-btn-primary" lay-event="detail" th:href="${back}" style="float: left">
                         <i class="layui-icon layui-icon-return"></i>
                         返回
                     </a>
-                    <div style="margin-right:10px;float:right;">
+                    <div style="margin-right:30px;float:right;margin-top: 10px">
                         参赛方式：
                         <button type="button" class="layui-btn layui-btn-primary layui-btn-radius"
                                 th:if="${session.thisUser.type == 2}">

@@ -141,11 +141,20 @@ public class StudentController {
     }
 
 
+    /**
+     * 根据主键id获取团队信息
+     */
     @ResponseBody
-    @RequestMapping("/deleteTeamByCpiD")
-    public Integer deleteTeamByCpiD(Integer cpId) {
-        return teamService.deleteTeamByCpiD(cpId);
+    @RequestMapping("/getTeam")
+    public TeamDto getTeam(@RequestParam("id") Integer id) {
+        return teamService.getTeamById(id);
     }
+
+//    @ResponseBody
+//    @RequestMapping("/deleteTeamByCpiD")
+//    public Integer deleteTeamByCpiD(Integer cpId) {
+//        return teamService.deleteTeamByCpiD(cpId);
+//    }
 
     @ResponseBody
     @RequestMapping("/selectTeamList")

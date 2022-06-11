@@ -180,7 +180,7 @@ public class UserController {
     @ResponseBody
     @RequestMapping("/selectUserById")
     public UserDto selectUserById(@RequestParam("id") Integer id) {
-        return userService.selectUserById(id);
+        return userService.getUserById(id);
     }
 
 }

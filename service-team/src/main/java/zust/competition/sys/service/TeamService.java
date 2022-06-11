@@ -33,7 +33,7 @@ public interface TeamService {
     /**
      * 根据cpId删除团队
      */
-    Integer deleteTeamByCpiD(Integer cpId);
+//    Integer deleteTeamByCpiD(Integer cpId);
 
     Integer adminUpdateTeam(TeamDto teamDto);
     /**

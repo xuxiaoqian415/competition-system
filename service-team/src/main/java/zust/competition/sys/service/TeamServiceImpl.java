@@ -223,16 +223,14 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public TeamDto getTeamById(Integer id) {
-        TeamDto team = teamDao.selectTeamById(id);
-//        if(team.getMember() != null){
-//            String[] members = team.getMember().split(";");
-//            ArrayList<Integer> memberList = new ArrayList<>();
-//            for (String m : members) {
-//                memberList.add(Integer.parseInt(m));
-//            }
-//            team.setMemberList(memberList);
-//        }
-        return team;
+        Team team = teamDao.getTeamById(id);
+        TeamDto teamDto = new TeamDto();
+        BeanUtils.copyProperties(team,teamDto);
+        UserDto leader = userService.selectUserById(team.getLeaderId());
+        teamDto.setLeaderName(leader.getName());
+        CompetitionDto competition = competitionService.getCompetitionById(team.getCpId());
+        teamDto.setCpName(competition.getTitle());
+        return teamDto;
     }
 
     @Override
@@ -267,8 +265,8 @@ public class TeamServiceImpl implements TeamService {
         return teamDao.selectTeamList(query);
     }
 
-    @Override
-    public Integer deleteTeamByCpiD(Integer cpId) {
-        return teamDao.deleteTeamByCpiD(cpId);
-    }
+//    @Override
+//    public Integer deleteTeamByCpiD(Integer cpId) {
+//        return teamDao.deleteTeamByCpiD(cpId);
+//    }
 }

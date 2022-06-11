@@ -100,4 +100,10 @@ public class UserController {
         competitionService.insertUserTeam(stuComp);
     }
 
+    @ResponseBody
+    @RequestMapping("/getCompetition")
+    public CompetitionDto getCompetitionById(@RequestParam("id") Integer id){
+        return competitionService.detail(id);
+    }
+
 }

@@ -86,7 +86,7 @@ public interface TeamDao {
     /**
      * 根据cpId删除团队
      */
-    Integer deleteTeamByCpiD(@Param("cpId") Integer cpId);
+//    Integer deleteTeamByCpiD(@Param("cpId") Integer cpId);
 
     /**
      * 团队更新
