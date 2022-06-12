@@ -29,29 +29,41 @@
         id,cp_id,`team_name`,leader_id,`team_intro`,`member`
     </sql>
 
-    <select id="getTeamById" resultType="Team">
-        SELECT *
-        FROM team
-        WHERE id=#{id}
-    </select>
 
     <insert id="insertTeam" parameterType="Team"  useGeneratedKeys="true" keyProperty="id">
-        insert into team (cp_id,team_name,leader_id)
-        values (#{cpId},#{teamName},#{leaderId})
+        insert into team
+            (team_name,introduction,cp_id,leader_id,invitation_code,create_time,operator_id)
+        values
+               (#{teamName},#{introduction},#{cpId},#{leaderId},#{invitationCode},now(),#{operatorId})
     </insert>
-
-    <select id="getTeamList" resultType="Team">
-        SELECT *
-        FROM team
-        WHERE leader_id=#{leaderId} AND cp_id=#{cpId}
-    </select>
 
     <insert id="insertTeamTeacher" parameterType="TeamTeacher"  useGeneratedKeys="true" keyProperty="id">
         insert into team_teacher (team_id,teacher_id,operator_id)
         values (#{teamId},#{teacherId},#{operatorId})
     </insert>
 
-
+    <select id="getTeam" parameterType="TeamQuery" resultType="Team">
+        SELECT *
+        FROM team
+        <where>
+            is_delete = 0
+            <if test="teamId != null">
+                AND id = #{teamId}
+            </if>
+            <if test="leaderId != null">
+                AND leader_id = #{leaderId}
+            </if>
+            <if test="cpId != null">
+                AND cp_id = #{cpId}
+            </if>
+            <if test="invitationCode != null and invitationCode != ''">
+                AND invitation_code = #{invitationCode}
+            </if>
+            <if test="is_awarded != null">
+                AND is_awarded = #{isAwarded}
+            </if>
+        </where>
+    </select>
 
     <select id="getMember" resultType="UserTeam">
         select user_team.*
@@ -59,12 +71,6 @@
                  LEFT JOIN team on team.id=team_id WHERE team_id=#{id}
     </select>
 
-    <select id="selectTeamId" resultType="int">
-        select id
-        from team
-        where cp_id=#{cpId} and leader_id=#{leaderId}
-          AND is_delete = 0
-    </select>
 
     <select id="myJoin" resultType="Team">
         select team.*
@@ -91,6 +97,14 @@
             AND t.is_delete = 0
         </where>
     </select>
+
+    <select id="getMyTeamByCpId" parameterType="int" resultType="team">
+        SELECT team.*
+        FROM user_team LEFT JOIN team ON team.id = team_id
+        WHERE user_team.student_id = #{userId} AND team.cp_id = #{cpId}
+          AND team.is_delete = 0
+    </select>
+
     <select id="ownLead" resultType="Team">
         SELECT *
         from team

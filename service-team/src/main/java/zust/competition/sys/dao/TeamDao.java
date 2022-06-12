@@ -12,6 +12,7 @@ import java.util.List;
 @Mapper
 public interface TeamDao {
 
+
     /**
      * 加入团队
      */
@@ -43,16 +44,6 @@ public interface TeamDao {
     List<Team> myJoin(Integer id);
 
     /**
-     * 根据竞赛id和成员id查找Team
-     */
-    Team getMyTeamByCpId(@Param("userId") Integer userId, @Param("cpId") Integer cpId);
-
-
-
-
-
-
-    /**
      * 获取所有团队信息
      */
     List<UserTeam> getMember(Integer id);
@@ -73,19 +64,17 @@ public interface TeamDao {
     List<UserTeam> ownRequest(Integer id);
 
 
-
-
     /**
      * 增加团队
      */
     Integer insertTeam(Team team);
 
 
-
     /**
-     * 根据竞赛id与队长id查询团队id
+     * 根据竞赛id和成员id查找Team
      */
-    Integer selectTeamId(@Param("cpId") Integer cpId, @Param("leaderId") Integer leaderId);
+    Team getMyTeamByCpId(@Param("userId") Integer userId, @Param("cpId") Integer cpId);
+
 
     /**
      * 获取所有团队信息

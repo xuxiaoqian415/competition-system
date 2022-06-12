@@ -27,5 +27,9 @@ public class TeamQuery implements Serializable {
      * 邀请码
      */
     private String invitationCode;
+    /**
+     * 获奖情况
+     */
+    private String result;
 
 }

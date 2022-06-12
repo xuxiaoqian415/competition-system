@@ -25,6 +25,34 @@ public class StudentController {
     @Autowired
     UserService userService;
 
+
+    /**
+     * 跳转创建团队
+     */
+    @GetMapping("/build/{cpId}")
+    public String toBuild(@PathVariable("cpId") Integer cpId, Model model) {
+        model.addAttribute("cpId", cpId);
+        return "student/build_team";
+    }
+
+    /**
+     * 创建团队
+     */
+    @PostMapping("/build")
+    public String buildTeam(TeamDto dto, HttpSession session, Model model) {
+        String msg = "";
+        Integer leaderId = ((UserDto) session.getAttribute("thisUser")).getId();
+        dto.setLeaderId(leaderId);
+        if (-1 == teamService.buildTeam(dto)) {
+            msg = "团队创建失败";
+        } else {
+            TeamDto t=teamService.getLeaderTeam(leaderId,dto.getCpId());
+            msg="团队邀请码："+t.getInvitationCode();
+        }
+        model.addAttribute("msg", msg);
+        return toBuild(dto.getCpId(), model);
+    }
+
     /**
      * 加入团队页面
      */
@@ -165,9 +193,9 @@ public class StudentController {
     @GetMapping("/requestTeam/{id}")
     public String requestTeam(@PathVariable Integer id, Model model) {
         String msg = "";
-        List<TeamDto> dtos = teamService.ownLead(id);
+        List<UserTeamDto> dtos = teamService.requestTeam(id);
         if (dtos.size() == 0) msg = "当前没有组队申请";
-        model.addAttribute("teamDtos", dtos);
+        model.addAttribute("userTeamDto", dtos);
         model.addAttribute("msg", msg);
         return "";
     }
