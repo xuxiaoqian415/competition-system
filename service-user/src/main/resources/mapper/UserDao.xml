@@ -5,25 +5,6 @@
         id,`number`,`name`,`password`,`mobile`,`email`,`intro`,type
     </sql>
 
-
-    <select id="getMessage" resultType="Message">
-            select *
-        from message
-        where id=#{id}
-    </select>
-
-    <select id="receiveMessage" resultType="Message">
-        select * from message  where receiver_id=#{id}
-        order  by is_read asc,create_time desc
-    </select>
-
-    <select id="sendMessage" resultType="Message">
-        select *
-        from message
-        where sender_id=#{id}
-        order  by is_read asc,create_time desc
-    </select>
-
     <select id="selectUser" parameterType="Query" resultType="User">
         select id,number,name,intro,type,email,mobile
         from user

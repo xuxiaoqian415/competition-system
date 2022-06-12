@@ -36,9 +36,7 @@ public class UserController {
     @ResponseBody
     @GetMapping("/inform/{status}")
     public TableVo competitionInformList(@PathVariable("status") Integer status) {
-        System.out.println("===status:" + status);
         List<CompetitionDto> informList = competitionService.getInformList(status);
-        System.out.println("===informList:" + informList);
         TableVo tableVo = new TableVo(0, informList);
         return tableVo;
     }
@@ -47,41 +45,29 @@ public class UserController {
      * 竞赛信息详情
      */
     @GetMapping("/detail/{id}")
-    public String competitionDetail(@PathVariable("id") Integer id, Model model) {
+    public String competitionDetail(@PathVariable("id") Integer id, Model model, HttpSession session) {
+        UserDto thisUser = (UserDto) session.getAttribute("thisUser");
         CompetitionDto detail = competitionService.getCompetitionDetail(id);
+        // 设置当前用户的类型 0-不可报名（教师/管理员）1-未报名过该竞赛 2-已创建团队 3-已加入团队
+        if (thisUser.getType() != 2) { // 不是学生
+            detail.setUserType(0);
+        }
+        else {
+            Integer userType = competitionService.getUserType(thisUser.getId(), id);
+            detail.setUserType(userType);
+        }
         model.addAttribute("detail", detail);
         return "user/competitionDetail";
     }
 
-//    @GetMapping("/detail/{id}")
-//    public String toCompetitionDetail(@PathVariable("id") Integer id, @RequestParam("back") String back,
-//                                      Model model, HttpSession session) {
-//        CompetitionDto detail = competitionService.getCompetitionDetail(id);
-//        UserDto thisUser = (UserDto) session.getAttribute("thisUser");
-//        if (thisUser.getType() == 2) {
-//            UserTeam stuComp = new UserTeam();
-//            stuComp.setStudentId(thisUser.getId());
-////            stuComp.setCompetitionId(id);
-////            detail.setHaveApply(competitionService.ifHaveApply(stuComp));
-//        }
-//        model.addAttribute("detail",detail);
-//        if (back.equals("requestList")) {
-//            model.addAttribute("back","/select-serv/teacher/select/request/list");
-//        }
-//        else if (back.equals("agreeList")) {
-//            model.addAttribute("back","/select-serv/teacher/select/agree/list");
-//        }
-//        else if (back.equals("informList")) {
-//            model.addAttribute("back","/competition-serv/competition/inform/list");
-//        }
-//        else if (back.equals("applyList")) {
-//            model.addAttribute("back","/competition-serv/competition/applied/list");
-//        }
-//        else if (back.equals("leadTeamList")) {
-//            model.addAttribute("back","/team-serv/team/lead/list");
-//        }
-//        return "user/competitionDetail";
-//    }
+
+
+
+
+
+
+
+
 
     /**
      * 已报名竞赛列表
@@ -101,9 +87,12 @@ public class UserController {
     }
 
     @ResponseBody
-    @RequestMapping("/getCompetition")
-    public CompetitionDto getCompetitionById(@RequestParam("id") Integer id){
-        return competitionService.detail(id);
+    @RequestMapping("/getCompetitionTile")
+    public String getCompetitionTile(Integer id) {
+        CompetitionDto detail = competitionService.detail(id);
+        if (detail != null)
+            return detail.getTitle();
+        return "0";
     }
 
 }

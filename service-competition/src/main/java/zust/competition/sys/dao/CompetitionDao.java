@@ -12,23 +12,21 @@ import java.util.List;
 
 @Mapper
 public interface CompetitionDao {
+
+    /**
+     * 新增一条竞赛信息
+     */
+    void addCompetition(Competition competition);
+
+    /**
+     * 竞赛更新
+     */
+    Integer updateCompetition(Competition competition);
+
     /**
      * 根据条件查询全部竞赛信息
      */
     List<Competition> getCompetitionList(Query query);
-
-    /**
-     *获取当前时间内可报名的竞赛信息
-     */
-    List<Competition> getCompetitionByApply(Date currentTime);
-
-    //竞赛发布
-    int addCompetition(Competition competition);
-
-    /**
-     * 根据Id获取竞赛详情
-     */
-    Competition getCompetitionDetail(@Param("id") Integer id);
 
     /**
      * 删除竞赛
@@ -36,9 +34,22 @@ public interface CompetitionDao {
     Integer deleteCompetition(@Param("id") Integer id);
 
     /**
-     * 竞赛更新
+     * 根据Id获取竞赛详情
      */
-    Integer updateCompetition(Competition competition);
+    Competition getCompetitionDetail(@Param("id") Integer id);
+
+
+
+
+
+
+
+
+
+    /**
+     *获取当前时间内可报名的竞赛信息
+     */
+    List<Competition> getCompetitionByApply(Date currentTime);
 
     /**
      * 增加一条student-competition记录

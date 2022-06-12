@@ -15,58 +15,85 @@
 <div class="layui-fluid">
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
-            <div class="layui-card"  style="height: 610px">
+            <div class="layui-card">
                 <div>
-                    <a class="layui-btn layui-btn-primary" lay-event="detail" th:href="${back}" style="float: left">
-                        <i class="layui-icon layui-icon-return"></i>
-                        返回
-                    </a>
-                    <div style="margin-right:30px;float:right;margin-top: 10px">
+                    <div style="margin-right:10px;float:right;" th:if="${detail.userType !=0}">
                         参赛方式：
                         <button type="button" class="layui-btn layui-btn-primary layui-btn-radius"
-                                th:if="${session.thisUser.type == 2}">
-                            <a th:herf="@{/team-serv/team/build/}+${detail.id}"></a>
-                            创建团队
+                                th:if="${detail.userType == 1}">
+                            <a th:onclick="|parent.xadmin.add_tab('创建团队',[['/team-serv/team/build/'+${detail.id}]],true)|"
+                               href="javascript:;" th:text="'创建团队'">
+                            </a>
                         </button>
                         <button type="button" class="layui-btn layui-btn-primary layui-btn-radius"
-                                th:if="${session.thisUser.type == 2}">
-                            <a th:herf="@{/team-serv/team/join/}+${detail.id}"></a>
-                            加入团队
+                                th:if="${detail.userType == 1}">
+                            <a th:onclick="|parent.xadmin.add_tab('加入团队',[['/team-serv/team/join/'+${detail.id}]],true)|"
+                               href="javascript:;" th:text="'加入团队'">
+                            </a>
                         </button>
                         <button type="button" class="layui-btn layui-btn-primary layui-btn-radius"
-                                th:if="${session.thisUser.type == 2}">
-                            <a th:herf="@{/team-serv/team/own/}+${detail.id}"></a>
-                            已有团队
+                                th:if="${detail.userType == 2}">
+                            <a th:onclick="|parent.xadmin.add_tab('已有团队',[['/team-serv/team/lead/'+${detail.id}]],true)|"
+                               href="javascript:;" th:text="'已有团队'">
+                            </a>
+                        </button>
+                        <button type="button" class="layui-btn layui-btn-primary layui-btn-radius"
+                                th:if="${detail.userType == 3}">
+                            <a th:onclick="|parent.xadmin.add_tab('aa','aa',true)|"
+                               href="javascript:;" th:text="'您已报名并组队，点击查看详情 >>'">
+                            </a>
                         </button>
                     </div>
                     <div style="clear:both"></div>
                 </div>
                 <div class="layui-card-body" style="text-align:center;margin: 5px;">
                     <ul style="text-align:center;">
-                        <h2>[[${detail.title}]]</h2>
+                        <h1 style="margin: 30px 0px;">[[${detail.title}]]</h1>
                     </ul>
                     <ul style="text-align:center;" th:if='${detail.picture != ""}'>
-                        <img style="height: 400px;width: 100%" th:src="@{${detail.picture}}" />
+                        <img style="height: 400px;width: 100%;" th:src="@{${detail.picture}}" />
                     </ul>
                     <ul style="text-align:left;">
-                        <li> <h4 th:text="'报名起止时间：'+${#dates.format(detail.applyStart,'yyyy-MM-dd')}+
-                            '————'+${#dates.format(detail.applyEnd,'yyyy-MM-dd')}"></h4></li>
+                        <h3 style="margin: 30px 0px;">
+                            <li style="list-style-position: inside;list-style-type: disc;"
+                                th:text="'报名起止时间：'+${#dates.format(detail.applyStart,'yyyy-MM-dd')}+
+                            '————'+${#dates.format(detail.applyEnd,'yyyy-MM-dd')}">
+                            </li>
+                        </h3>
                     </ul>
                     <ul style="text-align:left;">
-                        <li>  <h4 th:text="'竞赛起止时间：'+${#dates.format(detail.start,'yyyy-MM-dd')}+
-                            '————'+${#dates.format(detail.end,'yyyy-MM-dd')}"></h4></li>
+                        <h3 style="margin: 30px 0px;">
+                            <li style="list-style-position: inside;list-style-type: disc;"
+                                th:text="'竞赛起止时间：'+${#dates.format(detail.start,'yyyy-MM-dd')}+
+                            '————'+${#dates.format(detail.end,'yyyy-MM-dd')}">
+                            </li>
+                        </h3>
                     </ul>
                     <hr>
-                    <ul><li><h4 style="text-align: left">赛事背景</h4></li></ul>
+                    <ul style="text-align: left;">
+                        <h3 style="margin: 30px 0px;">
+                            <li style="list-style-position: inside;list-style-type: disc;">
+                                <strong>赛事背景</strong>
+                            </li>
+                        </h3>
+                    </ul>
                     <ul style="text-align:center; text-indent:2em;">
-                        <p style="text-align:left;">
-                        [[${detail.content}]]
-                        </p>
+                        <pre style="text-align:left;">
+                            [[${detail.content}]]
+                        </pre>
                     </ul>
                     <hr>
-                    <ul><li><h4 style="text-align: left">举办方</h4></li></ul>
+                    <ul style="text-align: left;">
+                        <h3 style="margin: 30px 0px;">
+                            <li style="list-style-position: inside;list-style-type: disc;">
+                                <strong>举办方</strong>
+                            </li>
+                        </h3>
+                    </ul>
                     <ul style="text-align:left;margin-left: 40px;">
-                        [[${detail.organizer}]]
+                        <li>
+                            <pre>[[${detail.organizer}]]</pre>
+                        </li>
                     </ul>
                     <hr>
                     <ul style="text-align:right;margin-right: 300px;" th:if='${detail.supplement != ""}'>

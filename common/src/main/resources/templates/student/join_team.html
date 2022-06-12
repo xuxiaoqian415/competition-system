@@ -16,7 +16,7 @@
     <div class="layui-row">
         <h1>加入团队</h1>
         <form class="layui-form" th:action="@{/team-serv/team/join}" method="post">
-            <input  name="cpId" th:value="${cpId}">
+            <input type="hidden" name="cpId" th:value="${cpId}">
             <div class="layui-form-item">
                 <label class="layui-form-label">邀请码：</label>
                 <div class="layui-input-inline">

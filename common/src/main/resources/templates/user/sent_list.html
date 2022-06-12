@@ -2,7 +2,7 @@
 <html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>收件箱</title>
+    <title>发件箱</title>
     <meta name="renderer" content="webkit|ie-comp|ie-stand">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -27,32 +27,19 @@
                     <table class="layui-table layui-form">
                         <thead>
                         <tr>
-                            <th>发件人</th><th>发件时间</th>
-                            <th>状态</th>
+                            <th>收件人</th><th>发件时间</th><th>发件内容</th>
                         </tr>
                         </thead>
+                        <p style="color: red" th:text = "${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
                         <tbody>
-                        <tr th:each="m:${messageDtos}" >
-                            <a th:href="@{/user/detail/}+${m.id}+'?back=informList'">
-                                <td th:text="${m.name}"></td>
-                                <td th:text="${#dates.format(m.createTime,'yyyy-MM-dd HH:MM:SS')}"></td>
-                                <td th:text="${m.isRead}"></td>
-                            </a>
+                        <tr th:each="m:${messageList}" >
+                            <td th:text="${m.name}"></td>
+                            <td th:text="${#dates.format(m.createTime,'yyyy-MM-dd HH:MM:SS')}"></td>
+                            <td th:text="${m.content}"></td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
-                <!--                <div class="layui-card-body ">-->
-                <!--                    <div class="page">-->
-                <!--                        <div>-->
-                <!--                            <a class="prev" href="">&lt;&lt;</a>-->
-                <!--                            <a class="num" href="">1</a>-->
-                <!--                            <span class="current">2</span>-->
-                <!--                            <a class="num" href="">3</a>-->
-                <!--                            <a class="num" href="">489</a>-->
-                <!--                            <a class="next" href="">&gt;&gt;</a></div>-->
-                <!--                    </div>-->
-                <!--                </div>-->
             </div>
         </div>
     </div>

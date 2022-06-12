@@ -10,6 +10,7 @@ import zust.competition.sys.entity.Query;
 import java.util.List;
 
 public interface TeamService {
+
     /**
      * 查看我发送的组队请求
      */
@@ -26,6 +27,31 @@ public interface TeamService {
     Integer joinTeam(UserTeamDto userTeamDto);
 
     /**
+     * 负责人查看某竞赛下的已有团队
+     */
+    TeamDto getLeaderTeam(Integer leaderId,Integer cpId) ;
+
+    /**
+     * 根据TeamId找已邀请的老师
+     */
+    List<String> getInviteTeacher(Integer teamId);
+
+    /**
+     * 负责人向老师发送指导请求
+     */
+    Integer inviteTeacher(TeamTeacherDto dto);
+
+    /**
+     * 查询我加入的团队
+     */
+    List<TeamDto> myJoin(Integer id);
+
+
+
+
+
+
+    /**
      * 根据团队id查询团队
      */
     TeamDto getTeamById(Integer id);
@@ -40,22 +66,8 @@ public interface TeamService {
      */
     List<TeamDto> selectTeamList(Query query);
 
-    /**
-     * 根据cpId删除团队
-     */
-//    Integer deleteTeamByCpiD(Integer cpId);
 
     Integer adminUpdateTeam(TeamDto teamDto);
-    /**
-     * 负责人查看负责的已有团队
-     */
-    TeamDto getTeamList(Integer leaderId,Integer cpId) ;
-
-
-    /**
-     * 负责人向老师发送指导请求
-     */
-    Integer inviteTeacher(TeamTeacherDto dto);
 
     /**
      * 根据主键id查询团队详情
@@ -67,10 +79,6 @@ public interface TeamService {
      */
     List<UserDto> getMember(Integer id);
 
-    /**
-     * 查询我加入的团队
-     */
-    List<TeamDto> myJoin(Integer id);
     /**
      * 查询我负责的团队
      */

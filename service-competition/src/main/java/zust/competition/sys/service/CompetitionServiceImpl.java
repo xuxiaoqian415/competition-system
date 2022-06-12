@@ -7,8 +7,10 @@ import zust.competition.sys.dao.CompetitionDao;
 import zust.competition.sys.dto.CompetitionDto;
 import zust.competition.sys.dto.SelectDto;
 import zust.competition.sys.dto.TeamDto;
+import zust.competition.sys.dto.query.TeamQuery;
 import zust.competition.sys.entity.Competition;
 import zust.competition.sys.entity.Query;
+import zust.competition.sys.entity.Team;
 import zust.competition.sys.entity.UserTeam;
 
 import java.util.ArrayList;
@@ -97,7 +99,6 @@ public class CompetitionServiceImpl implements CompetitionService {
     public List<CompetitionDto> getInformList(Integer status) {
         Query query = new Query();
         List<Competition> competitionList = competitionDao.getCompetitionList(query);
-        System.out.println("===competitionList" + competitionList);
         Date currentTime = new Date();
         List<CompetitionDto> competitionDtoList = new ArrayList<>();
         for(Competition competition : competitionList)  {
@@ -143,6 +144,29 @@ public class CompetitionServiceImpl implements CompetitionService {
         }
         return competitionDto;
     }
+
+    @Override
+    public Integer getUserType(Integer userId, Integer cpId) {
+        // 查看该竞赛下是否有当前用户为负责人的团队
+        TeamQuery query = new TeamQuery();
+        query.setCpId(cpId);
+        query.setLeaderId(userId);
+        if (teamService.getTeam(query) != null) {
+            return 2;
+        }
+        // 查看该竞赛下是否有当前用户为成员的团队
+        if (teamService.getMyTeamByCpId(userId, cpId) != null) {
+            return 3;
+        }
+        return 1;
+    }
+
+
+
+
+
+
+
 
     @Override
     public List<CompetitionDto> getApplyList(Integer id) {

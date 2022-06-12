@@ -217,7 +217,7 @@
                     <i class="iconfont nav_right">&#xe697;</i></a>
                 <ul class="sub-menu">
                     <li>
-                        <a onclick="xadmin.add_tab('我加入的团队','/competition-serv/competition/applied/list')">
+                        <a onclick="xadmin.add_tab('我加入的团队','/team-serv/team/applied/list')">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>我加入的团队</cite></a>
                     </li>
@@ -231,7 +231,7 @@
                 </ul>
                 <ul class="sub-menu">
                     <li>
-                        <a onclick="xadmin.add_tab('组队请求处理','/team-serv/team/lead/list')">
+                        <a onclick="xadmin.add_tab('组队请求处理','/team-serv/team/request/list')">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>组队请求处理</cite></a>
                     </li>
@@ -248,15 +248,18 @@
                 <a href="javascript:;">
                     <i class="iconfont left-nav-li" lay-tips="通知栏">&#xe83b;</i>
                     <cite>通知栏</cite>
+                    <label style="color: red" th:text="${notRead}" th:if="${notRead != 0}"></label>
                     <i class="iconfont nav_right">&#xe697;</i></a>
                 <ul class="sub-menu">
                     <li>
-                        <a onclick="xadmin.add_tab('竞赛信息','/competition-serv/competition/inform/list')">
+                        <a onclick="xadmin.add_tab('收件箱','/user-serv/message/received')">
                             <i class="iconfont">&#xe6a7;</i>
-                            <cite>收件箱</cite></a>
+                            <cite>收件箱</cite>
+                            <label style="color: red" th:text="'有'+${notRead}+'条未读消息'" th:if="${notRead != 0}"></label>
+                        </a>
                     </li>
                     <li>
-                        <a onclick="xadmin.add_tab('指导请求','/select-serv/teacher/select/request/list')">
+                        <a onclick="xadmin.add_tab('已发送','/user-serv/message/sent')">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>已发送</cite></a>
                     </li>

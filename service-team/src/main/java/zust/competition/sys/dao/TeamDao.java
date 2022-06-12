@@ -3,12 +3,15 @@ package zust.competition.sys.dao;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import zust.competition.sys.dto.TeamDto;
+import zust.competition.sys.dto.TeamTeacherDto;
+import zust.competition.sys.dto.query.TeamQuery;
 import zust.competition.sys.entity.*;
 
 import java.util.List;
 
 @Mapper
 public interface TeamDao {
+
     /**
      * 加入团队
      */
@@ -20,35 +23,40 @@ public interface TeamDao {
     Integer insertMessage(Message message);
 
     /**
-     * 根据邀请码查找团队信息
+     * 根据主键查询Team
      */
-    Team selectByCode(String invitation_code);
+    Team getTeam(TeamQuery query);
 
     /**
-     * 根据负责人id以及竞赛id获取已创建/加入的团队
+     * 根据teamId查找已邀请的老师
      */
-    Team getTeamList(@Param("leader_id") Integer leaderId,@Param("cp_id") Integer cpId);
+    List<TeamTeacher> getInviteTeacher(@Param("teamId") Integer teamId);
 
     /**
      * 邀请老师加入 (team_teacher)
      */
     Integer insertTeamTeacher(TeamTeacher teamTeacher);
 
+    /**
+     * 查询我加入的团队
+     */
+    List<Team> myJoin(Integer id);
 
     /**
-     * 根据团队id查询团队
+     * 根据竞赛id和成员id查找Team
      */
-    Team getTeamById(Integer id);
+    Team getMyTeamByCpId(@Param("userId") Integer userId, @Param("cpId") Integer cpId);
+
+
+
+
+
 
     /**
      * 获取所有团队信息
      */
     List<UserTeam> getMember(Integer id);
 
-    /**
-     * 查询我加入的团队
-     */
-    List<Team> myJoin(Integer id);
     /**
      * 查询我负责的团队
      */

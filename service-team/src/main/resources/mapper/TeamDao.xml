@@ -15,8 +15,8 @@
     </insert>
 
     <insert id="insertMessage" parameterType="Message"  useGeneratedKeys="true" keyProperty="id">
-        insert into message (sender_id,receiver_id,content,operator_id,jump_type)
-        values (#{senderId},#{receiverId},#{content},#{operatorId},#{jumpType})
+        insert into message (send_id,receive_id,content,operator_id,jump_type)
+        values (#{sendId},#{receiveId},#{content},#{operatorId},#{jumpType})
     </insert>
 
     <select id="selectByCode" resultType="Team">
@@ -28,11 +28,17 @@
     <sql id="Base_Column_List">
         id,cp_id,`team_name`,leader_id,`team_intro`,`member`
     </sql>
+
     <select id="getTeamById" resultType="Team">
         SELECT *
         FROM team
         WHERE id=#{id}
     </select>
+
+    <insert id="insertTeam" parameterType="Team"  useGeneratedKeys="true" keyProperty="id">
+        insert into team (cp_id,team_name,leader_id)
+        values (#{cpId},#{teamName},#{leaderId})
+    </insert>
 
     <select id="getTeamList" resultType="Team">
         SELECT *
@@ -45,10 +51,7 @@
         values (#{teamId},#{teacherId},#{operatorId})
     </insert>
 
-    <insert id="insertTeam" parameterType="Team"  useGeneratedKeys="true" keyProperty="id">
-        insert into team (cp_id,team_name,leader_id,team_intro,member)
-        values (#{cpId},#{teamName},#{leaderId},#{teamIntro},#{member})
-    </insert>
+
 
     <select id="getMember" resultType="UserTeam">
         select user_team.*
@@ -68,6 +71,7 @@
         from user_team
                  LEFT JOIN team on team.id=team_id WHERE student_id=#{id}
     </select>
+
 
     <select id="selectTeamList" resultType="TeamDto" parameterType="Query">
         select *
