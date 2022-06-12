@@ -8,6 +8,7 @@ import zust.competition.sys.dto.SelectDto;
 import zust.competition.sys.dto.TeamDto;
 import zust.competition.sys.dto.TeamTeacherDto;
 import zust.competition.sys.dto.UserDto;
+import zust.competition.sys.dto.query.TeamQuery;
 import zust.competition.sys.entity.TeamTeacher;
 
 import java.util.ArrayList;
@@ -58,7 +59,9 @@ public class SelectServiceImpl implements SelectService {
             TeamTeacherDto teamTeacherDto = new TeamTeacherDto();
             BeanUtils.copyProperties(teamTeacher,teamTeacherDto);
             Integer teamId = teamTeacher.getTeamId();
-            TeamDto teamDto = teamService.getTeam(teamId);
+            TeamQuery query = new TeamQuery();
+            query.setTeamId(teamId);
+            TeamDto teamDto = teamService.getTeam(query);
             teamTeacherDto.setTeamName(teamDto.getTeamName());
             teamTeacherDto.setCpName(teamDto.getCpName());
             teamTeacherDto.setLeaderName(teamDto.getLeaderName());

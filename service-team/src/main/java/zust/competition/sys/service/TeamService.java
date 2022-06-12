@@ -12,11 +12,6 @@ import java.util.List;
 public interface TeamService {
 
     /**
-     * 更新团队status
-     */
-    Integer updateStatus(Integer id);
-
-    /**
      * 加入团队
      */
     Integer joinTeam(UserTeamDto userTeamDto);
@@ -41,6 +36,22 @@ public interface TeamService {
      */
     List<TeamDto> myJoin(Integer id);
 
+    /**
+     * 根据主键id查询团队详情
+     */
+    TeamDto getTeamDetail(Integer teamId);
+
+    /**
+     * 根据成员id查询成员详情
+     */
+    List<UserDto> getMember(Integer id);
+
+    /**
+     * 更新团队status
+     */
+    Integer updateStatus(Integer id);
+
+
 
 
 
@@ -63,16 +74,6 @@ public interface TeamService {
 
 
     Integer adminUpdateTeam(TeamDto teamDto);
-
-    /**
-     * 根据主键id查询团队详情
-     */
-    TeamDto getTeamDetail(Integer teamId) ;
-
-    /**
-     * 根据成员id查询成员详情
-     */
-    List<UserDto> getMember(Integer id);
 
     /**
      * 查询我负责的团队

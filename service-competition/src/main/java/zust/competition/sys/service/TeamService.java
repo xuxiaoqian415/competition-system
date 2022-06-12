@@ -13,10 +13,7 @@ import java.util.List;
 @FeignClient("service-team")
 public interface TeamService {
 
-    @RequestMapping("/team/deleteStuCompByCompId")
-    Integer deleteStuCompByCompId(Integer compId);
-
-    @RequestMapping("/team/selectTeamList")
+    @RequestMapping("/dao/selectTeamList")
     List<TeamDto> selectTeamList(Query query);
 
     @RequestMapping("/dao/getTeam")

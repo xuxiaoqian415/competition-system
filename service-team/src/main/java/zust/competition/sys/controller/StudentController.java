@@ -1,6 +1,5 @@
 package zust.competition.sys.controller;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -91,107 +90,90 @@ public class StudentController {
     }
 
     /**
-     * 根据主键id查询团队详情
-     */
-    @GetMapping("/teamDetail/{id}")
-    public String toTeamDetail(@PathVariable Integer id, HttpSession session,Model model) {
-        TeamDto teamDto= teamService.getTeamDetail(id);
-        Integer thisId=((UserDto)session.getAttribute("thisUser")).getId();
-        Integer isLeader=0;
-        if(teamDto.getLeaderId()==thisId) isLeader=1;
-        teamDto.setIsLeader(isLeader);
-        model.addAttribute("detail", teamDto);
-        model.addAttribute("member", teamService.getMember(id));
-        return "student/teamDetail";
-    }
-
-    /**
-     * 组队完成请求
-     */
-    @GetMapping("/updateStatus/{id}")
-    public String updateStatus(@PathVariable Integer id, HttpSession session,Model model) {
-        teamService.updateStatus(id);
-        return toTeamDetail(id,session,model);
-    }
-
-    /**
      * 我加入的团队
      */
-    @GetMapping("/applied/list")
+    @GetMapping("/joined/list")
     public String toJoin(HttpSession session, Model model) {
         Integer userId = ((UserDto) session.getAttribute("thisUser")).getId();
         List<TeamDto> dtos = teamService.myJoin(userId);
         if (dtos.size() == 0)
             model.addAttribute("msg", "您当前没有加入任何团队");
         model.addAttribute("teamList", dtos);
-        return "student/applied_list";
+        return "student/joined_team_list";
     }
 
+    /**
+     * 团队详情页
+     */
+    @GetMapping("/detail/{id}")
+    public String toTeamDetail(@PathVariable Integer id, HttpSession session,Model model) {
+        TeamDto teamDto= teamService.getTeamDetail(id);
+        Integer thisId=((UserDto)session.getAttribute("thisUser")).getId();
+        if(teamDto.getLeaderId().equals(thisId)) teamDto.setIsLeader(1);
+        else teamDto.setIsLeader(0);
+        model.addAttribute("detail", teamDto);
+        model.addAttribute("memberList", teamService.getMember(id));
+        return "student/teamDetail";
+    }
 
-
-
-
-
-
+    /**
+     * 团队详情页-组队完成请求
+     */
+    @GetMapping("/update/status/{id}")
+    public String updateStatus(@PathVariable Integer id, HttpSession session,Model model) {
+        teamService.updateStatus(id);
+        model.addAttribute("msg", "组队完成，可以去选择指导老师了。");
+        return toTeamDetail(id,session,model);
+    }
 
     /**
      * 我负责的团队
      */
-    @GetMapping("/toLead/{id}")
-    public String toLead(@PathVariable Integer id, Model model) {
-        String msg = "";
-        List<TeamDto> dtos = teamService.ownLead(id);
-        if (dtos.size() == 0) msg = "您当前没有负责任何团队";
-        model.addAttribute("teamDtos", dtos);
-        model.addAttribute("msg", msg);
-        return "";
+    @GetMapping("/lead/list")
+    public String toLead(HttpSession session, Model model) {
+        Integer userId = ((UserDto)session.getAttribute("thisUser")).getId();
+        List<TeamDto> dtos = teamService.ownLead(userId);
+        System.out.println("===dtos"+dtos);
+        if (dtos.size() == 0)
+            model.addAttribute("msg", "您当前没有负责任何团队");
+        model.addAttribute("teamList", dtos);
+        return "student/lead_team_list";
     }
 
     /**
-     * 修改团队名称
+     * 修改团队信息页面
      */
-    @PostMapping("/updateTeamName")
+    @GetMapping("/update/info/{id}")
+    public String toUpdateName(@PathVariable("id") Integer id, Model model) {
+        TeamDto team = teamService.getTeamById(id);
+        model.addAttribute("team", team);
+        return "student/update_team";
+    }
+
+    /**
+     * 修改团队信息
+     */
+    @PostMapping("/update/info")
     public String updateTeamName(TeamDto dto, Model model) {
         String msg = "";
         if (teamService.updateTeam(dto) == 1) msg = "修改成功";
         else msg = "修改失败";
         model.addAttribute("msg", msg);
-        return "";
+        return toUpdateName(dto.getId(), model);
     }
 
     /**
-     * 组队请求
+     * 组队请求处理页面
      */
-    @GetMapping("/requestTeam/{id}")
-    public String requestTeam(@PathVariable Integer id, Model model) {
-        String msg = "";
-        List<TeamDto> dtos = teamService.ownLead(id);
-        if (dtos.size() == 0) msg = "当前没有组队申请";
-        model.addAttribute("teamDtos", dtos);
-        model.addAttribute("msg", msg);
-        return "";
+    @GetMapping("/request/list")
+    public String requestTeam(HttpSession session, Model model) {
+        Integer userId = ((UserDto)session.getAttribute("thisUser")).getId();
+        List<UserTeamDto> dtos = teamService.requestTeam(userId);
+        System.out.println("===dtos"+dtos);
+        if (dtos.size() == 0) model.addAttribute("msg", "当前没有组队申请");
+        model.addAttribute("UserTeamDto", dtos);
+        return "student/team_request_list";
     }
 
-    /**
-     * 根据主键id获取团队信息
-     */
-    @ResponseBody
-    @RequestMapping("/getTeam")
-    public TeamDto getTeam(@RequestParam("id") Integer id) {
-        return teamService.getTeamById(id);
-    }
 
-    @ResponseBody
-    @RequestMapping("/selectTeamList")
-    public List<TeamDto> selectTeamList(@RequestBody Query query) {
-        return teamService.selectTeamList(query);
-    }
-
-    @GetMapping("/lead/list")
-    public String toLeadTeamList(HttpSession session, Model model) {
-        UserDto u = (UserDto) session.getAttribute("thisUser");
-        List<TeamDto> list = teamService.getOwnTeam(u.getId());
-        model.addAttribute("leadTeamList", list);
-        return "student/leadTeamList";
-    }
 }

@@ -141,6 +141,9 @@
             <if test="introduction != null">
                 `introduction` = #{introduction},
             </if>
+            <if test="status != null">
+                `status` = #{status},
+            </if>
         </set>
         where id = #{id}
     </update>
@@ -154,7 +157,7 @@
     </select>
 
     <select id="requestTeam" resultType="UserTeam">
-        SELECT *
+        SELECT user_team.*
         FROM user_team LEFT JOIN team ON team.id=team_id
         WHERE leader_id=#{id}
     </select>

@@ -6,9 +6,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import zust.competition.sys.dto.TeamDto;
+import zust.competition.sys.dto.query.TeamQuery;
 
 @FeignClient("service-team")
 public interface TeamService {
-    @RequestMapping("/team/getTeam")
-    TeamDto getTeam(@RequestParam("id") Integer id);
+    @RequestMapping("/dao/getTeam")
+    TeamDto getTeam(TeamQuery query);
 }

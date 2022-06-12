@@ -188,6 +188,7 @@ public class TeamServiceImpl implements TeamService {
         query.setTeamId(id);
         Team team = teamDao.getTeam(query);
         TeamDto dto = Te2d(team);
+        dto.setLeaderName(userService.selectUserById(dto.getLeaderId()).getName());
         dto.setCpName(competitionService.getCompetitionTile(team.getCpId()));
         if(dto.getIsAwarded()==0) dto.setResult("暂无");
         if(dto.getTeacherId()==0) dto.setTeacherName("待定");
@@ -204,7 +205,7 @@ public class TeamServiceImpl implements TeamService {
     public List<UserDto> getMember(Integer teamId) {
         List<UserDto> users=new ArrayList<>();
         List<UserTeam> dtos= teamDao.getMember(teamId);
-        if(dtos.size()>=0&&dtos!=null) {
+        if(dtos!=null && dtos.size()!=0) {
             for (UserTeam ut : dtos) {
                 UserDto u = userService.selectUserById(ut.getStudentId());
                 if(ut.getRole()!=null) u.setRole(ut.getRole());
@@ -218,12 +219,18 @@ public class TeamServiceImpl implements TeamService {
     public List<TeamDto> ownLead(Integer id) {
         List<TeamDto> dtos=new ArrayList<>();
         List<Team> lists=teamDao.ownLead(id);
-        if(lists.size()>=0){
+        if(lists != null && lists.size() != 0){
             for (Team t:lists) {
                 TeamDto dto = Te2d(t);
                 dto.setLeaderName(userService.selectUserById(dto.getLeaderId()).getName());
-                //        根据cp_id查询竞赛名称
-                //        dto.setCpName();
+                dto.setCpName(competitionService.getCompetitionTile(dto.getCpId()));
+                if(dto.getTeacherId()==0) dto.setTeacherName("待定");
+                else {
+                    UserDto teacher = userService.selectUserById(dto.getTeacherId());
+                    if (teacher != null) {
+                        dto.setTeacherName(teacher.getName());
+                    }
+                }
                 dtos.add(dto);
             }
         }
@@ -240,13 +247,15 @@ public class TeamServiceImpl implements TeamService {
     public List<UserTeamDto> requestTeam(Integer id) {
         List<UserTeamDto> dtos=new ArrayList<>();
         List<UserTeam> lists=teamDao.requestTeam(id);
-        if(lists.size()>=0 && lists!=null){
+        if(lists!=null && lists.size()!=0){
             for (UserTeam ut:lists) {
+                System.out.println("===service ut"+ut);
                 UserTeamDto dto = UserTeam2d(ut);
                 dto.setStudentName(userService.selectUserById(dto.getStudentId()).getName());
                 TeamQuery query = new TeamQuery();
                 query.setTeamId(dto.getTeamId());
                 dto.setTeamName(teamDao.getTeam(query).getTeamName());
+                System.out.println("===service dto"+dto);
                 dtos.add(dto);
             }
         }
