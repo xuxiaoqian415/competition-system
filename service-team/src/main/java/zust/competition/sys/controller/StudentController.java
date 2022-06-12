@@ -182,12 +182,6 @@ public class StudentController {
     }
 
     @ResponseBody
-    @RequestMapping("/deleteTeamByCpiD")
-    public Integer deleteTeamByCpiD(Integer cpId) {
-        return teamService.deleteTeamByCpiD(cpId);
-    }
-
-    @ResponseBody
     @RequestMapping("/selectTeamList")
     public List<TeamDto> selectTeamList(@RequestBody Query query) {
         return teamService.selectTeamList(query);

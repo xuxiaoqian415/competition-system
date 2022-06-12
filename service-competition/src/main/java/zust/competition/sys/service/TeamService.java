@@ -19,9 +19,6 @@ public interface TeamService {
     @RequestMapping("/team/selectTeamList")
     List<TeamDto> selectTeamList(Query query);
 
-    @RequestMapping("/team/deleteTeamByCpiD")
-    Integer deleteTeamByCpiD(Integer cpId);
-
     @RequestMapping("/dao/getTeam")
     Team getTeam(TeamQuery query);
 
