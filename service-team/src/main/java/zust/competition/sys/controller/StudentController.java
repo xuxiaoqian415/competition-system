@@ -90,15 +90,29 @@ public class StudentController {
         return leadTeam(dto.getCpId(), session, model);
     }
 
-//    /**
-//     * 根据主键id查询团队详情
-//     */
-//    @GetMapping("/detail/{id}")
-//    public String toTeamDetail(@PathVariable Integer id, Model model) {
-//        model.addAttribute("detail", teamService.getTeamDetail(id));
-//        model.addAttribute("member", teamService.getMember(id));
-//        return "";
-//    }
+    /**
+     * 根据主键id查询团队详情
+     */
+    @GetMapping("/teamDetail/{id}")
+    public String toTeamDetail(@PathVariable Integer id, HttpSession session,Model model) {
+        TeamDto teamDto= teamService.getTeamDetail(id);
+        Integer thisId=((UserDto)session.getAttribute("thisUser")).getId();
+        Integer isLeader=0;
+        if(teamDto.getLeaderId()==thisId) isLeader=1;
+        teamDto.setIsLeader(isLeader);
+        model.addAttribute("detail", teamDto);
+        model.addAttribute("member", teamService.getMember(id));
+        return "student/teamDetail";
+    }
+
+    /**
+     * 组队完成请求
+     */
+    @GetMapping("/updateStatus/{id}")
+    public String updateStatus(@PathVariable Integer id, HttpSession session,Model model) {
+        teamService.updateStatus(id);
+        return toTeamDetail(id,session,model);
+    }
 
     /**
      * 我加入的团队
@@ -158,6 +172,14 @@ public class StudentController {
         return "";
     }
 
+    /**
+     * 根据主键id获取团队信息
+     */
+    @ResponseBody
+    @RequestMapping("/getTeam")
+    public TeamDto getTeam(@RequestParam("id") Integer id) {
+        return teamService.getTeamById(id);
+    }
 
     @ResponseBody
     @RequestMapping("/deleteTeamByCpiD")

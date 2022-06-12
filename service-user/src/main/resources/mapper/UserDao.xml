@@ -24,7 +24,7 @@
         </where>
     </select>
 
-    <select id="selectUserById" resultType="UserDto">
+    <select id="selectUserById" resultType="User">
         select
         <include refid="Base_Column_List"/>
         from user

@@ -9,6 +9,10 @@ public class TeamTeacherDto {
 
     private Integer teamId;
 
+    private String teamName;
+
+    private String cpName;
+
     private Integer teacherId;
 
     private String leaderName;

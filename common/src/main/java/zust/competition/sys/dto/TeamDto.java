@@ -62,6 +62,10 @@ public class TeamDto  implements Serializable {
      * 状态：0-组队中 1-组队完成 2-报名成功
      */
     private Integer status;
+    /**
+     * 是否为负责人：0-不是 1-是
+     */
+    private Integer isLeader;
 
 
 //    private String member;

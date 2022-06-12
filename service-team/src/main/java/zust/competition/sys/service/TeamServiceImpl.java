@@ -30,6 +30,14 @@ public class TeamServiceImpl implements TeamService {
     SelectService selectService;
 
     @Override
+    public Integer updateStatus(Integer id) {
+        Team team=new Team();
+        team.setId(id);
+        team.setStatus(2);
+        return teamDao.updateTeam(team);
+    }
+
+    @Override
     public Integer joinTeam(UserTeamDto dto) {
         UserTeam userTeam=new UserTeam();
         TeamQuery query = new TeamQuery();
@@ -180,6 +188,11 @@ public class TeamServiceImpl implements TeamService {
         query.setTeamId(id);
         Team team = teamDao.getTeam(query);
         return Te2d(team);
+        Team t= teamDao.getTeamById(id);
+//        竞赛名称还没取出来
+        if(t.getIsAwarded()==0) t.setResult("暂无");
+        if(t.getTeacherId()==0) t.setTeamName("待定");
+        return Te2d(t);
     }
 
     @Override
@@ -189,7 +202,7 @@ public class TeamServiceImpl implements TeamService {
         if(dtos.size()>=0&&dtos!=null) {
             for (UserTeam ut : dtos) {
                 UserDto u = userService.selectUserById(ut.getStudentId());
-                u.setRole(ut.getRole());
+                if(ut.getRole()!=null) u.setRole(ut.getRole());
                 users.add(u);
             }
         }
@@ -270,16 +283,14 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public TeamDto getTeamById(Integer id) {
-        TeamDto team = teamDao.selectTeamById(id);
-//        if(team.getMember() != null){
-//            String[] members = team.getMember().split(";");
-//            ArrayList<Integer> memberList = new ArrayList<>();
-//            for (String m : members) {
-//                memberList.add(Integer.parseInt(m));
-//            }
-//            team.setMemberList(memberList);
-//        }
-        return team;
+        Team team = teamDao.getTeamById(id);
+        TeamDto teamDto = new TeamDto();
+        BeanUtils.copyProperties(team,teamDto);
+        UserDto leader = userService.selectUserById(team.getLeaderId());
+        teamDto.setLeaderName(leader.getName());
+        CompetitionDto competition = competitionService.getCompetitionById(team.getCpId());
+        teamDto.setCpName(competition.getTitle());
+        return teamDto;
     }
 
     @Override

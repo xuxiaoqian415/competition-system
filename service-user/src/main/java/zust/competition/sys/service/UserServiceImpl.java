@@ -47,7 +47,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserById(Integer userId) {
-        return userDao.selectUserById(userId);
+        User user = userDao.selectUserById(userId);
+        UserDto userDto = new UserDto();
+        BeanUtils.copyProperties(user,userDto);
+        return userDto;
     }
 
     @Override
@@ -137,8 +140,4 @@ public class UserServiceImpl implements UserService {
         return userDao.getTeacherList();
     }
 
-    @Override
-    public UserDto selectUserById(Integer id) {
-        return userDao.selectUserById(id);
-    }
 }

@@ -25,4 +25,10 @@ public class UserDto implements Serializable {
      * 0管理员 1教师 2学生
      */
     private Integer type;
+    /**
+     * 学院
+     */
+    private String academy;
+
+
 }
