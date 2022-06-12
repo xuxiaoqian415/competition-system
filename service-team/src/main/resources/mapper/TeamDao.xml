@@ -15,8 +15,8 @@
     </insert>
 
     <insert id="insertMessage" parameterType="Message"  useGeneratedKeys="true" keyProperty="id">
-        insert into message (send_id,receive_id,content,operator_id,jump_type)
-        values (#{sendId},#{receiveId},#{content},#{operatorId},#{jumpType})
+        insert into message (sender_id,receiver_id,content,operator_id,jump_type)
+        values (#{senderId},#{receiverId},#{content},#{operatorId},#{jumpType})
     </insert>
 
     <select id="selectByCode" resultType="Team">
@@ -115,6 +115,12 @@
                     LEFT JOIN competition c on t.cp_id= c.id
         where t.id = #{id}
         AND t.is_delete = 0
+    </select>
+
+    <select id="ownRequest" resultType="UserTeam">
+        SELECT *
+        FROM user_team
+        WHERE student_id=#{id} AND is_delete=0
     </select>
 
     <select id="requestTeam" resultType="UserTeam">

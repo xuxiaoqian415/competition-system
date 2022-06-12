@@ -17,9 +17,17 @@ public class UserTeamDto {
      */
     private String studentName;
     /**
+     * 学生名字
+     */
+    private String leaderName;
+    /**
      * 竞赛id
      */
     private Integer cpId;
+    /**
+     * 竞赛id
+     */
+    private String cpName;
     /**
      * 可担任职务
      */

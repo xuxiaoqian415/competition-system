@@ -29,6 +29,24 @@ public class TeamServiceImpl implements TeamService {
     SelectService selectService;
 
     @Override
+    public List<UserTeamDto> ownRequest(Integer id) {
+        List<UserTeamDto> userTeamDtos=new ArrayList<>();
+        List<UserTeam> userTeams=teamDao.ownRequest(id);
+        if(userTeams.size()>=0&&userTeams!=null){
+            for (UserTeam ut:userTeams) {
+               UserTeamDto dto= UserTeam2d(ut);
+               Team t= teamDao.getTeamById(dto.getTeamId());
+               dto.setTeamName(t.getTeamName());
+               dto.setLeaderName(userService.selectUserById(t.getLeaderId()).getName());
+               CompetitionDto c= competitionService.getCompetitionById(dto.getCpId());
+               dto.setCpName(c.getTitle());
+               userTeamDtos.add(dto);
+            }
+        }
+        return userTeamDtos;
+    }
+
+    @Override
     public Integer updateStatus(Integer id) {
         Team team=new Team();
         team.setId(id);
@@ -118,19 +136,17 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
+    public TeamDto getTeamDetail(Integer teamId) {
+        return null;
+    }
+
+    @Override
     public List<TeamDto> getAllTeam() {
         Query query = new Query();
         List<TeamDto> list = teamDao.selectTeamList(query);
         return getMember(list);
     }
-    @Override
-    public TeamDto getTeamDetail(Integer id) {
-        Team t= teamDao.getTeamById(id);
-//        竞赛名称还没取出来
-        if(t.getIsAwarded()==0) t.setResult("暂无");
-        if(t.getTeacherId()==0) t.setTeamName("待定");
-        return Te2d(t);
-    }
+
 
     @Override
     public List<UserDto> getMember(Integer teamId) {

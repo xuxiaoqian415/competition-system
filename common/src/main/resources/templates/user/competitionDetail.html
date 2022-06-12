@@ -46,22 +46,30 @@
                         <h2>[[${detail.title}]]</h2>
                     </ul>
                     <ul style="text-align:center;" th:if='${detail.picture != ""}'>
-                        <img th:src="@{${detail.picture}}" />
+                        <img style="height: 400px;width: 100%" th:src="@{${detail.picture}}" />
                     </ul>
-                    <ul style="display:flex;justify-content:space-around;">
-                        <h3 th:text="'报名起止时间：'+${#dates.format(detail.applyStart,'yyyy-MM-dd')}+
-                            '————'+${#dates.format(detail.applyEnd,'yyyy-MM-dd')}"></h3>
-                        <h3 th:text="'竞赛起止时间：'+${#dates.format(detail.start,'yyyy-MM-dd')}+
-                            '————'+${#dates.format(detail.end,'yyyy-MM-dd')}"></h3>
+                    <ul style="text-align:left;">
+                        <li> <h4 th:text="'报名起止时间：'+${#dates.format(detail.applyStart,'yyyy-MM-dd')}+
+                            '————'+${#dates.format(detail.applyEnd,'yyyy-MM-dd')}"></h4></li>
                     </ul>
-                    <ul style="text-align:center; margin-bottom: 5px">
+                    <ul style="text-align:left;">
+                        <li>  <h4 th:text="'竞赛起止时间：'+${#dates.format(detail.start,'yyyy-MM-dd')}+
+                            '————'+${#dates.format(detail.end,'yyyy-MM-dd')}"></h4></li>
+                    </ul>
+                    <hr>
+                    <ul><li><h4 style="text-align: left">赛事背景</h4></li></ul>
+                    <ul style="text-align:center; text-indent:2em;">
+                        <p style="text-align:left;">
                         [[${detail.content}]]
+                        </p>
                     </ul>
-                    <ul style="text-align:right;margin-right: 300px;">
-                        举办方：
+                    <hr>
+                    <ul><li><h4 style="text-align: left">举办方</h4></li></ul>
+                    <ul style="text-align:left;margin-left: 40px;">
                         [[${detail.organizer}]]
                     </ul>
-                    <ul th:if='${detail.supplement != ""}'>
+                    <hr>
+                    <ul style="text-align:right;margin-right: 300px;" th:if='${detail.supplement != ""}'>
                         附件：
                     </ul>
                 </div>

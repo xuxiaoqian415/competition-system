@@ -59,6 +59,11 @@ public interface TeamDao {
      */
     List<UserTeam> requestTeam(Integer id);
 
+    /**
+     * 查询我发出组队申请
+     */
+    List<UserTeam> ownRequest(Integer id);
+
 
 
 

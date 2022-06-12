@@ -185,4 +185,15 @@ public class StudentController {
         model.addAttribute("leadTeamList", list);
         return "student/leadTeamList";
     }
+
+    /**
+     * 查看我发送的组队请求
+     */
+    @GetMapping("/ownRequest/{id}")
+    public String ownRequest(@PathVariable("id") Integer id,HttpSession session,Model model) {
+        UserDto u = (UserDto) session.getAttribute("thisUser");
+        List<UserTeamDto> i=teamService.ownRequest(id);
+        model.addAttribute("userTeamdtos", teamService.ownRequest(u.getId()));
+        return "";
+    }
 }
