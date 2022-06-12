@@ -61,10 +61,6 @@ public interface TeamService {
      */
     List<TeamDto> selectTeamList(Query query);
 
-    /**
-     * 根据cpId删除团队
-     */
-//    Integer deleteTeamByCpiD(Integer cpId);
 
     Integer adminUpdateTeam(TeamDto teamDto);
 

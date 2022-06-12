@@ -187,12 +187,17 @@ public class TeamServiceImpl implements TeamService {
         TeamQuery query = new TeamQuery();
         query.setTeamId(id);
         Team team = teamDao.getTeam(query);
-        return Te2d(team);
-        Team t= teamDao.getTeamById(id);
-//        竞赛名称还没取出来
-        if(t.getIsAwarded()==0) t.setResult("暂无");
-        if(t.getTeacherId()==0) t.setTeamName("待定");
-        return Te2d(t);
+        TeamDto dto = Te2d(team);
+        dto.setCpName(competitionService.getCompetitionTile(team.getCpId()));
+        if(dto.getIsAwarded()==0) dto.setResult("暂无");
+        if(dto.getTeacherId()==0) dto.setTeacherName("待定");
+        else {
+            UserDto teacher = userService.selectUserById(dto.getTeacherId());
+            if (teacher != null) {
+                dto.setTeacherName(teacher.getName());
+            }
+        }
+        return dto;
     }
 
     @Override
@@ -283,13 +288,14 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public TeamDto getTeamById(Integer id) {
-        Team team = teamDao.getTeamById(id);
+        TeamQuery query = new TeamQuery();
+        query.setTeamId(id);
+        Team team = teamDao.getTeam(query);
         TeamDto teamDto = new TeamDto();
         BeanUtils.copyProperties(team,teamDto);
         UserDto leader = userService.selectUserById(team.getLeaderId());
         teamDto.setLeaderName(leader.getName());
-        CompetitionDto competition = competitionService.getCompetitionById(team.getCpId());
-        teamDto.setCpName(competition.getTitle());
+        teamDto.setCpName(competitionService.getCompetitionTile(team.getCpId()));
         return teamDto;
     }
 
@@ -325,8 +331,4 @@ public class TeamServiceImpl implements TeamService {
         return teamDao.selectTeamList(query);
     }
 
-    @Override
-    public Integer deleteTeamByCpiD(Integer cpId) {
-        return teamDao.deleteTeamByCpiD(cpId);
-    }
 }
