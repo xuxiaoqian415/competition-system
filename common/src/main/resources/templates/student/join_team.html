@@ -13,6 +13,7 @@
 </head>
 <body>
 <div class="layui-fluid">
+    <button class="layui-btn layui-btn-primary"><a th:href="@{/competition-serv/competition/detail/}+${cpId}">返回</a></button>
     <div class="layui-row">
         <h1>加入团队</h1>
         <form class="layui-form" th:action="@{/team-serv/team/join}" method="post">

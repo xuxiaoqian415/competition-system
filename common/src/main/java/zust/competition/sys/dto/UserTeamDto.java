@@ -17,9 +17,10 @@ public class UserTeamDto {
      */
     private String studentName;
     /**
-     * 学生名字
+     * 负责人名字
      */
     private String leaderName;
+    private Integer leaderId;
     /**
      * 竞赛id
      */
@@ -39,7 +40,7 @@ public class UserTeamDto {
     private String invitationCode;
 
     /**
-     * 状态：0-待处理1-已同意 2-已拒绝
+     * 状态：0-待处理 1-已同意 2-已拒绝
      */
     private Integer status;
     /**

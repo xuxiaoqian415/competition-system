@@ -25,9 +25,8 @@ public class StudentController {
     @Autowired
     UserService userService;
 
-
     /**
-     * 跳转创建团队
+     * 创建团队页面
      */
     @GetMapping("/build/{cpId}")
     public String toBuild(@PathVariable("cpId") Integer cpId, Model model) {
@@ -71,9 +70,19 @@ public class StudentController {
         UserDto user = ((UserDto) session.getAttribute("thisUser"));
         dto.setStudentId(user.getId());
         dto.setStudentName(user.getName());
-        if (-1 == teamService.joinTeam(dto)) {
-            msg = "申请加入失败";
-        } else msg = "加入申请已发送";
+        Integer code = teamService.joinTeam(dto);
+        if (-1 == code) {
+            msg = " 邀请码错误";
+        }
+        else if (-2 == code) {
+            msg = "该团队不是该竞赛下的团队，加入失败";
+        }
+        else if (-3 == code) {
+            msg = "加入失败";
+        }
+        else {
+            msg = "加入申请已发送";
+        }
         model.addAttribute("msg", msg);
         return toJoinTeam(dto.getCpId(), model);
     }
@@ -204,5 +213,14 @@ public class StudentController {
         return "student/team_request_list";
     }
 
+    /**
+     * 我发送的组队请求
+     */
+    @GetMapping("/my/request")
+    public String ownRequest(HttpSession session,Model model) {
+        UserDto u = (UserDto) session.getAttribute("thisUser");
+        model.addAttribute("UserTeamDto", teamService.ownRequest(u.getId()));
+        return "student/my_request_list";
+    }
 
 }

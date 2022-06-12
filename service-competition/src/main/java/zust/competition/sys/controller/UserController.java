@@ -88,7 +88,7 @@ public class UserController {
 
     @ResponseBody
     @RequestMapping("/getCompetitionTile")
-    public String getCompetitionTile(Integer id) {
+    public String getCompetitionTile(@RequestParam("id") Integer id) {
         CompetitionDto detail = competitionService.detail(id);
         if (detail != null)
             return detail.getTitle();

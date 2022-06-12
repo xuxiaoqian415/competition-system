@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>我负责的竞赛</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+    <link rel="stylesheet" th:href="@{/css/font.css}">
+    <link rel="stylesheet" th:href="@{/css/xadmin.css}">
+    <script th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>
+    <script type="text/javascript" th:src="@{/js/xadmin.js}"></script>
+</head>
+<body>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body">
+                    <table class="layui-table layui-form">
+                        <thead>
+                        <tr>
+                            <th>团队名称</th><th>当前人数</th><th>状态</th><th>指导老师</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <td th:text="${teamDto.teamName}"></td>
+                        <td th:text="${teamDto.nowNumber}"></td>
+                        <td th:if="${teamDto.status eq 0}">组队中</td>
+                        <td th:if="${teamDto.status eq 1}">组队完成</td>
+                        <td th:if="${teamDto.status eq 2}">报名成功</td>
+                        <td th:text="${teamDto.teacherName}"></td>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="layui-card" th:if="${teamDto.status eq 1}">
+                <div class="layui-card-body">
+                    <h1>发送指导请求</h1>
+                    <div th:if="${not #strings.isEmpty(inviteTeacher)}" style="margin: 20px">
+                        <h3 th:text="${inviteTeacher}"></h3>
+                    </div>
+                    <form class="layui-form" th:action="@{/team-serv/team/invite}" method="post">
+                        <input type="hidden" name="teamId" th:value="${teamDto.id}">
+                        <input type="hidden" name="cpId" th:value="${teamDto.cpId}">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label"> 指导老师：</label>
+                            <div class="layui-input-inline">
+                                <select name="teacherId">
+                                    <option value="">请选择</option>
+                                    <option th:each="t:${teacherList}" th:value="${t.id}" th:text="${t.name}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label"></label>
+                            <button class="layui-btn">立即提交</button>
+                        </div>
+                    </form>
+                    <p style="color: red" th:text = "${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:src="@{/lib/layui/layui.js}"></script>
+<script>
+    //Demo
+    layui.use('form', function(){
+        var form = layui.form;
+
+    });
+</script>
+</body>
+</html>

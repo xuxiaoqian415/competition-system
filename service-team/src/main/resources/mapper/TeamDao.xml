@@ -1,45 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="zust.competition.sys.dao.TeamDao">
-<!--    <resultMap id="BaseResultMap" type="com.info.competition.model.Team">-->
-<!--        <result column="id" jdbcType="INTEGER" property="id"/>-->
-<!--        <result column="cp_id" jdbcType="INTEGER" property="cpId"/>-->
-<!--        <result column="team_name" jdbcType="VARCHAR" property="teamName"/>-->
-<!--        <result column="lead_id" jdbcType="INTEGER" property="leaderId"/>-->
-<!--        <result column="team_intro" jdbcType="VARCHAR" property="teamIntro"/>-->
-<!--        <result column="member" jdbcType="VARCHAR" property="member"/>-->
-<!--    </resultMap>-->
+    <!--    <resultMap id="BaseResultMap" type="com.info.competition.model.Team">-->
+    <!--        <result column="id" jdbcType="INTEGER" property="id"/>-->
+    <!--        <result column="cp_id" jdbcType="INTEGER" property="cpId"/>-->
+    <!--        <result column="team_name" jdbcType="VARCHAR" property="teamName"/>-->
+    <!--        <result column="lead_id" jdbcType="INTEGER" property="leaderId"/>-->
+    <!--        <result column="team_intro" jdbcType="VARCHAR" property="teamIntro"/>-->
+    <!--        <result column="member" jdbcType="VARCHAR" property="member"/>-->
+    <!--    </resultMap>-->
     <insert id="insertUserTeam" parameterType="UserTeam"  useGeneratedKeys="true" keyProperty="id">
         insert into user_team (student_id,team_id,`role`,operator_id)
         values (#{studentId},#{teamId},#{role},#{operatorId})
     </insert>
 
     <insert id="insertMessage" parameterType="Message"  useGeneratedKeys="true" keyProperty="id">
-        insert into message (send_id,receive_id,content,operator_id,jump_type)
-        values (#{sendId},#{receiveId},#{content},#{operatorId},#{jumpType})
-    </insert>
-
-    <select id="selectByCode" resultType="Team">
-        SELECT *
-        FROM team
-        WHERE invitation_code=#{invitationCode}
-    </select>
-
-    <sql id="Base_Column_List">
-        id,cp_id,`team_name`,leader_id,`team_intro`,`member`
-    </sql>
-
-
-    <insert id="insertTeam" parameterType="Team"  useGeneratedKeys="true" keyProperty="id">
-        insert into team
-            (team_name,introduction,cp_id,leader_id,invitation_code,create_time,operator_id)
-        values
-               (#{teamName},#{introduction},#{cpId},#{leaderId},#{invitationCode},now(),#{operatorId})
-    </insert>
-
-    <insert id="insertTeamTeacher" parameterType="TeamTeacher"  useGeneratedKeys="true" keyProperty="id">
-        insert into team_teacher (team_id,teacher_id,operator_id)
-        values (#{teamId},#{teacherId},#{operatorId})
+        insert into message (sender_id,receiver_id,content,operator_id,jump_type)
+        values (#{senderId},#{receiverId},#{content},#{operatorId},#{jumpType})
     </insert>
 
     <select id="getTeam" parameterType="TeamQuery" resultType="Team">
@@ -59,30 +36,80 @@
             <if test="invitationCode != null and invitationCode != ''">
                 AND invitation_code = #{invitationCode}
             </if>
-            <if test="is_awarded != null">
+            <if test="isAwarded != null">
                 AND is_awarded = #{isAwarded}
             </if>
         </where>
     </select>
 
-    <select id="getMember" resultType="UserTeam">
-        select user_team.*
-        from user_team
-                 LEFT JOIN team on team.id=team_id WHERE team_id=#{id}
+    <select id="getInviteTeacher" parameterType="int" resultType="TeamTeacher">
+        SELECT *
+        FROM team_teacher
+        WHERE team_id = #{teamId}
+          AND is_delete = 0
     </select>
 
+    <insert id="insertTeamTeacher" parameterType="TeamTeacher"  useGeneratedKeys="true" keyProperty="id">
+        insert into team_teacher (team_id,teacher_id,operator_id)
+        values (#{teamId},#{teacherId},#{operatorId})
+    </insert>
 
     <select id="myJoin" resultType="Team">
         select team.*
         from user_team
-                 LEFT JOIN team on team.id=team_id WHERE student_id=#{id}
+                 LEFT JOIN team on team.id=team_id
+        WHERE student_id=#{id} AND user_team.status = 1
+          AND team.is_delete = 0
     </select>
 
+    <select id="getMyTeamByCpId" parameterType="int" resultType="team">
+        SELECT team.*
+        FROM user_team LEFT JOIN team ON team.id = team_id
+        WHERE user_team.student_id = #{userId} AND team.cp_id = #{cpId}
+          AND team.is_delete = 0
+    </select>
+
+    <select id="selectByCode" resultType="Team">
+        SELECT *
+        FROM team
+        WHERE invitation_code=#{invitationCode}
+    </select>
+
+    <sql id="Base_Column_List">
+        id,cp_id,`team_name`,leader_id,`team_intro`,`member`
+    </sql>
+
+    <select id="getTeamById" resultType="Team">
+        SELECT *
+        FROM team
+        WHERE id=#{id}
+    </select>
+
+    <insert id="insertTeam" parameterType="Team"  useGeneratedKeys="true" keyProperty="id">
+        insert into team
+        (team_name,introduction,cp_id,leader_id,invitation_code,create_time,operator_id)
+        values
+        (#{teamName},#{introduction},#{cpId},#{leaderId},#{invitationCode},now(),#{operatorId})
+    </insert>
+
+    <select id="getMember" resultType="UserTeam">
+        SELECT user_team.*
+        from user_team LEFT JOIN team ON team.id=team_id
+        WHERE user_team.team_id=#{teamId} AND user_team.status = 1
+            AND user_team.is_delete = 0
+    </select>
+
+    <select id="selectTeamId" resultType="int">
+        select id
+        from team
+        where cp_id=#{cpId} and leader_id=#{leaderId}
+          AND is_delete = 0
+    </select>
 
     <select id="selectTeamList" resultType="TeamDto" parameterType="Query">
         select *
         from team t LEFT JOIN user u on u.id = t.leader_id
-            LEFT JOIN competition c on t.cp_id= c.id
+        LEFT JOIN competition c on t.cp_id= c.id
         <where>
             <if test="cpId != null">
                 t.cp_id = #{cpId}
@@ -97,14 +124,6 @@
             AND t.is_delete = 0
         </where>
     </select>
-
-    <select id="getMyTeamByCpId" parameterType="int" resultType="team">
-        SELECT team.*
-        FROM user_team LEFT JOIN team ON team.id = team_id
-        WHERE user_team.student_id = #{userId} AND team.cp_id = #{cpId}
-          AND team.is_delete = 0
-    </select>
-
     <select id="ownLead" resultType="Team">
         SELECT *
         from team
@@ -135,7 +154,7 @@
         from team t LEFT JOIN user u on u.id = t.leader_id
                     LEFT JOIN competition c on t.cp_id= c.id
         where t.id = #{id}
-        AND t.is_delete = 0
+          AND t.is_delete = 0
     </select>
 
     <select id="ownRequest" resultType="UserTeam">

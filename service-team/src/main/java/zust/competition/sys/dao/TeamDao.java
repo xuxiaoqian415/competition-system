@@ -44,9 +44,9 @@ public interface TeamDao {
     List<Team> myJoin(Integer id);
 
     /**
-     * 获取所有团队信息
+     * 获取所有团队成员
      */
-    List<UserTeam> getMember(Integer id);
+    List<UserTeam> getMember(@Param("teamId") Integer id);
 
     /**
      * 查询我负责的团队
