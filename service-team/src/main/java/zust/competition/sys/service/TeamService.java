@@ -11,6 +11,17 @@ import java.util.List;
 
 public interface TeamService {
 
+
+    /**
+     * 创建团队
+     */
+    Integer buildTeam(TeamDto dto);
+
+    /**
+     * 查看我发送的组队请求
+     */
+    List<UserTeamDto> ownRequest(Integer id);
+
     /**
      * 加入团队
      */

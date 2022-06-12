@@ -17,6 +17,7 @@ import zust.competition.sys.entity.UserTeam;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class TeamServiceImpl implements TeamService {
@@ -28,6 +29,59 @@ public class TeamServiceImpl implements TeamService {
     CompetitionService competitionService;
     @Autowired
     SelectService selectService;
+
+
+    @Override
+    public Integer buildTeam(TeamDto dto) {
+        Team t=DtoT2d(dto);
+        String invitation=getCharAndNumr(6);
+        t.setInvitationCode(invitation);
+        t.setOperatorId(dto.getLeaderId());
+        return teamDao.insertTeam(t);
+    }
+
+    public String getCharAndNumr(Integer length)
+    {
+        String val = "";
+
+        Random random = new Random();
+        for(int i = 0; i < length; i++)
+        {
+            String charOrNum = random.nextInt(2) % 2 == 0 ? "char" : "num"; // 输出字母还是数字
+
+            if("char".equalsIgnoreCase(charOrNum)) // 字符串
+            {
+                int choice = random.nextInt(2) % 2 == 0 ? 65 : 97; //取得大写字母还是小写字母
+                val += (char) (choice + random.nextInt(26));
+            }
+            else if("num".equalsIgnoreCase(charOrNum)) // 数字
+            {
+                val += String.valueOf(random.nextInt(10));
+            }
+        }
+
+        return val;
+    }
+
+
+    @Override
+    public List<UserTeamDto> ownRequest(Integer id) {
+        List<UserTeamDto> userTeamDtos=new ArrayList<>();
+        List<UserTeam> userTeams=teamDao.ownRequest(id);
+        if(userTeams.size()>=0&&userTeams!=null){
+            for (UserTeam ut:userTeams) {
+                UserTeamDto dto= UserTeam2d(ut);
+                TeamQuery query=new TeamQuery();
+                query.setTeamId(dto.getTeamId());
+                Team t= teamDao.getTeam(query);
+                dto.setTeamName(t.getTeamName());
+                dto.setLeaderName(userService.selectUserById(t.getLeaderId()).getName());
+                dto.setCpName(competitionService.getCompetitionTile(dto.getCpId()));
+                userTeamDtos.add(dto);
+            }
+        }
+        return userTeamDtos;
+    }
 
     @Override
     public Integer updateStatus(Integer id) {

@@ -1,5 +1,6 @@
 package zust.competition.sys.controller;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,6 +24,34 @@ public class StudentController {
     TeamService teamService;
     @Autowired
     UserService userService;
+
+
+    /**
+     * 跳转创建团队
+     */
+    @GetMapping("/build/{cpId}")
+    public String toBuild(@PathVariable("cpId") Integer cpId, Model model) {
+        model.addAttribute("cpId", cpId);
+        return "student/build_team";
+    }
+
+    /**
+     * 创建团队
+     */
+    @PostMapping("/build")
+    public String buildTeam(TeamDto dto, HttpSession session, Model model) {
+        String msg = "";
+        Integer leaderId = ((UserDto) session.getAttribute("thisUser")).getId();
+        dto.setLeaderId(leaderId);
+        if (-1 == teamService.buildTeam(dto)) {
+            msg = "团队创建失败";
+        } else {
+            TeamDto t=teamService.getLeaderTeam(leaderId,dto.getCpId());
+            msg="团队邀请码："+t.getInvitationCode();
+        }
+        model.addAttribute("msg", msg);
+        return toBuild(dto.getCpId(), model);
+    }
 
     /**
      * 加入团队页面
