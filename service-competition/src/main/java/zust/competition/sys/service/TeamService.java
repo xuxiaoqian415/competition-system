@@ -2,8 +2,11 @@ package zust.competition.sys.service;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import zust.competition.sys.dto.TeamDto;
+import zust.competition.sys.dto.query.TeamQuery;
 import zust.competition.sys.entity.Query;
+import zust.competition.sys.entity.Team;
 
 import java.util.List;
 
@@ -18,4 +21,10 @@ public interface TeamService {
 
     @RequestMapping("/team/deleteTeamByCpiD")
     Integer deleteTeamByCpiD(Integer cpId);
+
+    @RequestMapping("/dao/getTeam")
+    Team getTeam(TeamQuery query);
+
+    @RequestMapping("/dao/getMyTeamByCpId")
+    Team getMyTeamByCpId(@RequestParam("userId") Integer userId, @RequestParam("cpId") Integer cpId);
 }

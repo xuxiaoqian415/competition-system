@@ -12,20 +12,6 @@ import java.util.List;
 
 @Mapper
 public interface UserDao {
-    /**
-     * 按照创建时间新旧对message进行排序查询（收件箱）
-     */
-    List<Message> receiveMessage( Integer id);
-
-    /**
-     * 按照创建时间新旧对message进行排序查询（发件箱）
-     */
-    List<Message> sendMessage(Integer id);
-
-    /**
-     * 根据主键查找Message
-     */
-    Message getMessage(Integer id);
 
     /**
      * 根据主键查找唯一用户

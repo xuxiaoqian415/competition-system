@@ -9,6 +9,7 @@ import java.util.List;
 @Data
 @Alias("TeamDto")
 public class TeamDto  implements Serializable {
+
     private Integer id;
 
     private Integer cpId;
@@ -29,6 +30,11 @@ public class TeamDto  implements Serializable {
      * 指导老师名字
      */
     private String teacherName;
+
+    /**
+     * 已邀请的老师
+     */
+    private String inviteTeacher;
 
     private Integer teacherId;
 

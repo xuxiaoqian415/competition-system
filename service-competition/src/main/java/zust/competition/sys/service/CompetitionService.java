@@ -50,6 +50,19 @@ public interface CompetitionService {
     CompetitionDto getCompetitionDetail(Integer id);
 
     /**
+     * 判断当前用户的类型
+     * return：0-不可报名（教师）1-未报名过该竞赛 2-已创建团队 3-已加入团队
+     */
+    Integer getUserType(Integer userId, Integer cpId);
+
+
+
+
+
+
+
+
+    /**
      * 根据学生id获取已报名竞赛
      */
     List<CompetitionDto> getApplyList(Integer id);

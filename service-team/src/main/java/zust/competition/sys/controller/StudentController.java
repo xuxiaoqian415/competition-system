@@ -29,11 +29,14 @@ public class StudentController {
      * 加入团队页面
      */
     @GetMapping("/join/{cpId}")
-    public String toBuildTeam(@PathVariable("cpId") Integer cpId, Model model) {
+    public String toJoinTeam(@PathVariable("cpId") Integer cpId, Model model) {
         model.addAttribute("cpId", cpId);
         return "student/join_team";
     }
 
+    /**
+     * 加入团队
+     */
     @PostMapping("/join")
     public String joinTeam(UserTeamDto dto, HttpSession session, Model model) {
         String msg = "";
@@ -44,22 +47,30 @@ public class StudentController {
             msg = "申请加入失败";
         } else msg = "加入申请已发送";
         model.addAttribute("msg", msg);
-        return toBuildTeam(dto.getCpId(), model);
+        return toJoinTeam(dto.getCpId(), model);
     }
 
     /**
-     * 负责人进入已有团队页面
+     * 竞赛详情-负责人进入已有团队页面
      */
     @GetMapping("/lead/{cpId}")
     public String leadTeam(@PathVariable("cpId") Integer cpId, HttpSession session, Model model) {
-        String msg = "";
-        UserDto u = (UserDto) session.getAttribute("thisUser");
-        TeamDto t = teamService.getTeamList(u.getId(), cpId);
-        List<UserDto> teacherList = userService.getTeacherList();
-        if (teacherList.size() == 0) msg = "当前竞赛您并没有负责的团队";
-        model.addAttribute("msg", msg);
-        model.addAttribute("teacherList", teacherList);
-        model.addAttribute("teamDto", t);
+        Integer leaderId = ((UserDto) session.getAttribute("thisUser")).getId();
+        TeamDto leaderTeam = teamService.getLeaderTeam(leaderId, cpId);
+        if (leaderTeam.getStatus() == 1) {
+            List<UserDto> teacherList = userService.getTeacherList();
+            model.addAttribute("teacherList", teacherList);
+            // 已发出邀请的老师
+            List<String> inviteTeacherList = teamService.getInviteTeacher(leaderTeam.getId());
+            if (inviteTeacherList.size() != 0) {
+                String inviteTeacher = "您已邀请老师：";
+                for (String s : inviteTeacherList) {
+                    inviteTeacher += s;
+                }
+                model.addAttribute("inviteTeacher",inviteTeacher);
+            }
+        }
+        model.addAttribute("teamDto", leaderTeam);
         return "student/lead_hasTeam";
     }
 
@@ -76,31 +87,38 @@ public class StudentController {
             msg = "邀请发送失败";
         } else msg = "已成功发送邀请";
         model.addAttribute("msg", msg);
-        return toBuildTeam(dto.getCpId(), model);
+        return leadTeam(dto.getCpId(), session, model);
     }
 
-    /**
-     * 根据主键id查询团队详情
-     */
-    @GetMapping("/teamDetail/{id}")
-    public String toTeamDetail(@PathVariable Integer id, Model model) {
-        model.addAttribute("detail", teamService.getTeamDetail(id));
-        model.addAttribute("member", teamService.getMember(id));
-        return "";
-    }
+//    /**
+//     * 根据主键id查询团队详情
+//     */
+//    @GetMapping("/detail/{id}")
+//    public String toTeamDetail(@PathVariable Integer id, Model model) {
+//        model.addAttribute("detail", teamService.getTeamDetail(id));
+//        model.addAttribute("member", teamService.getMember(id));
+//        return "";
+//    }
 
     /**
      * 我加入的团队
      */
-    @GetMapping("/toJoin/{id}")
-    public String toJoin(@PathVariable Integer id, Model model) {
-        String msg = "";
-        List<TeamDto> dtos = teamService.myJoin(id);
-        if (dtos.size() == 0) msg = "您当前没有加入任何团队";
-        model.addAttribute("teamDtos", dtos);
-        model.addAttribute("msg", msg);
-        return "";
+    @GetMapping("/applied/list")
+    public String toJoin(HttpSession session, Model model) {
+        Integer userId = ((UserDto) session.getAttribute("thisUser")).getId();
+        List<TeamDto> dtos = teamService.myJoin(userId);
+        if (dtos.size() == 0)
+            model.addAttribute("msg", "您当前没有加入任何团队");
+        model.addAttribute("teamList", dtos);
+        return "student/applied_list";
     }
+
+
+
+
+
+
+
 
     /**
      * 我负责的团队

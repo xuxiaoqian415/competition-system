@@ -83,4 +83,10 @@ public class CompetitionDto {
      * 竞赛状态：1-即将开始报名 2-报名进行中 3-比赛进行中 4-比赛已结束
      */
     private Integer status;
+
+    /**
+     * 用户类型：0-不可报名（教师）
+     * 1-未报名过该竞赛 2-已创建团队 3-已加入团队
+     */
+    private Integer userType;
 }

@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>竞赛信息详情</title>
+    <title>收件详情</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -10,13 +10,16 @@
     <link rel="stylesheet" th:href="@{/css/xadmin.css}">
     <script th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>
     <script type="text/javascript" th:src="@{/js/xadmin.js}"></script>
+    <script>
+        // 是否开启刷新记忆tab功能
+        var is_remember = false;
+    </script>
 </head>
 <body>
 <div class="layui-fluid">
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
             <div class="layui-card">
-                <button class="layui-btn layui-btn-primary"><a th:href="${back}">返回</a></button>
                 <div class="layui-card-body">
                     <div style="text-align:center;margin: 5px;line-height: 40px; border: 1px solid gainsboro;">
                         <ul style="text-align:left;border: 1px solid gainsboro">
@@ -29,17 +32,18 @@
                         <ul style="text-align:left;border: 1px solid gainsboro">
                             [[${message.content}]]</ul>
                         <ul>
-<!--                            <a th:text="'去处理 >>'" th:href="@{/user/jump/}+${message.jumpType}+'?back=informList'"></a>-->
+                            <li>
+                                <a onclick="parent.xadmin.add_tab('组队请求处理','/team-serv/team/request/list',true)"
+                                   th:if="${message.jumpType == 1}" href="javascript:;" th:text="'去处理组队请求 >>'">
+                                </a>
+                            </li>
+                            <li>
+                                <a onclick="parent.xadmin.add_tab('指导请求','/select-serv/teacher/select/request/list',true)"
+                                   th:if="${message.jumpType == 2}" href="javascript:;" th:text="'去处理指导请求 >>'">
+                                </a>
+                            </li>
                         </ul>
                     </div>
-<!--                    <div class="layui-form-item" th:if="${session.thisUser.type == 2}">-->
-<!--                        <button class="layui-btn layui-btn-primary" th:if="${detail.haveApply == 0}">-->
-<!--                            <a th:href="@{/team-serv/team/build/}+${detail.id}">进入报名</a>-->
-<!--                        </button>-->
-<!--                        <button class="layui-btn layui-btn-primary" th:if="${detail.haveApply == 1}">-->
-<!--                            您已报名该竞赛-->
-<!--                        </button>-->
-<!--                    </div>-->
                 </div>
             </div>
         </div>

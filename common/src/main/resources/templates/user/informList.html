@@ -95,7 +95,8 @@
         table.on('tool', function(obj){
             var data = obj.data;
             console.log(data.id)
-            window.location.href='http://localhost:7000/competition-serv/competition/detail/'+data.id
+            // window.location.href='http://localhost:7000/competition-serv/competition/detail/'+data.id
+            parent.xadmin.add_tab('竞赛详情', 'http://localhost:7000/competition-serv/competition/detail/'+data.id, true)
         });
     });
 </script>

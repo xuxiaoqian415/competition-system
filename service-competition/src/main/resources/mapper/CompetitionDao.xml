@@ -2,50 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="zust.competition.sys.dao.CompetitionDao">
 
-    <select id="getCompetitionList" resultType="Competition" parameterType="Query">
-        select *
-        from competition
-        <where>
-            <if test="startTime != null">
-                `end` &gt;= #{startTime}
-            </if>
-            <if test="endTime != null">
-                AND `end` &lt;= #{endTime}
-            </if>
-            <if test="keyword != null and keyword != ''">
-                <bind name="_keyword" value="'%' + keyword + '%'"/>
-                AND (title LIKE #{_keyword} or content LIKE #{_keyword} or organizer LIKE #{_keyword})
-            </if>
-            AND is_delete = 0
-        </where>
-        ORDER BY update_time DESC
-    </select>
-
-    <select id="getCompetitionByApply" resultType="Competition">
-        select *
-        from competition
-        where apply_start &lt;= #{currentTime}
-          and apply_end &gt;= #{currentTime}
-          AND is_delete = 0
-    </select>
-
     <insert id="addCompetition" parameterType="Competition" useGeneratedKeys="true" keyProperty="id">
         insert into competition(title, content, apply_start, apply_end, start, end, organizer, `limit`, operator_id)
         values(#{title}, #{content}, #{applyStart}, #{applyEnd}, #{start}, #{end}, #{organizer}, #{limit}, #{operatorId})
     </insert>
-
-    <select id="getCompetitionDetail" parameterType="int" resultType="Competition">
-        select *
-        from competition
-        where id = #{id}
-        AND is_delete = 0
-    </select>
-
-    <update id="deleteCompetition" parameterType="int">
-        update competition
-        set is_delete = 1
-        where id = #{id}
-    </update>
 
     <update id="updateCompetition" parameterType="Competition">
         update competition
@@ -84,6 +44,50 @@
         </set>
         where id = #{id}
     </update>
+
+    <select id="getCompetitionList" resultType="Competition" parameterType="Query">
+        select *
+        from competition
+        <where>
+            <if test="startTime != null">
+                `end` &gt;= #{startTime}
+            </if>
+            <if test="endTime != null">
+                AND `end` &lt;= #{endTime}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                <bind name="_keyword" value="'%' + keyword + '%'"/>
+                AND (title LIKE #{_keyword} or content LIKE #{_keyword} or organizer LIKE #{_keyword})
+            </if>
+            AND is_delete = 0
+        </where>
+        ORDER BY update_time DESC
+    </select>
+
+    <update id="deleteCompetition" parameterType="int">
+        update competition
+        set is_delete = 1
+        where id = #{id}
+    </update>
+
+    <select id="getCompetitionDetail" parameterType="int" resultType="Competition">
+        select *
+        from competition
+        where id = #{id}
+          AND is_delete = 0
+    </select>
+
+
+
+
+
+    <select id="getCompetitionByApply" resultType="Competition">
+        select *
+        from competition
+        where apply_start &lt;= #{currentTime}
+          and apply_end &gt;= #{currentTime}
+          AND is_delete = 0
+    </select>
 
 <!--    <select id="getApplyList" parameterType="int" resultType="CompetitionDto">-->
 <!--        select c.id as id, c.cp_name as cpName, t.id as teamId, t.team_name as teamName, u.name as leaderName-->

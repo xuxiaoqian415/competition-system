@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="zust.competition.sys.dao.MessageDao">
+
+    <select id="receiveMessage" resultType="Message">
+        select *
+        from message
+        where receiver_id = #{userId} and is_delete = 0
+        order by is_read asc,create_time desc
+    </select>
+
+    <select id="sendMessage" resultType="Message">
+        select *
+        from message
+        where sender_id = #{userId} and is_delete = 0
+        order  by is_read asc,create_time desc
+    </select>
+
+    <select id="getMessage" resultType="Message">
+        select *
+        from message
+        where id=#{id}
+    </select>
+
+    <update id="setIsRead" parameterType="int">
+        update message
+        set is_read = 1
+        where id = #{id}
+    </update>
+
+    <select id="countNotRead" parameterType="int" resultType="int">
+        select count(id)
+        from message
+        where receiver_id = #{userId} and is_read = 0
+        and is_delete = 0
+    </select>
+</mapper>

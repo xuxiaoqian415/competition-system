@@ -24,62 +24,52 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <td th:text="${t.teamName}"></td>
-                        <td th:text="${t.nowNumber}"></td>
-                        <td th:if="${t.status eq 0}">组队中</td>
-                        <td th:if="${t.status eq 1}">组队完成</td>
-                        <td th:if="${t.status eq 0}">报名成功</td>
-                        <td th:text="${t.teacherName}"></td>
-
-<!--                        还差选择老师的选择框-->
-
-<!--                        <tr th:each="t:${leadTeamList}">-->
-<!--                            <td>-->
-<!--                                <a th:text="${t.cpName}" th:href="@{/competition-serv/competition/detail/}+${t.cpId}+'?back=leadTeamList'"></a>-->
-<!--                            </td>-->
-<!--                            <td th:text="${t.teamName}"></td>-->
-<!--                            <td th:text="${t.leaderName}"></td>-->
-<!--                            <td th:text="${t.memberNames}"></td>-->
-<!--                            <td class="td-manage">-->
-<!--                                <a th:href="@{/team-serv/team/update/}+${t.id}">编辑团队</a>-->
-<!--                            </td>-->
-<!--                        </tr>-->
+                        <td th:text="${teamDto.teamName}"></td>
+                        <td th:text="${teamDto.nowNumber}"></td>
+                        <td th:if="${teamDto.status eq 0}">组队中</td>
+                        <td th:if="${teamDto.status eq 1}">组队完成</td>
+                        <td th:if="${teamDto.status eq 2}">报名成功</td>
+                        <td th:text="${teamDto.teacherName}"></td>
                         </tbody>
                     </table>
                 </div>
-                <!--                <div class="layui-card-body ">-->
-                <!--                    <div class="page">-->
-                <!--                        <div>-->
-                <!--                            <a class="prev" href="">&lt;&lt;</a>-->
-                <!--                            <a class="num" href="">1</a>-->
-                <!--                            <span class="current">2</span>-->
-                <!--                            <a class="num" href="">3</a>-->
-                <!--                            <a class="num" href="">489</a>-->
-                <!--                            <a class="next" href="">&gt;&gt;</a></div>-->
-                <!--                    </div>-->
-                <!--                </div>-->
+            </div>
+            <div class="layui-card" th:if="${teamDto.status eq 1}">
+                <div class="layui-card-body">
+                    <h1>发送指导请求</h1>
+                    <div th:if="${not #strings.isEmpty(inviteTeacher)}" style="margin: 20px">
+                        <h3 th:text="${inviteTeacher}"></h3>
+                    </div>
+                    <form class="layui-form" th:action="@{/team-serv/team/invite}" method="post">
+                        <input type="hidden" name="teamId" th:value="${teamDto.id}">
+                        <input type="hidden" name="cpId" th:value="${teamDto.cpId}">
+                        <div class="layui-form-item">
+                            <label class="layui-form-label"> 指导老师：</label>
+                            <div class="layui-input-inline">
+                                <select name="teacherId">
+                                    <option value="">请选择</option>
+                                    <option th:each="t:${teacherList}" th:value="${t.id}" th:text="${t.name}"></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label"></label>
+                            <button class="layui-btn">立即提交</button>
+                        </div>
+                    </form>
+                    <p style="color: red" th:text = "${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
+                </div>
             </div>
         </div>
     </div>
 </div>
-</body>
 <script th:src="@{/lib/layui/layui.js}"></script>
 <script>
-    layui.use(['laydate', 'form'],
-        function() {
-            var laydate = layui.laydate;
+    //Demo
+    layui.use('form', function(){
+        var form = layui.form;
 
-            //执行一个laydate实例
-            laydate.render({
-                elem: '#start' //指定元素
-            });
-
-            //执行一个laydate实例
-            laydate.render({
-                elem: '#end' //指定元素
-            });
-        });
+    });
 </script>
-</html>
 </body>
 </html>

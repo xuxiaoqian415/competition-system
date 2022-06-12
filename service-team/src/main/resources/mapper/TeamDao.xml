@@ -9,15 +9,67 @@
 <!--        <result column="team_intro" jdbcType="VARCHAR" property="teamIntro"/>-->
 <!--        <result column="member" jdbcType="VARCHAR" property="member"/>-->
 <!--    </resultMap>-->
+
     <insert id="insertUserTeam" parameterType="UserTeam"  useGeneratedKeys="true" keyProperty="id">
         insert into user_team (student_id,team_id,`role`,operator_id)
         values (#{studentId},#{teamId},#{role},#{operatorId})
     </insert>
 
     <insert id="insertMessage" parameterType="Message"  useGeneratedKeys="true" keyProperty="id">
-        insert into message (send_id,receive_id,content,operator_id,jump_type)
-        values (#{sendId},#{receiveId},#{content},#{operatorId},#{jumpType})
+        insert into message (sender_id,receiver_id,content,operator_id,jump_type)
+        values (#{senderId},#{receiverId},#{content},#{operatorId},#{jumpType})
     </insert>
+
+    <select id="getTeam" parameterType="TeamQuery" resultType="Team">
+        SELECT *
+        FROM team
+        <where>
+            is_delete = 0
+            <if test="teamId != null">
+                AND id = #{teamId}
+            </if>
+            <if test="leaderId != null">
+                AND leader_id = #{leaderId}
+            </if>
+            <if test="cpId != null">
+                AND cp_id = #{cpId}
+            </if>
+            <if test="invitationCode != null and invitationCode != ''">
+                AND invitation_code = #{invitationCode}
+            </if>
+        </where>
+    </select>
+
+    <select id="getInviteTeacher" parameterType="int" resultType="TeamTeacher">
+        SELECT *
+        FROM team_teacher
+        WHERE team_id = #{teamId}
+        AND is_delete = 0
+    </select>
+
+    <insert id="insertTeamTeacher" parameterType="TeamTeacher"  useGeneratedKeys="true" keyProperty="id">
+        insert into team_teacher (team_id,teacher_id,operator_id)
+        values (#{teamId},#{teacherId},#{operatorId})
+    </insert>
+
+    <select id="myJoin" resultType="Team">
+        select team.*
+        from user_team
+                 LEFT JOIN team on team.id=team_id
+        WHERE student_id=#{id} AND user_team.status = 1
+          AND team.is_delete = 0
+    </select>
+
+    <select id="getMyTeamByCpId" parameterType="int" resultType="team">
+        SELECT team.*
+        FROM user_team LEFT JOIN team ON team.id = team_id
+        WHERE user_team.student_id = #{userId} AND team.cp_id = #{cpId}
+          AND team.is_delete = 0
+    </select>
+
+
+
+
 
     <select id="selectByCode" resultType="Team">
         SELECT *
@@ -28,26 +80,16 @@
     <sql id="Base_Column_List">
         id,cp_id,`team_name`,leader_id,`team_intro`,`member`
     </sql>
+
     <select id="getTeamById" resultType="Team">
         SELECT *
         FROM team
         WHERE id=#{id}
     </select>
 
-    <select id="getTeamList" resultType="Team">
-        SELECT *
-        FROM team
-        WHERE leader_id=#{leaderId} AND cp_id=#{cpId}
-    </select>
-
-    <insert id="insertTeamTeacher" parameterType="TeamTeacher"  useGeneratedKeys="true" keyProperty="id">
-        insert into team_teacher (team_id,teacher_id,operator_id)
-        values (#{teamId},#{teacherId},#{operatorId})
-    </insert>
-
     <insert id="insertTeam" parameterType="Team"  useGeneratedKeys="true" keyProperty="id">
-        insert into team (cp_id,team_name,leader_id,team_intro,member)
-        values (#{cpId},#{teamName},#{leaderId},#{teamIntro},#{member})
+        insert into team (cp_id,team_name,leader_id)
+        values (#{cpId},#{teamName},#{leaderId})
     </insert>
 
     <select id="getMember" resultType="UserTeam">
@@ -61,12 +103,6 @@
         from team
         where cp_id=#{cpId} and leader_id=#{leaderId}
           AND is_delete = 0
-    </select>
-
-    <select id="myJoin" resultType="Team">
-        select team.*
-        from user_team
-                 LEFT JOIN team on team.id=team_id WHERE student_id=#{id}
     </select>
 
     <select id="selectTeamList" resultType="TeamDto" parameterType="Query">
@@ -115,6 +151,7 @@
                     LEFT JOIN competition c on t.cp_id= c.id
         where t.id = #{id}
         AND t.is_delete = 0
+    </select>
 
     <select id="requestTeam" resultType="UserTeam">
         SELECT *
