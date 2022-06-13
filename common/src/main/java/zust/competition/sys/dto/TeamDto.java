@@ -10,48 +10,27 @@ import java.util.List;
 @Alias("TeamDto")
 public class TeamDto  implements Serializable {
 
+//    直接对应team表
     private Integer id;
-
     private Integer cpId;
-    private String cpName;
-
     private String teamName;
-
     private Integer leaderId;
-
-    private String leaderName;
-
-    private Integer newLeaderId;
-
+    /**
+     * 团队介绍
+     */
     private String introduction;
-
-
-    /**
-     * 指导老师名字
-     */
-    private String teacherName;
-
-    /**
-     * 已邀请的老师
-     */
-    private String inviteTeacher;
-
-    private Integer teacherId;
-
     /**
      * 当前人数
      */
     private Integer nowNumber;
-
-    /**
-     * 最大人数
-     */
-    private Integer limitNum;
-
     /**
      * 邀请码
      */
     private String invitationCode;
+    /**
+     * 指导老师id
+     */
+    private Integer teacherId;
     /**
      * 是否评奖： 0-未评奖 1-已评奖
      */
@@ -68,22 +47,35 @@ public class TeamDto  implements Serializable {
      * 状态：0-组队中 1-组队完成 2-报名成功
      */
     private Integer status;
+//    直接对应team表结束
+
+//    其他字段
+    /**
+     * 竞赛名称
+     */
+    private String cpName;
+    /**
+     * 负责人名字
+     */
+    private String leaderName;
+    /**
+     * 新负责人id
+     */
+    private Integer newLeaderId;
+    /**
+     * 指导老师名字
+     */
+    private String teacherName;
+    /**
+     * 已邀请的老师
+     */
+    private String inviteTeacher;
+    /**
+     * 最大人数
+     */
+    private Integer limitNum;
     /**
      * 是否为负责人：0-不是 1-是
      */
     private Integer isLeader;
-
-
-//    private String member;
-//
-//    private List<Integer> memberList;
-//
-//    private Integer member1Id;
-//    private Integer member2Id;
-//    private Integer member3Id;
-//    private Integer member4Id;
-//
-//    private String memberNames;
-
-
 }

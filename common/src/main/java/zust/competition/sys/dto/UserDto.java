@@ -8,27 +8,48 @@ import java.io.Serializable;
 @Data
 @Alias("UserDto")
 public class UserDto implements Serializable {
+
+//    直接对应user表
     private Integer id;
     private String number;
     private String name;
-    private String nowpsw;  //当前密码
-    private String newpsw;  //新密码
-    private String rpsw;    //密码确认
     private String mobile;
     private String email;
     private String intro;
     /**
-     * 学生在团队中的职位
-     */
-    private String role;
-    /**
-     * 0管理员 1教师 2学生
+     * 0-管理员 1-教师 2-学生
      */
     private Integer type;
+    /**
+     * 0-在读 1-毕业
+     */
+    private Integer status;
     /**
      * 学院
      */
     private String academy;
+//    直接对应user表结束
+
+//    其他字段
+    /**
+     * 当前密码
+     */
+    private String nowpsw;
+
+    /**
+     * 新密码
+     */
+    private String newpsw;
+
+    /**
+     * 密码确认
+     */
+    private String rpsw;
+
+    /**
+     * 学生在团队中的职位
+     */
+    private String role;
 
 
 }

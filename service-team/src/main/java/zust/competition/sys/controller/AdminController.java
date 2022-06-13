@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import zust.competition.sys.dto.TeamDto;
 import zust.competition.sys.dto.UserDto;
+import zust.competition.sys.dto.UserTeamDto;
+import zust.competition.sys.dto.query.TeamQuery;
 import zust.competition.sys.entity.Query;
 import zust.competition.sys.service.TeamService;
 import zust.competition.sys.service.UserService;
@@ -32,7 +34,7 @@ public class AdminController {
     }
 
     @PostMapping("/search")
-    public String searchTeam(Query query, Model model) {
+    public String searchTeam(TeamQuery query, Model model) {
         List<TeamDto> teamList = teamService.searchTeam(query);
         model.addAttribute("teamList",teamList);
         return "admin/teamList";
@@ -40,38 +42,38 @@ public class AdminController {
 
     @GetMapping("/delete/{id}")
     public String deleteTeam(@PathVariable("id") Integer id,Model model){
-        String msg = "";
-        if(-1 == teamService.deleteTeam(id)){
-            msg = "删除失败!";
-            model.addAttribute("msg", msg);
+        Integer code = teamService.deleteTeam(id);
+        if (-1 == code){
+            model.addAttribute("msg", "该团队有成员，无法删除！");
+            return toTeamList(model);
         }
-        else{
-            msg = "删除成功!";
-            model.addAttribute("msg", msg);
+        if (-2 == code){
+            model.addAttribute("msg", "该团队已有指导老师，无法删除！");
+            return toTeamList(model);
         }
+        model.addAttribute("msg", "删除成功!");
         return toTeamList(model);
     }
 
-    @GetMapping("/update/{id}")
-    public String toUpdateTeam(@PathVariable("id") Integer id,Model model){
-        TeamDto teamDto = teamService.getTeamById(id);
-        List<UserDto> studentList = userService.getStudentList();
-        model.addAttribute("thisTeam",teamDto);
-        model.addAttribute("studentList",studentList);
+    @GetMapping("/update/leader/{id}")
+    public String toUpdateTeamLeader(@PathVariable("id") Integer id,Model model){
+        TeamDto team = teamService.getTeamById(id);
+        model.addAttribute("team", team);
+        List<UserTeamDto> memberList = teamService.getMember(id);
+        model.addAttribute("memberList", memberList);
         return "admin/adminUpdateTeam";
     }
 
-    @PostMapping("/update")
-    public String updateTeam(TeamDto dto, Model model){
-        String msg = "";
-        if(teamService.adminUpdateTeam(dto)!= 1){
-            msg = "修改团队信息失败!";
-            model.addAttribute("msg", msg);
-            return toUpdateTeam(dto.getId(),model);
+    @PostMapping("/update/leader")
+    public String updateTeamLeader(TeamDto dto, Model model){
+        if (dto.getId() == null || dto.getNewLeaderId() == null) {
+            model.addAttribute("msg", "请选择新负责人");
         }
-        msg = "修改团队信息成功!";
-        model.addAttribute("msg", msg);
-        return toUpdateTeam(dto.getId(),model);
+        else {
+            teamService.updateTeamLeader(dto.getId(), dto.getNewLeaderId());
+        }
+        model.addAttribute("msg", "修改负责人成功！");
+        return toUpdateTeamLeader(dto.getId(),model);
     }
 
 }

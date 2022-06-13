@@ -89,7 +89,6 @@ public class SelectServiceImpl implements SelectService {
             teamModel.setTeacherId(teamTeacher.getTeacherId());
             teamModel.setStatus(2);
         }
-        System.out.println("===teamModel"+teamModel);
         teamService.updateTeam(teamModel);
         return selectDao.updateSelectStatus(id,status);
     }

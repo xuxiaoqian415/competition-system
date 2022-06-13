@@ -16,7 +16,7 @@ public interface UserDao {
     /**
      * 根据主键查找唯一用户
      */
-    User selectUser(Query query);
+    UserDto selectUser(Query query);
 
     /**
      * 根据Id查找用户

@@ -80,19 +80,4 @@ public class UserController {
         return "student/applyList";
     }
 
-    @ResponseBody
-    @RequestMapping("/insertUserTeam")
-    public void insertUserTeam(@RequestBody UserTeam stuComp) {
-        competitionService.insertUserTeam(stuComp);
-    }
-
-    @ResponseBody
-    @RequestMapping("/getCompetitionTile")
-    public String getCompetitionTile(@RequestParam("id") Integer id) {
-        CompetitionDto detail = competitionService.detail(id);
-        if (detail != null)
-            return detail.getTitle();
-        return "0";
-    }
-
 }

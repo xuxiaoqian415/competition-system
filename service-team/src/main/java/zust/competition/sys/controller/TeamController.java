@@ -18,7 +18,7 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/dao")
-public class DaoController {
+public class TeamController {
 
     @Autowired
     private TeamDao teamDao;
@@ -39,14 +39,13 @@ public class DaoController {
 
     @ResponseBody
     @RequestMapping("/selectTeamList")
-    public List<TeamDto> selectTeamList(@RequestBody Query query) {
+    public List<TeamDto> selectTeamList(@RequestBody TeamQuery query) {
         return teamService.selectTeamList(query);
     }
 
     @ResponseBody
     @RequestMapping("/updateTeam")
     public Integer updateTeam(@RequestBody Team team) {
-        System.out.println("===team"+team);
         return teamDao.updateTeam(team);
     }
 }

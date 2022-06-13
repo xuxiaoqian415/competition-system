@@ -15,7 +15,7 @@
 <div class="layui-fluid">
     <button class="layui-btn layui-btn-primary"><a th:href="@{/team-serv/team/lead/list}">返回</a></button>
     <div class="layui-row">
-        <h1>修改团队名称</h1>
+        <h1>修改团队信息</h1>
         <form class="layui-form" th:action="@{/team-serv/team/update/info}" method="post">
             <input type="hidden" name="id" th:value="${team.id}">
             <div class="layui-form-item">

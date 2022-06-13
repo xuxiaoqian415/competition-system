@@ -11,6 +11,9 @@ import java.util.Date;
 @Alias("TeamQuery")
 public class TeamQuery implements Serializable {
 
+    /**
+     * 团队id
+     */
     private Integer teamId;
 
     /**
@@ -37,5 +40,10 @@ public class TeamQuery implements Serializable {
      * 是否评奖： 0-未评奖 1-已评奖
      */
     private Integer isAwarded;
+
+    /**
+     * 模糊查询关键字
+     */
+    private String keyword;
 
 }

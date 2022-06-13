@@ -4,6 +4,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import zust.competition.sys.dao.TeamDao;
+import zust.competition.sys.dao.UserTeamDao;
 import zust.competition.sys.dto.*;
 import zust.competition.sys.dto.query.TeamQuery;
 import zust.competition.sys.entity.*;
@@ -24,12 +25,36 @@ public class TeamServiceImpl implements TeamService {
     @Autowired
     TeamDao teamDao;
     @Autowired
+    UserTeamDao userTeamDao;
+    @Autowired
     UserService userService;
     @Autowired
     CompetitionService competitionService;
     @Autowired
     SelectService selectService;
 
+    @Override
+    public Integer updateTeamLeader(Integer teamId, Integer newLeaderId) {
+        // 找到原负责人id
+        TeamQuery query = new TeamQuery();
+        query.setTeamId(teamId);
+        Integer oldLeaderId = teamDao.getTeam(query).getLeaderId();
+        // 将原负责人改为成员
+        UserTeam userTeamModel = new UserTeam();
+        userTeamModel.setStudentId(oldLeaderId);
+        userTeamModel.setTeamId(teamId);
+        userTeamModel.setRole("");
+        userTeamModel.setStatus(1);
+        userTeamDao.insertUserTeam(userTeamModel);
+        // 修改team中负责人id
+        Team teamModel = new Team();
+        teamModel.setId(teamId);
+        teamModel.setLeaderId(newLeaderId);
+        teamDao.updateTeam(teamModel);
+        // 删除新负责人UserTeam记录
+        userTeamDao.deleteUserTeam(newLeaderId, teamId);
+        return 1;
+    }
 
     @Override
     public Integer buildTeam(TeamDto dto) {
@@ -120,7 +145,7 @@ public class TeamServiceImpl implements TeamService {
         userTeam.setStudentId(thisId);
         userTeam.setRole(dto.getRole());
         userTeam.setOperatorId(thisId);
-        if(1 != teamDao.insertUserTeam(userTeam)){
+        if(1 != userTeamDao.insertUserTeam(userTeam)){
             return -3;
         }
         Message message=new Message();
@@ -223,12 +248,11 @@ public class TeamServiceImpl implements TeamService {
     public List<TeamDto> myJoin(Integer id) {
         List<TeamDto> dtos=new ArrayList<>();
         List<Team> lists=teamDao.myJoin(id);
-        if(lists.size()>=0){
+        if(lists!=null && lists.size()!=0){
             for (Team t:lists) {
                 TeamDto dto=Te2d(t);
                 dto.setLeaderName(userService.selectUserById(dto.getLeaderId()).getName());
-                //        根据cp_id查询竞赛名称
-                dto.setCpName(competitionService.getCompetitionTile(t.getCpId()));
+                dto.setCpName(competitionService.getCompetitionDetail(t.getCpId()).getTitle());
                 if (dto.getTeacherId() == 0) {
                     dto.setTeacherName("待定");
                 }
@@ -252,7 +276,7 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public List<TeamDto> getAllTeam() {
-        Query query = new Query();
+        TeamQuery query = new TeamQuery();
         List<TeamDto> list = teamDao.selectTeamList(query);
         return getMember(list);
     }
@@ -293,7 +317,7 @@ public class TeamServiceImpl implements TeamService {
             for (Team t:lists) {
                 TeamDto dto = Te2d(t);
                 dto.setLeaderName(userService.selectUserById(dto.getLeaderId()).getName());
-                dto.setCpName(competitionService.getCompetitionTile(dto.getCpId()));
+                dto.setCpName(competitionService.getCompetitionDetail(dto.getCpId()).getTitle());
                 if(dto.getTeacherId()==0) dto.setTeacherName("待定");
                 else {
                     UserDto teacher = userService.selectUserById(dto.getTeacherId());
@@ -375,7 +399,7 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public List<TeamDto> searchTeam(Query query) {
+    public List<TeamDto> searchTeam(TeamQuery query) {
         List<TeamDto> list = teamDao.selectTeamList(query);
         return getMember(list);
     }
@@ -383,28 +407,23 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public Integer deleteTeam(Integer id) {
-        Integer i;
-        try {
-            i = teamDao.deleteTeam(id);
-            teamDao.deleteUserTeamByTeamId(id);
-            selectService.deleteByTeamId(id);
-        } catch (Exception e) {
-            i = -1;
+        // 该团队有成员
+        if (teamDao.getMember(id) != null) {
+            return -1;
         }
-        return i;
-    }
-
-
-    @Override
-    public Integer adminUpdateTeam(TeamDto teamDto) {
-//        Team team = new Team();
-//        team.setId(teamDto.getId());
-//        team.setTeamName(teamDto.getTeamName());
-//        team.setTeamIntro(teamDto.getTeamIntro());
-//        ArrayList<Integer> memberList = new ArrayList<>();
-//        StringBuffer memberBuffer = new StringBuffer();
-//        return teamDao.updateTeam(team);
-        return null;
+        // 该团队有指导老师
+        TeamQuery query = new TeamQuery();
+        query.setTeamId(id);
+        if (teamDao.getTeam(query).getTeacherId() != 0) {
+            return -2;
+        }
+        // 删除所有组队请求
+        userTeamDao.deleteUserTeamByTeamId(id);
+        // 删除所有指导请求
+        selectService.deleteByTeamId(id);
+        // 删除团队
+        teamDao.deleteTeam(id);
+        return 1;
     }
 
     @Override
@@ -416,7 +435,7 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public List<TeamDto> getOwnTeam(Integer id) {
-        Query query= new Query();
+        TeamQuery query = new TeamQuery();
         query.setLeaderId(id);
         List<TeamDto> list = teamDao.selectTeamList(query);
         return getMember(list);
@@ -442,7 +461,7 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public List<TeamDto> selectTeamList(Query query) {
+    public List<TeamDto> selectTeamList(TeamQuery query) {
         return teamDao.selectTeamList(query);
     }
 

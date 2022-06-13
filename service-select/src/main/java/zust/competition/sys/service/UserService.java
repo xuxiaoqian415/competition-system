@@ -10,9 +10,10 @@ import java.util.List;
 @FeignClient("service-user")
 public interface UserService {
 
-    @RequestMapping("/user/getTeacherList")
+    @RequestMapping("/dao/getTeacherList")
     List<UserDto> getTeacherList();
 
-    @RequestMapping("/user/selectUserById")
+    @RequestMapping("/dao/selectUserById")
     UserDto selectUserById(@RequestParam("id") Integer id);
+
 }

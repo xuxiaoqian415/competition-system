@@ -15,13 +15,6 @@ public class MyMvcConfig implements WebMvcConfigurer {
     @Value("${upload.route.pics}")
     private String uploadPicsRoute;
 
-    //视图跳转
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/admin/postCompetition").setViewName("admin/postCompetition");
-
-    }
-
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         //注册配置类，使用addResourceHandlers方法，将本地路径uploadPicsPath映射到uploadPicsRoute路由上。

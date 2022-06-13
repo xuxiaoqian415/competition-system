@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="zust.competition.sys.dao.UserTeamDao">
+
+    <insert id="insertUserTeam" parameterType="UserTeam"  useGeneratedKeys="true" keyProperty="id">
+        insert into user_team (student_id,team_id,`role`,operator_id)
+        values (#{studentId},#{teamId},#{role},#{operatorId})
+    </insert>
+
+    <update id="deleteUserTeamByTeamId" parameterType="int">
+        update user_team
+        set is_delete = 1
+        where team_id = #{teamId}
+    </update>
+
+    <update id="deleteUserTeam" parameterType="int">
+        update user_team
+        set is_delete = 1
+        where student_id = #{studentId} and team_id = #{teamId}
+    </update>
+
+
+
+</mapper>

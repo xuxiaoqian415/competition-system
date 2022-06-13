@@ -128,22 +128,4 @@ public class UserController {
         return toUpdatePsw(model);  //返回修改密码页面
     }
 
-    @ResponseBody
-    @RequestMapping("/getStudentList")
-    public List<UserDto> getStudentList() {
-        return userService.getStudentList();
-    }
-
-    @ResponseBody
-    @RequestMapping("/getTeacherList")
-    public List<UserDto> getTeacherList() {
-        return userService.getTeacherList();
-    }
-
-    @ResponseBody
-    @RequestMapping("/selectUserById")
-    public UserDto selectUserById(@RequestParam("id") Integer id) {
-        return userService.getUserById(id);
-    }
-
 }

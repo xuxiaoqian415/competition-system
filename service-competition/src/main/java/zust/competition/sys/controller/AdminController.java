@@ -38,6 +38,11 @@ public class AdminController {
     @Value("${gateway.route.name}")
     private String gatewayRoute;
 
+    @GetMapping("/post/info")
+    public String toPostInfo() {
+        return "admin/postCompetition";
+    }
+
     /**
      * 发布竞赛信息
      */

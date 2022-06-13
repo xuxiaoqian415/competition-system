@@ -78,7 +78,7 @@ public class CompetitionServiceImpl implements CompetitionService {
 
     @Override
     public Integer deleteCompetition(Integer id) {
-        Query query = new Query();
+        TeamQuery query = new TeamQuery();
         query.setCpId(id);
         List<TeamDto> teamList = teamService.selectTeamList(query);
         if (teamList.size() != 0) {

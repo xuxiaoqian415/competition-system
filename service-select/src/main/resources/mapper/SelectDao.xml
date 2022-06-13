@@ -67,10 +67,11 @@
 <!--        where teacher_id=#{id} and select_type=1;-->
 <!--    </select>-->
 
-    <delete id="deleteByTeamId" parameterType="int">
-        delete from `team_teacher`
+    <update id="deleteByTeamId" parameterType="int">
+        update team_teacher
+        set is_delete = 1
         where team_id = #{teamId}
-    </delete>
+    </update>
 
 <!--    <select id="getTeacherByTeamId" parameterType="int" resultType="SelectDto">-->
 <!--        select s.*, u.name as teacherName-->

@@ -5,8 +5,8 @@
         id,`number`,`name`,`password`,`mobile`,`email`,`intro`,type
     </sql>
 
-    <select id="selectUser" parameterType="Query" resultType="User">
-        select id,number,name,intro,type,email,mobile
+    <select id="selectUser" parameterType="Query" resultType="UserDto">
+        select id, number, name, mobile, email, intro, type, status, academy
         from user
         <where>
             <if test="id != null">

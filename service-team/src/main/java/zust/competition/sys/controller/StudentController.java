@@ -168,7 +168,6 @@ public class StudentController {
     public String toLead(HttpSession session, Model model) {
         Integer userId = ((UserDto)session.getAttribute("thisUser")).getId();
         List<TeamDto> dtos = teamService.ownLead(userId);
-        System.out.println("===dtos"+dtos);
         if (dtos.size() == 0)
             model.addAttribute("msg", "您当前没有负责任何团队");
         model.addAttribute("teamList", dtos);

@@ -9,10 +9,6 @@
     <!--        <result column="team_intro" jdbcType="VARCHAR" property="teamIntro"/>-->
     <!--        <result column="member" jdbcType="VARCHAR" property="member"/>-->
     <!--    </resultMap>-->
-    <insert id="insertUserTeam" parameterType="UserTeam"  useGeneratedKeys="true" keyProperty="id">
-        insert into user_team (student_id,team_id,`role`,operator_id)
-        values (#{studentId},#{teamId},#{role},#{operatorId})
-    </insert>
 
     <insert id="insertMessage" parameterType="Message"  useGeneratedKeys="true" keyProperty="id">
         insert into message (sender_id,receiver_id,content,operator_id,jump_type)
@@ -120,24 +116,29 @@
           AND is_delete = 0
     </select>
 
-    <select id="selectTeamList" resultType="TeamDto" parameterType="Query">
-        select *
-        from team t LEFT JOIN user u on u.id = t.leader_id
-        LEFT JOIN competition c on t.cp_id= c.id
+    <select id="selectTeamList" resultType="TeamDto" parameterType="TeamQuery">
+        SELECT team.*, c.title as cpName, c.`limit` as limitNum, u.name as leaderName, u2.name as teacherName
+        FROM team LEFT JOIN competition c on team.cp_id= c.id
+            LEFT JOIN user u on u.id = team.leader_id
+            LEFT JOIN user u2 on u2.id = team.teacher_id
         <where>
             <if test="cpId != null">
-                t.cp_id = #{cpId}
+                team.cp_id = #{cpId}
             </if>
             <if test="leaderId != null">
-                AND t.leader_id = #{leaderId}
+                AND team.leader_id = #{leaderId}
+            </if>
+            <if test="isAwarded != null">
+                AND team.is_awarded = #{isAwarded}
             </if>
             <if test="keyword != null and keyword != ''">
                 <bind name="_keyword" value="'%' + keyword + '%'"/>
-                AND (t.team_name LIKE #{_keyword} or c.title LIKE #{_keyword})
+                AND (team.team_name LIKE #{_keyword} or u.name LIKE #{_keyword} or c.title LIKE #{_keyword})
             </if>
-            AND t.is_delete = 0
+            AND team.is_delete = 0
         </where>
     </select>
+
     <select id="ownLead" resultType="Team">
         SELECT *
         from team
@@ -195,14 +196,10 @@
         WHERE leader_id=#{id}
     </select>
 
-    <delete id="deleteUserTeamByTeamId" parameterType="int">
-        delete from user_team
-        where team_id = #{teamId}
-    </delete>
-
-    <delete id="deleteTeam" parameterType="int">
-        delete from team
+    <update id="deleteTeam" parameterType="int">
+        update team
+        set is_delete = 1
         where id = #{id}
-    </delete>
+    </update>
 
 </mapper>

@@ -13,12 +13,6 @@ import java.util.List;
 @Mapper
 public interface TeamDao {
 
-
-    /**
-     * 加入团队
-     */
-    Integer insertUserTeam(UserTeam userTeam);
-
     /**
      *  message
      */
@@ -90,7 +84,7 @@ public interface TeamDao {
     /**
      * 获取所有团队信息
      */
-    List<TeamDto> selectTeamList(Query query);
+    List<TeamDto> selectTeamList(TeamQuery query);
 
     /**
      * 根据id删除团队
@@ -117,9 +111,5 @@ public interface TeamDao {
      */
     TeamDto selectTeamById(@Param("id") Integer id);
 
-    /**
-     * 根据teamId删除原来的成员关系
-     */
-    Integer deleteUserTeamByTeamId(@Param("teamId") Integer teamId);
 
 }

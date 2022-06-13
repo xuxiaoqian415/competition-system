@@ -5,12 +5,49 @@ import zust.competition.sys.dto.TeamDto;
 import zust.competition.sys.dto.TeamTeacherDto;
 import zust.competition.sys.dto.UserDto;
 import zust.competition.sys.dto.UserTeamDto;
+import zust.competition.sys.dto.query.TeamQuery;
 import zust.competition.sys.entity.Query;
 import zust.competition.sys.entity.UserTeam;
 
 import java.util.List;
 
 public interface TeamService {
+
+    /**
+     * 管理员获取所有团队列表
+     */
+    List<TeamDto> getAllTeam();
+
+    /**
+     * 管理员根据条件查询团队
+     * 模糊查询：团队名称、负责人名称、竞赛名称
+     */
+    List<TeamDto> searchTeam(TeamQuery query);
+
+    /**
+     * 管理员根据id删除Team
+     */
+    Integer deleteTeam(Integer id);
+
+    /**
+     * 管理员修改团队负责人
+     */
+    Integer updateTeamLeader(Integer teamId, Integer newLeaderId);
+
+    /**
+     * 根据团队id查询团队
+     */
+    TeamDto getTeamById(Integer id);
+
+    /**
+     * 根据teamId查询成员信息
+     */
+    List<UserTeamDto> getMember(Integer teamId);
+
+
+
+
+
 
 
     /**
@@ -54,11 +91,6 @@ public interface TeamService {
     TeamDto getTeamDetail(Integer teamId);
 
     /**
-     * 根据teamId查询成员信息
-     */
-    List<UserTeamDto> getMember(Integer teamId);
-
-    /**
      * 根据teamId查询负责人信息
      */
     UserDto getLeader(Integer teamId);
@@ -74,13 +106,6 @@ public interface TeamService {
     UserTeam getUserTeam(Integer id);
 
 
-
-
-    /**
-     * 根据团队id查询团队
-     */
-    TeamDto getTeamById(Integer id);
-
     /**
      * 获取自己负责的团队
      */
@@ -89,10 +114,7 @@ public interface TeamService {
     /**
      * 获取所有团队信息
      */
-    List<TeamDto> selectTeamList(Query query);
-
-
-    Integer adminUpdateTeam(TeamDto teamDto);
+    List<TeamDto> selectTeamList(TeamQuery query);
 
     /**
      * 查询我负责的团队
@@ -112,11 +134,4 @@ public interface TeamService {
      */
     Integer updateRequestStatus(Integer id, Integer type);
 
-
-
-    List<TeamDto> getAllTeam();
-
-    List<TeamDto> searchTeam(Query query);
-
-    Integer deleteTeam(Integer id);
 }

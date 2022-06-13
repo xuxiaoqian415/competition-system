@@ -14,7 +14,7 @@ import java.util.List;
 public interface TeamService {
 
     @RequestMapping("/dao/selectTeamList")
-    List<TeamDto> selectTeamList(Query query);
+    List<TeamDto> selectTeamList(TeamQuery query);
 
     @RequestMapping("/dao/getTeam")
     TeamDto getTeam(TeamQuery query);

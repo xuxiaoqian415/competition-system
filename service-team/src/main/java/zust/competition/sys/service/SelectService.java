@@ -6,6 +6,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @FeignClient("select-service")
 public interface SelectService {
 
-    @RequestMapping("/student/select/deleteByTeamId")
+    @RequestMapping("/dao/deleteByTeamId")
     Integer deleteByTeamId(Integer teamId);
 }

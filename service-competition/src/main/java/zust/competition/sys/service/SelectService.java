@@ -9,9 +9,7 @@ import java.util.List;
 @FeignClient("service-select")
 public interface SelectService {
 
-    @RequestMapping("/student/select/deleteByTeamId")
+    @RequestMapping("/dao/deleteByTeamId")
     Integer deleteByTeamId(Integer teamId);
 
-    @RequestMapping("/student/select/getTeacherByTeamId")
-    List<SelectDto> getTeacherByTeamId(Integer teamId);
 }
