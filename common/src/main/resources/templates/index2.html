@@ -156,24 +156,6 @@
             </li>
             <li th:if="${thisUser.type eq 1}">
                 <a href="javascript:;">
-                    <i class="iconfont left-nav-li" lay-tips="通知栏">&#xe83b;</i>
-                    <cite>通知栏</cite>
-                    <i class="iconfont nav_right">&#xe697;</i></a>
-                <ul class="sub-menu">
-                    <li>
-                        <a onclick="xadmin.add_tab('竞赛信息','/competition-serv/competition/inform')">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>收件箱</cite></a>
-                    </li>
-                    <li>
-                        <a onclick="xadmin.add_tab('指导请求','/select-serv/teacher/select/request/list')">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>已发送</cite></a>
-                    </li>
-                </ul>
-            </li>
-            <li th:if="${thisUser.type eq 1}">
-                <a href="javascript:;">
                     <i class="iconfont left-nav-li" lay-tips="获奖信息">&#xe6b8;</i>
                     <cite>获奖信息</cite>
                     <i class="iconfont nav_right">&#xe697;</i></a>
@@ -192,6 +174,26 @@
                         <a onclick="xadmin.add_tab('获奖信息统计','/team-serv/admin/team/list')">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>获奖信息统计</cite></a>
+                    </li>
+                </ul>
+            </li>
+            <li th:if="${thisUser.type eq 1}">
+                <a href="javascript:;">
+                    <i class="iconfont left-nav-li" lay-tips="通知栏">&#xe83b;</i>
+                    <cite>通知栏</cite>
+                    <i class="iconfont nav_right">&#xe697;</i></a>
+                <ul class="sub-menu">
+                    <li>
+                        <a onclick="xadmin.add_tab('收件箱','/user-serv/message/received')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>收件箱</cite>
+                            <label style="color: red" th:text="'有'+${notRead}+'条未读消息'" th:if="${notRead != 0}"></label>
+                        </a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('已发送','/user-serv/message/sent')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>已发送</cite></a>
                     </li>
                 </ul>
             </li>
