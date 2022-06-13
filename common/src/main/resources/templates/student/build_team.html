@@ -13,6 +13,7 @@
 </head>
 <body>
 <div class="layui-fluid">
+    <button class="layui-btn layui-btn-primary"><a th:href="@{/competition-serv/competition/detail/}+${cpId}">返回</a></button>
     <div class="layui-row">
         <h1>填写报名信息</h1>
         <form class="layui-form" th:action="@{/team-serv/team/build}" method="post">
@@ -26,7 +27,7 @@
             <div class="layui-form-item">
                 <label class="layui-form-label">团队介紹：</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="teamIntro" required  lay-verify="required" class="layui-input">
+                    <input type="text" name="introduction" required  lay-verify="required" class="layui-input">
                 </div>
             </div>
             <div class="layui-form-item">

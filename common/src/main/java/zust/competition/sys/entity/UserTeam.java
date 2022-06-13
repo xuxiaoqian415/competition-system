@@ -21,7 +21,7 @@ public class UserTeam {
     /**
      * 状态：0-待处理1-已同意 2-已拒绝
      */
-    private String status;
+    private Integer status;
     /**
      * 是否删除：0-未删除，1-已删除
      */

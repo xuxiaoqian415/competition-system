@@ -146,15 +146,17 @@ public class TeamServiceImpl implements TeamService {
     public List<UserTeamDto> ownRequest(Integer id) {
         List<UserTeamDto> userTeamDtos=new ArrayList<>();
         List<UserTeam> userTeams=teamDao.ownRequest(id);
-        if(userTeams.size()>=0&&userTeams!=null){
+        if(userTeams!=null && userTeams.size()!=0){
             for (UserTeam ut:userTeams) {
                 UserTeamDto dto= UserTeam2d(ut);
                 TeamQuery query=new TeamQuery();
                 query.setTeamId(dto.getTeamId());
-                Team t= teamDao.getTeam(query);
-                dto.setTeamName(t.getTeamName());
-                dto.setLeaderName(userService.selectUserById(t.getLeaderId()).getName());
-                dto.setCpName(competitionService.getCompetitionTile(dto.getCpId()));
+                TeamDto teamdto = teamDao.getTeam(query);
+                dto.setTeamName(teamdto.getTeamName());
+                dto.setLeaderId(teamdto.getLeaderId());
+                dto.setLeaderName(teamdto.getLeaderName());
+                dto.setCpId(teamdto.getCpId());
+                dto.setCpName(teamdto.getCpName());
                 userTeamDtos.add(dto);
             }
         }
@@ -165,8 +167,16 @@ public class TeamServiceImpl implements TeamService {
     public Integer updateStatus(Integer id) {
         Team team=new Team();
         team.setId(id);
-        team.setStatus(2);
-        return teamDao.updateTeam(team);
+        team.setStatus(1);
+        teamDao.updateTeam(team);
+        // 当前团队下其他的所有待处理请求都改为已拒绝
+        teamDao.updateUserTeamStatus(id);
+        return 1;
+    }
+
+    @Override
+    public UserTeam getUserTeam(Integer id) {
+        return teamDao.getUserTeam(id);
     }
 
     @Override
@@ -174,25 +184,35 @@ public class TeamServiceImpl implements TeamService {
         UserTeam userTeam=new UserTeam();
         TeamQuery query = new TeamQuery();
         query.setInvitationCode(dto.getInvitationCode());
-        Team team=teamDao.getTeam(query);
+//        Team team=teamDao.getTeam(query);
+        TeamDto teamDto = teamDao.getTeam(query);
+        if (teamDto == null) { // 邀请码错误
+            return -1;
+        }
+        query.setCpId(dto.getCpId());
+        if (teamDao.getTeam(query) == null) { // 不是该竞赛下的团队
+            return -2;
+        }
         Integer thisId= dto.getStudentId();
-        userTeam.setTeamId(team.getId());
+        userTeam.setTeamId(teamDto.getId());
         userTeam.setStudentId(thisId);
         userTeam.setRole(dto.getRole());
         userTeam.setOperatorId(thisId);
-        if(1 == teamDao.insertUserTeam(userTeam)){
-            Message message=new Message();
-            message.setSenderId(thisId);
-            message.setOperatorId(thisId);
-            message.setReceiverId(team.getLeaderId());
-            String content= dto.getStudentName()+"同学申请加入您所带领的"+
-                    team.getTeamName()+"团队,一起参加***比赛,希望得到您的同意!";
-            message.setContent(content);
-            message.setJumpType(1);
-            if(1==teamDao.insertMessage(message))
-                return 1;
+        if(1 != teamDao.insertUserTeam(userTeam)){
+            return -3;
         }
-        return -1;
+        Message message=new Message();
+        message.setSenderId(thisId);
+        message.setOperatorId(thisId);
+        message.setReceiverId(teamDto.getLeaderId());
+        String content= dto.getStudentName()+"同学申请加入您所带领的"+
+                teamDto.getTeamName()+"团队,一起参加" +
+                teamDto.getCpName() + "比赛,希望得到您的同意!";
+        message.setContent(content);
+        message.setJumpType(1);
+        if(1 != teamDao.insertMessage(message))
+            return -3;
+        return 1;
     }
     private AcademyDto academy2d(Academy a){
         if(a==null)
@@ -235,7 +255,7 @@ public class TeamServiceImpl implements TeamService {
         TeamQuery query = new TeamQuery();
         query.setLeaderId(leaderId);
         query.setCpId(cpId);
-        TeamDto leadTeam = Te2d(teamDao.getTeam(query));
+        TeamDto leadTeam = teamDao.getTeam(query);
         if (leadTeam.getStatus() == 2 && leadTeam.getTeacherId() != 0) {
                 UserDto teacher = userService.selectUserById(leadTeam.getTeacherId());
             if (teacher != null) leadTeam.setTeacherName(teacher.getName());
@@ -268,14 +288,14 @@ public class TeamServiceImpl implements TeamService {
         if(1 == teamDao.insertTeamTeacher(teamTeacher)){
             TeamQuery query = new TeamQuery();
             query.setTeamId(dto.getTeamId());
-            Team team = teamDao.getTeam(query);
-            String teamName= team.getTeamName();
+            TeamDto teamDto = teamDao.getTeam(query);
+            String teamName= teamDto.getTeamName();
             Message message=new Message();
             message.setReceiverId(dto.getTeacherId());
             message.setSenderId(dto.getOperatorId());
             message.setOperatorId(dto.getOperatorId());
             String content= "老师你好，我是"+teamName+"团队负责人"+dto.getLeaderName()+"，现想邀请您成为我们团队的指导老师"+
-                   "一起参加" + competitionService.getCompetitionTile(team.getCpId()) + "比赛,希望得到您的同意!";
+                   "一起参加" + teamDto.getCpName() + "比赛,希望得到您的同意!";
             message.setContent(content);
             message.setJumpType(2);
             if(1==teamDao.insertMessage(message))
@@ -320,44 +340,47 @@ public class TeamServiceImpl implements TeamService {
     public TeamDto getTeamDetail(Integer id) {
         TeamQuery query = new TeamQuery();
         query.setTeamId(id);
-        Team team = teamDao.getTeam(query);
-        TeamDto dto = Te2d(team);
-        dto.setCpName(competitionService.getCompetitionTile(team.getCpId()));
-        if(dto.getIsAwarded()==0) dto.setResult("暂无");
-        if(dto.getTeacherId()==0) dto.setTeacherName("待定");
+        TeamDto teamDto = teamDao.getTeam(query);
+        if(teamDto.getIsAwarded()==0) teamDto.setResult("暂无");
+        if(teamDto.getTeacherId()==0) teamDto.setTeacherName("待定");
         else {
-            UserDto teacher = userService.selectUserById(dto.getTeacherId());
+            UserDto teacher = userService.selectUserById(teamDto.getTeacherId());
             if (teacher != null) {
-                dto.setTeacherName(teacher.getName());
+                teamDto.setTeacherName(teacher.getName());
             }
         }
-        return dto;
+        return teamDto;
     }
 
     @Override
-    public List<UserDto> getMember(Integer teamId) {
-        List<UserDto> users=new ArrayList<>();
-        List<UserTeam> dtos= teamDao.getMember(teamId);
-        if(dtos.size()>=0&&dtos!=null) {
-            for (UserTeam ut : dtos) {
-                UserDto u = userService.selectUserById(ut.getStudentId());
-                if(ut.getRole()!=null) u.setRole(ut.getRole());
-                users.add(u);
-            }
-        }
-        return users;
+    public List<UserTeamDto> getMember(Integer teamId) {
+        return teamDao.getMember(teamId);
+    }
+
+    @Override
+    public UserDto getLeader(Integer teamId) {
+        TeamQuery query = new TeamQuery();
+        query.setTeamId(teamId);
+        Integer leaderId = teamDao.getTeam(query).getLeaderId();
+        return userService.selectUserById(leaderId);
     }
 
     @Override
     public List<TeamDto> ownLead(Integer id) {
         List<TeamDto> dtos=new ArrayList<>();
         List<Team> lists=teamDao.ownLead(id);
-        if(lists.size()>=0){
+        if(lists != null && lists.size() != 0){
             for (Team t:lists) {
                 TeamDto dto = Te2d(t);
                 dto.setLeaderName(userService.selectUserById(dto.getLeaderId()).getName());
-                //        根据cp_id查询竞赛名称
-                //        dto.setCpName();
+                dto.setCpName(competitionService.getCompetitionTile(dto.getCpId()));
+                if(dto.getTeacherId()==0) dto.setTeacherName("待定");
+                else {
+                    UserDto teacher = userService.selectUserById(dto.getTeacherId());
+                    if (teacher != null) {
+                        dto.setTeacherName(teacher.getName());
+                    }
+                }
                 dtos.add(dto);
             }
         }
@@ -374,17 +397,61 @@ public class TeamServiceImpl implements TeamService {
     public List<UserTeamDto> requestTeam(Integer id) {
         List<UserTeamDto> dtos=new ArrayList<>();
         List<UserTeam> lists=teamDao.requestTeam(id);
-        if(lists!=null && lists.size()>=0 ){
+        if(lists!=null && lists.size()!=0){
             for (UserTeam ut:lists) {
                 UserTeamDto dto = UserTeam2d(ut);
                 dto.setStudentName(userService.selectUserById(dto.getStudentId()).getName());
                 TeamQuery query = new TeamQuery();
                 query.setTeamId(dto.getTeamId());
-                dto.setTeamName(teamDao.getTeam(query).getTeamName());
+                TeamDto team = teamDao.getTeam(query);
+                dto.setTeamName(team.getTeamName());
+                dto.setTeamStatus(team.getStatus());
                 dtos.add(dto);
             }
         }
         return dtos;
+    }
+
+    @Override
+    public Integer updateRequestStatus(Integer id, Integer type) {
+        UserTeam userTeam = teamDao.getUserTeam(id);
+        TeamQuery query = new TeamQuery();
+        query.setTeamId(userTeam.getTeamId());
+        TeamDto teamDto = teamDao.getTeam(query);
+        UserTeam userTeamModel = new UserTeam();
+        userTeamModel.setId(id);
+        Team teamModel = new Team();
+        teamModel.setId(teamDto.getId());
+        // 同意
+        if (type == 1) {
+            // 判断团队当前人数是否达到最大
+            if (teamDto.getNowNumber() == teamDto.getLimitNum()) {
+                return -1; // 当前团队已达到最大人数
+            }
+            // 修改状态、team人数加一
+            userTeamModel.setStatus(1);
+            teamModel.setNowNumber(teamDto.getNowNumber()+1);
+            teamDao.updateTeam(teamModel);
+        }
+        // 拒绝
+        if (type == 2) {
+            // 修改状态
+            userTeamModel.setStatus(2);
+        }
+        // 取消同意
+        if (type == -1) {
+            // 修改状态、team人数减一
+            userTeamModel.setStatus(0);
+            teamModel.setNowNumber(teamDto.getNowNumber()-1);
+            teamDao.updateTeam(teamModel);
+        }
+        // 取消拒绝
+        if (type == -2) {
+            // 修改状态
+            userTeamModel.setStatus(0);
+        }
+        teamDao.updateUserTeam(userTeamModel);
+        return 1;
     }
 
     @Override
@@ -424,13 +491,7 @@ public class TeamServiceImpl implements TeamService {
     public TeamDto getTeamById(Integer id) {
         TeamQuery query = new TeamQuery();
         query.setTeamId(id);
-        Team team = teamDao.getTeam(query);
-        TeamDto teamDto = new TeamDto();
-        BeanUtils.copyProperties(team,teamDto);
-        UserDto leader = userService.selectUserById(team.getLeaderId());
-        teamDto.setLeaderName(leader.getName());
-        teamDto.setCpName(competitionService.getCompetitionTile(team.getCpId()));
-        return teamDto;
+        return teamDao.getTeam(query);
     }
 
     @Override

@@ -21,25 +21,21 @@
                         参赛方式：
                         <button type="button" class="layui-btn layui-btn-primary layui-btn-radius"
                                 th:if="${detail.userType == 1}">
-                            <a th:onclick="|parent.xadmin.add_tab('创建团队',[['/team-serv/team/build/'+${detail.id}]],true)|"
-                               href="javascript:;" th:text="'创建团队'">
-                            </a>
+                            <a th:href="@{/team-serv/team/build/}+${detail.id}" th:text="'创建团队'"></a>
                         </button>
                         <button type="button" class="layui-btn layui-btn-primary layui-btn-radius"
                                 th:if="${detail.userType == 1}">
-                            <a th:onclick="|parent.xadmin.add_tab('加入团队',[['/team-serv/team/join/'+${detail.id}]],true)|"
-                               href="javascript:;" th:text="'加入团队'">
-                            </a>
+                            <a th:href="@{/team-serv/team/join/}+${detail.id}" th:text="'加入团队'"></a>
                         </button>
                         <button type="button" class="layui-btn layui-btn-primary layui-btn-radius"
                                 th:if="${detail.userType == 2}">
                             <a th:onclick="|parent.xadmin.add_tab('已有团队',[['/team-serv/team/lead/'+${detail.id}]],true)|"
-                               href="javascript:;" th:text="'已有团队'">
+                               href="javascript:;" th:text="'您已报名并创建团队'">
                             </a>
                         </button>
                         <button type="button" class="layui-btn layui-btn-primary layui-btn-radius"
                                 th:if="${detail.userType == 3}">
-                            <a th:onclick="|parent.xadmin.add_tab('aa','aa',true)|"
+                            <a th:onclick="|parent.xadmin.add_tab('我发送的组队请求','/team-serv/team/my/request',true)|"
                                href="javascript:;" th:text="'您已报名并组队，点击查看详情 >>'">
                             </a>
                         </button>

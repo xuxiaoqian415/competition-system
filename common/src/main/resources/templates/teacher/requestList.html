@@ -43,7 +43,7 @@
                 ,cols: [[ //表头
                     {field: 'id', title: 'ID', fixed: 'left'},
                     {field: 'teamName', title: '团队名称'},
-                    {field: 'cpName', title: '报名开始时间'},
+                    {field: 'cpName', title: '竞赛名称'},
                     {field: 'leaderName', title: '负责人'},
                     {title: '状态',
                         templet: function (data) {
@@ -67,8 +67,8 @@
                         templet: function (data) {
                             if(data.flag == 1) {
                                 return '<div id="choice">\n' +
-                                    '        <a id="agree" class="layui-btn layui-btn-disabled layui-btn-xs" lay-event="agree" >同意</a>\n' +
-                                    '        <a id="reject" class="layui-btn layui-btn-disabled layui-btn-xs" lay-event="reject" >拒绝</a>\n' +
+                                    '        <a id="agree" class="layui-btn layui-btn-disabled layui-btn-xs">同意</a>\n' +
+                                    '        <a id="reject" class="layui-btn layui-btn-disabled layui-btn-xs">拒绝</a>\n' +
                                     '    </div>';
                             }
                             else if(data.flag == 0) {

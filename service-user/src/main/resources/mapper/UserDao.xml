@@ -25,8 +25,7 @@
     </select>
 
     <select id="selectUserById" resultType="User">
-        select
-        <include refid="Base_Column_List"/>
+        select *
         from user
         where id=#{id}
     </select>

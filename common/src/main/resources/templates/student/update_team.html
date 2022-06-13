@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>选择老师</title>
+    <title>修改团队信息</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -13,35 +13,28 @@
 </head>
 <body>
 <div class="layui-fluid">
+    <button class="layui-btn layui-btn-primary"><a th:href="@{/team-serv/team/lead/list}">返回</a></button>
     <div class="layui-row">
-        <h1>选择指导老师</h1>
-        <form class="layui-form" th:action="@{/select-serv/student/select/teacher}" method="post">
-            <input type="hidden" name="teamId" th:value="${teamId}">
+        <h1>修改团队名称</h1>
+        <form class="layui-form" th:action="@{/team-serv/team/update/info}" method="post">
+            <input type="hidden" name="id" th:value="${team.id}">
             <div class="layui-form-item">
-                <label class="layui-form-label"> 第一意愿：</label>
+                <label class="layui-form-label">团队名称：</label>
                 <div class="layui-input-inline">
-                    <select name="teacher1Id" required>
-                        <option value="">请选择</option>
-                        <option th:each="t:${teacherList}" th:value="${t.id}" th:text="${t.name}"></option>
-                    </select>
+                    <input type="text" name="teamName" required  lay-verify="required" class="layui-input" th:value="${team.teamName}">
+                </div>
+            </div>
+            <div class="layui-form-item"><label style="color: red">*若要修改请联系管理员</label></div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">负责人：</label>
+                <div class="layui-input-inline">
+                    <input disabled readonly class="layui-input layui-disabled" th:value="${team.leaderName}">
                 </div>
             </div>
             <div class="layui-form-item">
-                <label class="layui-form-label"> 第二意愿：</label>
+                <label class="layui-form-label">团队介绍：</label>
                 <div class="layui-input-inline">
-                    <select name="teacher2Id">
-                        <option value="">请选择</option>
-                        <option th:each="t:${teacherList}" th:value="${t.id}" th:text="${t.name}"></option>
-                    </select>
-                </div>
-            </div>
-            <div class="layui-form-item">
-                <label class="layui-form-label"> 第三意愿：</label>
-                <div class="layui-input-inline">
-                    <select name="teacher3Id">
-                        <option value="">请选择</option>
-                        <option th:each="t:${teacherList}" th:value="${t.id}" th:text="${t.name}"></option>
-                    </select>
+                    <input type="text" name="introduction" required  lay-verify="required" class="layui-input" th:value="${team.introduction}">
                 </div>
             </div>
             <div class="layui-form-item">

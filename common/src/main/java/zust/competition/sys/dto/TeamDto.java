@@ -42,6 +42,12 @@ public class TeamDto  implements Serializable {
      * 当前人数
      */
     private Integer nowNumber;
+
+    /**
+     * 最大人数
+     */
+    private Integer limitNum;
+
     /**
      * 邀请码
      */

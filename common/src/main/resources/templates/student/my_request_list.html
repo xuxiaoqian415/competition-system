@@ -2,7 +2,7 @@
 <html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>我加入的团队</title>
+    <title>我发送的组队请求</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
@@ -20,41 +20,34 @@
                     <table class="layui-table layui-form">
                         <thead>
                         <tr>
-                            <th>竞赛名称</th><th>团队名称</th><th>负责人</th><th>当前人数</th><th>指导老师</th><th>状态</th>
+                            <th>申请加入的团队</th><th>竞赛</th><th>负责人</th><th>状态</th>
                         </tr>
                         </thead>
                         <p style="color: red" th:text = "${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
                         <tbody>
-                        <tr th:each="a:${teamList}">
+                        <tr th:each="a:${UserTeamDto}">
                             <td>
-                                <a th:text="${a.cpName}" th:href="@{/competition-serv/competition/detail/}+${a.cpId}+'?back=applyList'"></a>
+                                <a th:onclick="|parent.xadmin.add_tab('团队信息详情',[['/team-serv/team/detail/'+${a.teamId}]],true)|"
+                                   href="javascript:;" th:text="${a.teamName}">
+                                </a>
                             </td>
                             <td>
-                                <a th:text="${a.teamName}" th:href="@{/team-serv/team/detail/}+${a.id}"></a>
+                                <a th:onclick="|parent.xadmin.add_tab('竞赛信息详情',[['/competition-serv/competition/detail/'+${a.cpId}]],true)|"
+                                   href="javascript:;" th:text="${a.cpName}">
+                                </a>
                             </td>
                             <td>
-                                <a th:text="${a.leaderName}" th:href="@{/user-serv/user/showhome/}+${a.leaderId}"></a>
+                                <a th:onclick="|parent.xadmin.add_tab('负责人个人主页',[['/user-serv/user/showhome/'+${a.leaderId}]],true)|"
+                                   href="javascript:;" th:text="${a.leaderName}">
+                                </a>
                             </td>
-                            <td th:text="${a.nowNumber}"></td>
-                            <td th:text="${a.teacherName}"></td>
-                            <td th:if="${a.status eq 0}">组队中</td>
-                            <td th:if="${a.status eq 1}">组队完成</td>
-                            <td th:if="${a.status eq 2}">报名成功</td>
+                            <td th:if="${a.status == 0}" th:text="待处理"></td>
+                            <td th:if="${a.status == 1}" th:text="已同意"></td>
+                            <td th:if="${a.status == 2}" th:text="已拒绝"></td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
-                <!--                <div class="layui-card-body ">-->
-                <!--                    <div class="page">-->
-                <!--                        <div>-->
-                <!--                            <a class="prev" href="">&lt;&lt;</a>-->
-                <!--                            <a class="num" href="">1</a>-->
-                <!--                            <span class="current">2</span>-->
-                <!--                            <a class="num" href="">3</a>-->
-                <!--                            <a class="num" href="">489</a>-->
-                <!--                            <a class="next" href="">&gt;&gt;</a></div>-->
-                <!--                    </div>-->
-                <!--                </div>-->
             </div>
         </div>
     </div>

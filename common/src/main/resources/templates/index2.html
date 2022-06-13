@@ -52,9 +52,10 @@
     <div id="side-nav">
         <ul id="nav">
             <!-- 管理员功能开始 -->
+            <!-- 竞赛管理 -->
             <li th:if="${thisUser.type eq 0}">
                 <a href="javascript:;">
-                    <i class="iconfont left-nav-li" lay-tips="竞赛管理">&#xe6b8;</i>
+                    <i class="iconfont left-nav-li" lay-tips="竞赛管理">&#xe723;</i>
                     <cite>竞赛管理</cite>
                     <i class="iconfont nav_right">&#xe697;</i></a>
                 <ul class="sub-menu">
@@ -70,6 +71,7 @@
                     </li>
                 </ul>
             </li>
+            <!-- 用户管理 -->
             <li th:if="${thisUser.type eq 0}">
                 <a href="javascript:;">
                     <i class="iconfont left-nav-li" lay-tips="用户管理">&#xe6b8;</i>
@@ -88,9 +90,10 @@
                     </li>
                 </ul>
             </li>
+            <!-- 团队管理 -->
             <li th:if="${thisUser.type eq 0}">
                 <a href="javascript:;">
-                    <i class="iconfont left-nav-li" lay-tips="团队管理">&#xe6b8;</i>
+                    <i class="iconfont left-nav-li" lay-tips="团队管理">&#xe82a;</i>
                     <cite>团队管理</cite>
                     <i class="iconfont nav_right">&#xe697;</i></a>
                 <ul class="sub-menu">
@@ -101,9 +104,10 @@
                     </li>
                 </ul>
             </li>
+            <!-- 获奖管理 -->
             <li th:if="${thisUser.type eq 0}">
                 <a href="javascript:;">
-                    <i class="iconfont left-nav-li" lay-tips="获奖管理">&#xe6b8;</i>
+                    <i class="iconfont left-nav-li" lay-tips="获奖管理">&#xe6e4;</i>
                     <cite>获奖管理</cite>
                     <i class="iconfont nav_right">&#xe697;</i></a>
                 <ul class="sub-menu">
@@ -131,10 +135,11 @@
             </li>
             <!-- 管理员功能结束 -->
             <!-- 教师功能开始 -->
+            <!-- 竞赛信息 -->
             <li th:if="${thisUser.type eq 1}">
                 <a href="javascript:;">
-                    <i class="iconfont left-nav-li" lay-tips="教师功能">&#xe83b;</i>
-                    <cite>教师功能</cite>
+                    <i class="iconfont left-nav-li" lay-tips="竞赛信息">&#xe6a4;</i>
+                    <cite>竞赛信息</cite>
                     <i class="iconfont nav_right">&#xe697;</i></a>
                 <ul class="sub-menu">
                     <li>
@@ -142,6 +147,15 @@
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>竞赛信息</cite></a>
                     </li>
+                </ul>
+            </li>
+            <!-- 我的指导 -->
+            <li th:if="${thisUser.type eq 1}">
+                <a href="javascript:;">
+                    <i class="iconfont left-nav-li" lay-tips="我的指导">&#xe726;</i>
+                    <cite>我的指导</cite>
+                    <i class="iconfont nav_right">&#xe697;</i></a>
+                <ul class="sub-menu">
                     <li>
                         <a onclick="xadmin.add_tab('指导请求','/select-serv/teacher/select/request/list')">
                             <i class="iconfont">&#xe6a7;</i>
@@ -154,27 +168,10 @@
                     </li>
                 </ul>
             </li>
+            <!-- 获奖信息 -->
             <li th:if="${thisUser.type eq 1}">
                 <a href="javascript:;">
-                    <i class="iconfont left-nav-li" lay-tips="通知栏">&#xe83b;</i>
-                    <cite>通知栏</cite>
-                    <i class="iconfont nav_right">&#xe697;</i></a>
-                <ul class="sub-menu">
-                    <li>
-                        <a onclick="xadmin.add_tab('竞赛信息','/competition-serv/competition/inform')">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>收件箱</cite></a>
-                    </li>
-                    <li>
-                        <a onclick="xadmin.add_tab('指导请求','/select-serv/teacher/select/request/list')">
-                            <i class="iconfont">&#xe6a7;</i>
-                            <cite>已发送</cite></a>
-                    </li>
-                </ul>
-            </li>
-            <li th:if="${thisUser.type eq 1}">
-                <a href="javascript:;">
-                    <i class="iconfont left-nav-li" lay-tips="获奖信息">&#xe6b8;</i>
+                    <i class="iconfont left-nav-li" lay-tips="获奖信息">&#xe6e4;</i>
                     <cite>获奖信息</cite>
                     <i class="iconfont nav_right">&#xe697;</i></a>
                 <ul class="sub-menu">
@@ -195,11 +192,33 @@
                     </li>
                 </ul>
             </li>
+            <!-- 通知栏 -->
+            <li th:if="${thisUser.type eq 1}">
+                <a href="javascript:;">
+                    <i class="iconfont left-nav-li" lay-tips="通知栏">&#xe72d;</i>
+                    <cite>通知栏</cite>
+                    <i class="iconfont nav_right">&#xe697;</i></a>
+                <ul class="sub-menu">
+                    <li>
+                        <a onclick="xadmin.add_tab('收件箱','/user-serv/message/received')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>收件箱</cite>
+                            <label style="color: red" th:text="'有'+${notRead}+'条未读消息'" th:if="${notRead != 0}"></label>
+                        </a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('已发送','/user-serv/message/sent')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>已发送</cite></a>
+                    </li>
+                </ul>
+            </li>
             <!-- 教师功能结束 -->
             <!-- 学生功能开始 -->
+            <!-- 竞赛信息 -->
             <li th:if="${thisUser.type eq 2}">
                 <a href="javascript:;">
-                    <i class="iconfont left-nav-li" lay-tips="竞赛信息">&#xe6db;</i>
+                    <i class="iconfont left-nav-li" lay-tips="竞赛信息">&#xe6a4;</i>
                     <cite>竞赛信息</cite>
                     <i class="iconfont nav_right">&#xe697;</i></a>
                 <ul class="sub-menu">
@@ -210,14 +229,15 @@
                     </li>
                 </ul>
             </li>
+            <!-- 我的团队 -->
             <li th:if="${thisUser.type eq 2}">
                 <a href="javascript:;">
-                    <i class="iconfont left-nav-li" lay-tips="我的团队">&#xe6db;</i>
+                    <i class="iconfont left-nav-li" lay-tips="我的团队">&#xe82a;</i>
                     <cite>我的团队</cite>
                     <i class="iconfont nav_right">&#xe697;</i></a>
                 <ul class="sub-menu">
                     <li>
-                        <a onclick="xadmin.add_tab('我加入的团队','/team-serv/team/applied/list')">
+                        <a onclick="xadmin.add_tab('我加入的团队','/team-serv/team/joined/list')">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>我加入的团队</cite></a>
                     </li>
@@ -238,15 +258,16 @@
                 </ul>
                 <ul class="sub-menu">
                     <li>
-                        <a onclick="xadmin.add_tab('我发出的组队请求','/team-serv/team/lead/list')">
+                        <a onclick="xadmin.add_tab('我发出的组队请求','/team-serv/team/my/request')">
                             <i class="iconfont">&#xe6a7;</i>
                             <cite>我发出的组队请求</cite></a>
                     </li>
                 </ul>
             </li>
+            <!-- 通知栏 -->
             <li th:if="${thisUser.type eq 2}">
                 <a href="javascript:;">
-                    <i class="iconfont left-nav-li" lay-tips="通知栏">&#xe83b;</i>
+                    <i class="iconfont left-nav-li" lay-tips="通知栏">&#xe72d;</i>
                     <cite>通知栏</cite>
                     <label style="color: red" th:text="${notRead}" th:if="${notRead != 0}"></label>
                     <i class="iconfont nav_right">&#xe697;</i></a>

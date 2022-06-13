@@ -5,38 +5,12 @@ import zust.competition.sys.dto.*;
 import zust.competition.sys.dto.query.CountQuery;
 import zust.competition.sys.entity.Academy;
 import zust.competition.sys.entity.Query;
+import zust.competition.sys.entity.UserTeam;
 import zust.competition.sys.entity.Team;
 
 import java.util.List;
 
 public interface TeamService {
-    List<CountQuery> countByAcademy(CountQuery query);
-    /**
-     * 查询所有学院
-     */
-    List<AcademyDto> academyList();
-
-    /**
-     * 根据学院查询团队获奖信息
-     */
-    List<TeamDto> getTeamByAcademy(Integer id);
-    /**
-     * 模糊查询团队
-     */
-    List<TeamDto> searchTeamAward(Query query);
-    /**
-     * 根据修改时间查询团队
-     */
-    List<TeamDto> getTeamByTime(Integer isAwarded);
-
-    /**
-     * 未获奖操作
-     */
-    Integer noAwarded(Integer teamId);
-    /**
-     * 获奖录入
-     */
-    Integer updateResult(TeamDto dto);
 
 
     /**
@@ -79,7 +53,30 @@ public interface TeamService {
      */
     List<TeamDto> myJoin(Integer id);
 
+    /**
+     * 根据主键id查询团队详情
+     */
+    TeamDto getTeamDetail(Integer teamId);
 
+    /**
+     * 根据teamId查询成员信息
+     */
+    List<UserTeamDto> getMember(Integer teamId);
+
+    /**
+     * 根据teamId查询负责人信息
+     */
+    UserDto getLeader(Integer teamId);
+
+    /**
+     * 更新团队status
+     */
+    Integer updateStatus(Integer id);
+
+    /**
+     * 根据ID找UserTeam
+     */
+    UserTeam getUserTeam(Integer id);
 
 
 
@@ -103,16 +100,6 @@ public interface TeamService {
     Integer adminUpdateTeam(TeamDto teamDto);
 
     /**
-     * 根据主键id查询团队详情
-     */
-    TeamDto getTeamDetail(Integer teamId) ;
-
-    /**
-     * 根据成员id查询成员详情
-     */
-    List<UserDto> getMember(Integer id);
-
-    /**
      * 查询我负责的团队
      */
     List<TeamDto> ownLead(Integer id);
@@ -124,6 +111,11 @@ public interface TeamService {
      * 查询我负责的团队的组队申请
      */
     List<UserTeamDto> requestTeam(Integer id);
+
+    /**
+     * 更改选择记录状态
+     */
+    Integer updateRequestStatus(Integer id, Integer type);
 
 
 
