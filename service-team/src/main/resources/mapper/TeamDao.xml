@@ -22,6 +22,38 @@
         from academy
     </select>
 
+    <select id="getTeamByTime" resultType="Team">
+        select *
+        from team
+        where is_awarded=#{isAwarded} and and is_delete=0
+        ORDER BY update_time DESC
+    </select>
+
+    <select id="getTeamByAcademy" resultType="Team">
+        select *
+        from team
+        WHERE is_delete=0 AND is_awarded=1 AND
+                leader_id IN
+                (select `user`.id
+                 from `user` LEFT JOIN academy ON `user`.academy=academy.`name`
+                 WHERE academy.id=#{id})
+    </select>
+
+    <select id="countByAcademy" resultType="CountQuery" parameterType="CountQuery">
+        SELECT academy.name as `academy`,count(*) as `count`
+        from academy LEFT JOIN
+        (SELECT user.* from team LEFT JOIN `user` ON leader_id=`user`.id WHERE team.is_delete=0
+        <where>
+            is_delete = 0
+            <if test="isWin != null">
+                AND is_win = #{isWin}
+            </if>
+        </where>
+        ) u
+        on academy.id=u.academy
+        GROUP BY academy.name
+    </select>
+
     <insert id="insertUserTeam" parameterType="UserTeam"  useGeneratedKeys="true" keyProperty="id">
         insert into user_team (student_id,team_id,`role`,operator_id)
         values (#{studentId},#{teamId},#{role},#{operatorId})

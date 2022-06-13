@@ -12,6 +12,34 @@ import java.util.List;
 
 public interface TeamService {
 
+    List<CountQuery> countByAcademy(CountQuery query);
+    /**
+     * 查询所有学院
+     */
+    List<AcademyDto> academyList();
+
+    /**
+     * 根据学院查询团队获奖信息
+     */
+    List<TeamDto> getTeamByAcademy(Integer id);
+    /**
+     * 模糊查询团队
+     */
+    List<TeamDto> searchTeamAward(Query query);
+    /**
+     * 根据修改时间查询团队
+     */
+    List<TeamDto> getTeamByTime(Integer isAwarded);
+
+    /**
+     * 未获奖操作
+     */
+    Integer noAwarded(Integer teamId);
+    /**
+     * 获奖录入
+     */
+    Integer updateResult(TeamDto dto);
+
 
     /**
      * 创建团队
@@ -22,11 +50,6 @@ public interface TeamService {
      * 查看我发送的组队请求
      */
     List<UserTeamDto> ownRequest(Integer id);
-
-    /**
-     * 更新团队status
-     */
-    Integer updateStatus(Integer id);
 
     /**
      * 加入团队
@@ -106,7 +129,7 @@ public interface TeamService {
     /**
      * 修改team
      */
-   Integer updateTeam(TeamDto dto);
+    Integer updateTeam(TeamDto dto);
     /**
      * 查询我负责的团队的组队申请
      */
