@@ -86,7 +86,7 @@ public class AdminController {
     @GetMapping("/toWin")
     public String toWinList( Model model) {
         List<TeamDto> teamList = teamService.getTeamByTime(1);
-        List<AcademyDto> academyList=teamService.academyList();
+        List<AcademyDto> academyList=userService.getAcademyList();
         model.addAttribute("teamList",teamList);
         model.addAttribute("academyList",academyList);
         return "admin/winList";
@@ -99,7 +99,7 @@ public class AdminController {
     public String searchWinList(Query query, Model model) {
         query.setIsAwarded(1);
         List<TeamDto> teamList = teamService.searchTeamAward(query);
-        List<AcademyDto> academyList=teamService.academyList();
+        List<AcademyDto> academyList=userService.getAcademyList();
         model.addAttribute("academyList",academyList);
         model.addAttribute("teamList",teamList);
         return "admin/winList";
@@ -111,7 +111,7 @@ public class AdminController {
     @PostMapping("/getTeamByAcademy")
     public String getTeamByAcademy(Query query,Model model) {
         List<TeamDto> teamList = teamService.getTeamByAcademy(query.getAcademyId());
-        List<AcademyDto> academyList=teamService.academyList();
+        List<AcademyDto> academyList=userService.getAcademyList();
         model.addAttribute("academyList",academyList);
         model.addAttribute("teamList",teamList);
         return "admin/teamList";

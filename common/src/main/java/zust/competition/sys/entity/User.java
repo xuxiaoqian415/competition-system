@@ -39,6 +39,10 @@ public class User {
     /**
      * 所在学院
      */
+    private Integer academyId;
+    /**
+     * 所在学院
+     */
     private String academy;
 
     /**

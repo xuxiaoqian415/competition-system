@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import zust.competition.sys.dto.AcademyDto;
 import zust.competition.sys.dto.LoginDto;
 import zust.competition.sys.dto.MessageDto;
 import zust.competition.sys.dto.UserDto;
@@ -145,6 +146,12 @@ public class UserController {
     @RequestMapping("/selectUserById")
     public UserDto selectUserById(@RequestParam("id") Integer id) {
         return userService.getUserById(id);
+    }
+
+    @ResponseBody
+    @RequestMapping("/getAcademyList")
+    public List<AcademyDto> getAcademyList() {
+        return userService.academyList();
     }
 
 }

@@ -4,14 +4,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import zust.competition.sys.dao.UserDao;
-import zust.competition.sys.dto.LoginDto;
-import zust.competition.sys.dto.MessageDto;
-import zust.competition.sys.dto.TeamDto;
-import zust.competition.sys.dto.UserDto;
-import zust.competition.sys.entity.Message;
-import zust.competition.sys.entity.Query;
-import zust.competition.sys.entity.Team;
-import zust.competition.sys.entity.User;
+import zust.competition.sys.dto.*;
+import zust.competition.sys.entity.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -113,16 +107,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Integer addUser(UserDto userDto){
-        User user = new User();
-        user.setType(userDto.getType());
-        user.setNumber(userDto.getNumber());
-        user.setName(userDto.getName());
-        user.setMobile(userDto.getMobile());
-        user.setPassword(userDto.getNowpsw());
-        user.setEmail(userDto.getEmail());
-        user.setIntro(userDto.getIntro());
-        return userDao.insertUser(user);
+        User u=User2d(userDto);
+        u.setAcademy(userDao.getAcademy(u.getAcademyId()).getName());
+        return userDao.insertUser(User2d(userDto));
     }
+
+    @Override
+    public List<AcademyDto> academyList() {
+        List<AcademyDto> dtos=new ArrayList<>();
+        List<Academy> academies=userDao.academyList();
+        if(academies!=null && academies.size()>0) {
+            for (Academy a : academies) {
+                AcademyDto dto = academy2d(a);
+                dtos.add(dto);
+            }
+        }
+        return dtos;
+    }
+
 
     @Override
     public List<UserDto> searchUser(Query query) {
@@ -138,6 +140,22 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserDto> getTeacherList(){
         return userDao.getTeacherList();
+    }
+
+    private AcademyDto academy2d(Academy a){
+        if(a==null)
+            return null;
+        AcademyDto dto=new AcademyDto();
+        BeanUtils.copyProperties(a,dto);
+        return dto;
+    }
+
+    private User User2d(UserDto dto){
+        if(dto==null)
+            return null;
+        User u=new User();
+        BeanUtils.copyProperties(dto,u);
+        return u;
     }
 
 }

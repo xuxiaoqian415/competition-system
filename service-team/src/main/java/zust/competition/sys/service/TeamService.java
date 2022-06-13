@@ -13,10 +13,6 @@ import java.util.List;
 public interface TeamService {
 
     List<CountQuery> countByAcademy(CountQuery query);
-    /**
-     * 查询所有学院
-     */
-    List<AcademyDto> academyList();
 
     /**
      * 根据学院查询团队获奖信息

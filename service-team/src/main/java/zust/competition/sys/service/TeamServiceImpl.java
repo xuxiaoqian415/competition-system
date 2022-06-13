@@ -65,20 +65,6 @@ public class TeamServiceImpl implements TeamService {
 
 
     @Override
-    public List<AcademyDto> academyList() {
-        List<AcademyDto> dtos=new ArrayList<>();
-        List<Academy> academies=teamDao.academyList();
-        if(academies!=null && academies.size()>0) {
-            for (Academy a : academies) {
-                AcademyDto dto = academy2d(a);
-                dtos.add(dto);
-            }
-        }
-        return dtos;
-    }
-
-
-    @Override
     public List<TeamDto> searchTeamAward(Query query) {
         List<TeamDto> teams = teamDao.selectTeamList(query);
         if(teams!=null && teams.size()>=0){
@@ -217,13 +203,7 @@ public class TeamServiceImpl implements TeamService {
             return -3;
         return 1;
     }
-    private AcademyDto academy2d(Academy a){
-        if(a==null)
-            return null;
-        AcademyDto dto=new AcademyDto();
-        BeanUtils.copyProperties(a,dto);
-        return dto;
-    }
+
     private Team DtoT2d(TeamDto dto){
         if(dto==null)
             return null;

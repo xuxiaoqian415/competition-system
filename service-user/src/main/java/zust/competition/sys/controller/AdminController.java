@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import zust.competition.sys.dto.AcademyDto;
 import zust.competition.sys.dto.UserDto;
 import zust.competition.sys.entity.Query;
 import zust.competition.sys.service.UserService;
@@ -21,14 +22,23 @@ public class AdminController {
     @Autowired
     UserService userService;
 
+    @GetMapping("/toAdd")
+    public String toAddUser(Model model) {
+        List<AcademyDto> academyList =userService.academyList();
+        model.addAttribute("academyList",academyList);
+        return "admin/addUser";
+    }
+
     @PostMapping("/add")
-    public String addUser(UserDto userDto,Model model){
+    public String addUser(UserDto userDto,HttpSession session,Model model){
         String msg = "";
         if(!userDto.getNowpsw().equals(userDto.getRpsw())) {
             msg = "两次密码不一致!";
             model.addAttribute("msg", msg);
             return "admin/addUser";
         }
+        Integer id = ((UserDto) session.getAttribute("thisUser")).getId();
+        userDto.setOperatorId(id);
         userService.addUser(userDto);
         msg = "添加用户成功!";
         model.addAttribute("msg", msg);

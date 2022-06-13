@@ -4,6 +4,15 @@
     <sql id="Base_Column_List">
         id,`number`,`name`,`password`,`mobile`,`email`,`intro`,type
     </sql>
+    <select id="academyList" resultType="Academy" >
+        SELECT *
+        from academy
+    </select>
+    <select id="getAcademy" resultType="Academy">
+        select *
+        from academy
+        where id=#{id}
+    </select>
 
     <select id="selectUser" parameterType="Query" resultType="User">
         select id,number,name,intro,type,email,mobile
@@ -54,8 +63,8 @@
 
 
     <insert id="insertUser" parameterType="User">
-        insert into user (`number`,`name`,`password`,`mobile`,`email`,`intro`,`type`)
-        values (#{number},#{name},#{password},#{mobile},#{email},#{intro},#{type})
+        insert into user (`number`,`name`,`password`,`mobile`,`email`,`intro`,`type`,academy_id,academy,operator_id,create_time)
+        values (#{number},#{name},#{password},#{mobile},#{email},#{intro},#{type},#{academyId},#{academy},#{operatorId},now())
     </insert>
 
     <update id="updateUser" parameterType="User">
