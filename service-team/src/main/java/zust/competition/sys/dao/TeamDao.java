@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import zust.competition.sys.dto.TeamDto;
 import zust.competition.sys.dto.TeamTeacherDto;
+import zust.competition.sys.dto.query.CountQuery;
 import zust.competition.sys.dto.query.TeamQuery;
 import zust.competition.sys.entity.*;
 
@@ -11,7 +12,25 @@ import java.util.List;
 
 @Mapper
 public interface TeamDao {
+    /**
+     * 统计各学院情况
+     */
+    List<CountQuery> countByAcademy(CountQuery query);
 
+    /**
+     * 查询所有学院
+     */
+    List<Academy> academyList();
+    /**
+     * 根据学院查询团队获奖信息
+     */
+    List<Team> getTeamByAcademy(Integer id);
+
+
+    /**
+     * 按照修改时间次序查询未评奖团队
+     */
+    List<Team> getTeamByTime(Integer isAwarded);
 
     /**
      * 加入团队

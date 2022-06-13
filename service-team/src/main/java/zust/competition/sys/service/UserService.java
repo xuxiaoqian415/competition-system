@@ -17,4 +17,5 @@ public interface UserService {
 
     @RequestMapping("/user/selectUserById")
     UserDto selectUserById(@RequestParam("id") Integer id);
+
 }

@@ -9,6 +9,11 @@
 <!--        <result column="team_intro" jdbcType="VARCHAR" property="teamIntro"/>-->
 <!--        <result column="member" jdbcType="VARCHAR" property="member"/>-->
 <!--    </resultMap>-->
+    <select id="academyList" resultType="Academy" >
+        SELECT *
+        from academy
+    </select>
+
     <insert id="insertUserTeam" parameterType="UserTeam"  useGeneratedKeys="true" keyProperty="id">
         insert into user_team (student_id,team_id,`role`,operator_id)
         values (#{studentId},#{teamId},#{role},#{operatorId})
@@ -19,10 +24,38 @@
         values (#{sendId},#{receiveId},#{content},#{operatorId},#{jumpType})
     </insert>
 
-    <select id="selectByCode" resultType="Team">
-        SELECT *
-        FROM team
-        WHERE invitation_code=#{invitationCode}
+    <select id="getTeamByTime" resultType="Team">
+        select *
+        from team
+        where is_awarded=#{isAwarded} and and is_delete=0
+        ORDER BY update_time DESC
+    </select>
+
+    <select id="countByAcademy" resultType="CountQuery" parameterType="CountQuery">
+        SELECT academy.name as `academy`,count(*) as `count`
+        from academy LEFT JOIN
+        (SELECT user.* from team LEFT JOIN `user` ON leader_id=`user`.id WHERE team.is_delete=0
+            <where>
+            is_delete = 0
+            <if test="isWin != null">
+                AND is_win = #{isWin}
+            </if>
+            </where>
+            ) u
+            on academy.id=u.academy
+        GROUP BY academy.name
+    </select>
+
+
+
+    <select id="getTeamByAcademy" resultType="Team">
+        select *
+        from team
+        WHERE is_delete=0 AND is_awarded=1 AND
+        leader_id IN
+        (select `user`.id
+        from `user` LEFT JOIN academy ON `user`.academy=academy.`name`
+        WHERE academy.id=#{id})
     </select>
 
     <sql id="Base_Column_List">
@@ -59,9 +92,6 @@
             <if test="invitationCode != null and invitationCode != ''">
                 AND invitation_code = #{invitationCode}
             </if>
-            <if test="is_awarded != null">
-                AND is_awarded = #{isAwarded}
-            </if>
         </where>
     </select>
 
@@ -90,9 +120,12 @@
             <if test="leaderId != null">
                 AND t.leader_id = #{leaderId}
             </if>
+            <if test="is_awarded != null">
+                AND is_awarded = #{isAwarded}
+            </if>
             <if test="keyword != null and keyword != ''">
                 <bind name="_keyword" value="'%' + keyword + '%'"/>
-                AND (t.team_name LIKE #{_keyword} or c.title LIKE #{_keyword})
+                AND (t.team_name LIKE #{_keyword} or c.title LIKE #{_keyword} or u.number LIKE #{_keyword} or u.name LIKE #{_keyword})
             </if>
             AND t.is_delete = 0
         </where>
@@ -104,6 +137,9 @@
         WHERE user_team.student_id = #{userId} AND team.cp_id = #{cpId}
           AND team.is_delete = 0
     </select>
+
+
+
 
     <select id="ownLead" resultType="Team">
         SELECT *
@@ -122,6 +158,15 @@
             </if>
             <if test="introduction != null">
                 `introduction` = #{introduction},
+            </if>
+            <if test="is_awarded != null">
+                `is_awarded` = #{isAwarded},
+            </if>
+            <if test="is_win != null">
+                `is_win` = #{isWin},
+            </if>
+            <if test="result != null">
+                `result` = #{result},
             </if>
         </set>
         where id = #{id}

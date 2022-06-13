@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import zust.competition.sys.dto.LoginDto;
 import zust.competition.sys.dto.MessageDto;
 import zust.competition.sys.dto.UserDto;
+import zust.competition.sys.entity.Query;
 import zust.competition.sys.service.MessageService;
 import zust.competition.sys.service.UserService;
 
@@ -143,7 +144,7 @@ public class UserController {
     @ResponseBody
     @RequestMapping("/selectUserById")
     public UserDto selectUserById(@RequestParam("id") Integer id) {
-        return userService.selectUserById(id);
+        return userService.getUserById(id);
     }
 
 }
