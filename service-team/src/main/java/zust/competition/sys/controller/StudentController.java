@@ -75,6 +75,9 @@ public class StudentController {
             msg = "该团队不是该竞赛下的团队，加入失败";
         }
         else if (-3 == code) {
+            msg = "该团队已组队完成，加入失败";
+        }
+        else if (-4 == code) {
             msg = "加入失败";
         }
         else {

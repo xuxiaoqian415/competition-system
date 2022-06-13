@@ -117,10 +117,9 @@
     </select>
 
     <select id="selectTeamList" resultType="TeamDto" parameterType="TeamQuery">
-        SELECT team.*, c.title as cpName, c.`limit` as limitNum, u.name as leaderName, u2.name as teacherName
+        SELECT team.*, c.title as cpName, c.`limit` as limitNum, u.name as leaderName
         FROM team LEFT JOIN competition c on team.cp_id= c.id
             LEFT JOIN user u on u.id = team.leader_id
-            LEFT JOIN user u2 on u2.id = team.teacher_id
         <where>
             <if test="cpId != null">
                 team.cp_id = #{cpId}

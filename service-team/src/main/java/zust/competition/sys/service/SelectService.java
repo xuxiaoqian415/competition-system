@@ -3,7 +3,7 @@ package zust.competition.sys.service;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-@FeignClient("select-service")
+@FeignClient("service-select")
 public interface SelectService {
 
     @RequestMapping("/dao/deleteByTeamId")

@@ -131,20 +131,24 @@ public class TeamServiceImpl implements TeamService {
         UserTeam userTeam=new UserTeam();
         TeamQuery query = new TeamQuery();
         query.setInvitationCode(dto.getInvitationCode());
-//        Team team=teamDao.getTeam(query);
         TeamDto teamDto = teamDao.getTeam(query);
         if (teamDto == null) { // 邀请码错误
             return -1;
         }
         query.setCpId(dto.getCpId());
-        if (teamDao.getTeam(query) == null) { // 不是该竞赛下的团队
+        teamDto = teamDao.getTeam(query);
+        if (teamDto == null) { // 不是该竞赛下的团队
             return -2;
+        }
+        if (teamDto.getStatus() != 0) { // 该团队已组队完成
+            return -3;
         }
         Integer thisId= dto.getStudentId();
         userTeam.setTeamId(teamDto.getId());
         userTeam.setStudentId(thisId);
         userTeam.setRole(dto.getRole());
         userTeam.setOperatorId(thisId);
+        userTeam.setStatus(0);
         if(1 != userTeamDao.insertUserTeam(userTeam)){
             return -3;
         }
@@ -407,14 +411,15 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public Integer deleteTeam(Integer id) {
+        TeamQuery query = new TeamQuery();
+        query.setTeamId(id);
+        TeamDto team = teamDao.getTeam(query);
         // 该团队有成员
-        if (teamDao.getMember(id) != null) {
+        if (team.getNowNumber() > 1) {
             return -1;
         }
         // 该团队有指导老师
-        TeamQuery query = new TeamQuery();
-        query.setTeamId(id);
-        if (teamDao.getTeam(query).getTeacherId() != 0) {
+        if (team.getTeacherId() != 0) {
             return -2;
         }
         // 删除所有组队请求

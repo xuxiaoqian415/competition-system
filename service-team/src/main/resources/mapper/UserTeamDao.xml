@@ -3,8 +3,8 @@
 <mapper namespace="zust.competition.sys.dao.UserTeamDao">
 
     <insert id="insertUserTeam" parameterType="UserTeam"  useGeneratedKeys="true" keyProperty="id">
-        insert into user_team (student_id,team_id,`role`,operator_id)
-        values (#{studentId},#{teamId},#{role},#{operatorId})
+        insert into user_team (student_id,team_id,`role`,`status`,operator_id)
+        values (#{studentId},#{teamId},#{role},#{status},#{operatorId})
     </insert>
 
     <update id="deleteUserTeamByTeamId" parameterType="int">

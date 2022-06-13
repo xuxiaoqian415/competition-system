@@ -82,14 +82,15 @@ public class SelectServiceImpl implements SelectService {
             selectDao.updateFlag(teamTeacher.getTeamId(),id,0);
             teamModel.setTeacherId(0);
             teamModel.setStatus(1);
+            teamService.updateTeam(teamModel);
         }
         // 同意
         if (status.equals(2)) {
             selectDao.updateFlag(teamTeacher.getTeamId(),id,1);
             teamModel.setTeacherId(teamTeacher.getTeacherId());
             teamModel.setStatus(2);
+            teamService.updateTeam(teamModel);
         }
-        teamService.updateTeam(teamModel);
         return selectDao.updateSelectStatus(id,status);
     }
 

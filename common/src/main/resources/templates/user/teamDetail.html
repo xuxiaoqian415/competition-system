@@ -33,7 +33,7 @@
                             <h4 th:text="'获奖情况：'+${detail.result}"></h4></ul>
                     </div>
 
-                    <div class="layui-form-item" th:if="${memberList.size() != 0}">
+                    <div class="layui-form-item">
                         <h4>成员详情：</h4>
                         <table class="layui-table layui-form">
                             <thead>
@@ -53,7 +53,7 @@
                                 <td th:text="${leaderInfo.mobile}"></td>
                                 <td th:text="负责人"></td>
                             </tr>
-                            <tr th:each="a:${memberList}">
+                            <tr th:each="a:${memberList}" th:if="${memberList.size() != 0}">
                                 <td>
                                     <a th:onclick="|parent.xadmin.add_tab('成员个人主页',[['/user-serv/user/showhome/'+${a.studentId}]],true)|"
                                        href="javascript:;" th:text="${a.studentName}">

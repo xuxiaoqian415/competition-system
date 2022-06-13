@@ -13,10 +13,10 @@
 </head>
 <body>
 <div class="layui-fluid">
-  <button class="layui-btn layui-btn-primary"><a th:href="@{/team-serv/team/lead/list}">返回</a></button>
+  <button class="layui-btn layui-btn-primary"><a th:href="@{/team-serv/admin/team/list}">返回</a></button>
   <div class="layui-row">
     <h1>修改负责人</h1>
-    <form class="layui-form" th:action="@{/team-serv/team/update/info}" method="post">
+    <form class="layui-form" th:action="@{/team-serv/admin/team/update/leader}" method="post">
       <input type="hidden" name="id" th:value="${team.id}">
       <div class="layui-form-item"><label style="color: red">*只能在已加入团队的成员中选择新的负责人</label></div>
       <div class="layui-form-item">
