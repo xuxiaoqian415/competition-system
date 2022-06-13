@@ -9,8 +9,8 @@ import zust.competition.sys.entity.Team;
 @FeignClient("service-team")
 public interface TeamService {
 
-    @RequestMapping("/dao/getTeam")
-    TeamDto getTeam(TeamQuery query);
+    @RequestMapping("/dao/getTeamDto")
+    TeamDto getTeamDto(TeamQuery query);
 
     @RequestMapping("/dao/updateTeam")
     Integer updateTeam(Team team);

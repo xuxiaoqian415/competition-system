@@ -78,6 +78,11 @@ public class TeamServiceImpl implements TeamService {
     }
 
 
+    @Override
+    public TeamDto getTeamDto(TeamQuery query) {
+        return teamDao.getTeam(query);
+    }
+
 
     @Override
     public Integer noAwarded(Integer teamId) {

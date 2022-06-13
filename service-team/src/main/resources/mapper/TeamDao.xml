@@ -176,7 +176,7 @@
             <if test="leaderId != null">
                 AND t.leader_id = #{leaderId}
             </if>
-            <if test="is_awarded != null">
+            <if test="isAwarded != null">
                 AND is_awarded = #{isAwarded}
             </if>
             <if test="keyword != null and keyword != ''">
@@ -213,10 +213,10 @@
             <if test="teacherId != null">
                 teacher_id = #{teacherId},
             </if>
-            <if test="is_awarded != null">
+            <if test="isAwarded != null">
                 `is_awarded` = #{isAwarded},
             </if>
-            <if test="is_win != null">
+            <if test="isWin != null">
                 `is_win` = #{isWin},
             </if>
             <if test="result != null">

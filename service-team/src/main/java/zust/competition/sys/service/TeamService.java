@@ -3,6 +3,7 @@ package zust.competition.sys.service;
 import org.apache.ibatis.annotations.Param;
 import zust.competition.sys.dto.*;
 import zust.competition.sys.dto.query.CountQuery;
+import zust.competition.sys.dto.query.TeamQuery;
 import zust.competition.sys.entity.Academy;
 import zust.competition.sys.entity.Query;
 import zust.competition.sys.entity.UserTeam;
@@ -96,6 +97,12 @@ public interface TeamService {
      * 根据ID找UserTeam
      */
     UserTeam getUserTeam(Integer id);
+
+    /**
+     * 根据条件查询团队详情
+     */
+    TeamDto getTeamDto(TeamQuery query);
+
 
 
 

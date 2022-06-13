@@ -154,4 +154,12 @@ public class UserController {
         return userService.academyList();
     }
 
+
+    @GetMapping("/showHome")
+    public String showHome(@RequestParam("id") Integer id,Model model) {
+        UserDto userDto = userService.getUserById(id);
+        model.addAttribute("userDto",userDto);
+        return "user/userHome";
+    }
+
 }
