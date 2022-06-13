@@ -6,6 +6,7 @@ import zust.competition.sys.dto.TeamTeacherDto;
 import zust.competition.sys.dto.UserDto;
 import zust.competition.sys.dto.UserTeamDto;
 import zust.competition.sys.entity.Query;
+import zust.competition.sys.entity.UserTeam;
 
 import java.util.List;
 
@@ -53,17 +54,24 @@ public interface TeamService {
     TeamDto getTeamDetail(Integer teamId);
 
     /**
-     * 根据成员id查询成员详情
+     * 根据teamId查询成员信息
      */
-    List<UserDto> getMember(Integer id);
+    List<UserTeamDto> getMember(Integer teamId);
+
+    /**
+     * 根据teamId查询负责人信息
+     */
+    UserDto getLeader(Integer teamId);
 
     /**
      * 更新团队status
      */
     Integer updateStatus(Integer id);
 
-
-
+    /**
+     * 根据ID找UserTeam
+     */
+    UserTeam getUserTeam(Integer id);
 
 
 
@@ -98,6 +106,11 @@ public interface TeamService {
      * 查询我负责的团队的组队申请
      */
     List<UserTeamDto> requestTeam(Integer id);
+
+    /**
+     * 更改选择记录状态
+     */
+    Integer updateRequestStatus(Integer id, Integer type);
 
 
 

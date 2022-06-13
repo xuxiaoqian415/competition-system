@@ -18,11 +18,13 @@
             <div class="layui-card">
                 <div class="layui-card-body">
                     <div style="text-align:center;margin: 5px;line-height: 40px; border: 1px solid gainsboro;">
+                        <ul>
+                            <span style="margin-right: 20px" th:text="'参加的竞赛：'+${detail.cpName}"></span>
+                        </ul>
                         <ul style="text-align:left;border: 1px solid gainsboro">
                             <span style="margin-right: 20px" th:text="'团队名：'+${detail.teamName}"></span>
                             <span style="margin-right: 20px" th:text="'负责人：'+${detail.leaderName}"></span>
                             <span style="margin-right: 20px" th:text="'指导老师：'+${detail.teacherName}"></span>
-                            <span style="margin-right: 20px" th:text="'竞赛名：'+${detail.cpName}"></span>
                         </ul>
                         <ul style="text-align:left;border: 1px solid gainsboro">
                             <h4 th:text="'团队介绍：'+${detail.introduction}"></h4>
@@ -31,34 +33,53 @@
                             <h4 th:text="'获奖情况：'+${detail.result}"></h4></ul>
                     </div>
 
-                    <div class="layui-form-item" th:if="${detail.isLeader == 1}">
-                        <button class="layui-btn layui-btn-primary" >
-                            <a th:href="@{/team-serv/team/update/status/}+${detail.id}">组队完成</a>
-                        </button>
-                        <p style="color: red" th:text = "${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
-                    </div>
-
                     <div class="layui-form-item" th:if="${memberList.size() != 0}">
                         <h4>成员详情：</h4>
                         <table class="layui-table layui-form">
                             <thead>
                             <tr>
                                 <th>姓名</th><th>学院</th><th>联系方式</th><th>职务</th>
+                                <th th:if="${detail.isLeader == 1 && detail.status == 0}" th:text="操作"></th>
                             </tr>
                             </thead>
                             <tbody>
+                            <tr th:if="${leaderInfo != null}">
+                                <td>
+                                    <a th:onclick="|parent.xadmin.add_tab('负责人个人主页',[['/user-serv/user/showhome/'+${leaderInfo.id}]],true)|"
+                                       href="javascript:;" th:text="${leaderInfo.name}">
+                                    </a>
+                                </td>
+                                <td th:text="${leaderInfo.academy}"></td>
+                                <td th:text="${leaderInfo.mobile}"></td>
+                                <td th:text="负责人"></td>
+                            </tr>
                             <tr th:each="a:${memberList}">
                                 <td>
-                                    <a th:onclick="|parent.xadmin.add_tab('成员个人主页',[['/user-serv/user/showhome/'+${a.id}]],true)|"
-                                       href="javascript:;" th:text="${a.name}">
+                                    <a th:onclick="|parent.xadmin.add_tab('成员个人主页',[['/user-serv/user/showhome/'+${a.studentId}]],true)|"
+                                       href="javascript:;" th:text="${a.studentName}">
                                     </a>
                                 </td>
                                 <td th:text="${a.academy}"></td>
                                 <td th:text="${a.mobile}"></td>
                                 <td th:text="${a.role}"></td>
+                                <td th:if="${a.status == 1 && detail.status == 0}">
+                                    <a class="layui-btn layui-btn-warm" lay-event="cancel" th:text="'取消同意'"
+                                       th:href="@{/team-serv/team/request/choice?id=}+${a.id}+@{&type=-10}"></a>
+                                </td>
                             </tr>
                             </tbody>
                         </table>
+                    </div>
+                    <div class="layui-form-item" th:if="${detail.isLeader == 1 && detail.status == 0}">
+                        <div><a class="layui-btn layui-btn-danger" lay-event="agree" th:text="'确认成员 完成组队'"
+                                th:href="@{/team-serv/team/update/status/}+${detail.id}"></a></div>
+                    </div>
+                    <div th:if="${detail.isLeader == 1 && detail.status == 1}">
+                        <a style="color: red" th:href="@{/team-serv/team/lead/}+${detail.cpId}"
+                            th:text="'已完成组队,可以去选指导老师了 >>'"></a>
+                    </div>
+                    <div th:if="${detail.status == 2}">
+                        <p style="color: red">已确定组员和指导老师，报名成功！</p>
                     </div>
                 </div>
             </div>

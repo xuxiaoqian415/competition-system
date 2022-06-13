@@ -17,7 +17,7 @@ public interface TeamService {
     List<TeamDto> selectTeamList(Query query);
 
     @RequestMapping("/dao/getTeam")
-    Team getTeam(TeamQuery query);
+    TeamDto getTeam(TeamQuery query);
 
     @RequestMapping("/dao/getMyTeamByCpId")
     Team getMyTeamByCpId(@RequestParam("userId") Integer userId, @RequestParam("cpId") Integer cpId);

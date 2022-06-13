@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import zust.competition.sys.dto.TeamDto;
 import zust.competition.sys.dto.TeamTeacherDto;
+import zust.competition.sys.dto.UserTeamDto;
 import zust.competition.sys.dto.query.TeamQuery;
 import zust.competition.sys.entity.*;
 
@@ -26,7 +27,17 @@ public interface TeamDao {
     /**
      * 根据主键查询Team
      */
-    Team getTeam(TeamQuery query);
+    TeamDto getTeam(TeamQuery query);
+
+    /**
+     * 根据ID找UserTeam
+     */
+    UserTeam getUserTeam(@Param("id") Integer id);
+
+    /**
+     * 修改UserTeam
+     */
+    Integer updateUserTeam(UserTeam userTeam);
 
     /**
      * 根据teamId查找已邀请的老师
@@ -46,7 +57,7 @@ public interface TeamDao {
     /**
      * 获取所有团队成员
      */
-    List<UserTeam> getMember(@Param("teamId") Integer id);
+    List<UserTeamDto> getMember(@Param("teamId") Integer id);
 
     /**
      * 查询我负责的团队
@@ -95,6 +106,11 @@ public interface TeamDao {
      * 团队更新
      */
     Integer updateTeam(Team team);
+
+    /**
+     * 某团队所有待处理请求都改为已拒绝
+     */
+    Integer updateUserTeamStatus(@Param("teamId") Integer teamId);
 
     /**
      * 根据团队id查询团队

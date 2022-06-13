@@ -27,7 +27,7 @@ public class DaoController {
 
     @ResponseBody
     @RequestMapping("/getTeam")
-    public Team getTeam(@RequestBody TeamQuery query) {
+    public TeamDto getTeam(@RequestBody TeamQuery query) {
         return teamDao.getTeam(query);
     }
 
@@ -41,5 +41,12 @@ public class DaoController {
     @RequestMapping("/selectTeamList")
     public List<TeamDto> selectTeamList(@RequestBody Query query) {
         return teamService.selectTeamList(query);
+    }
+
+    @ResponseBody
+    @RequestMapping("/updateTeam")
+    public Integer updateTeam(@RequestBody Team team) {
+        System.out.println("===team"+team);
+        return teamDao.updateTeam(team);
     }
 }

@@ -3,11 +3,12 @@ package zust.competition.sys.entity;
 import lombok.Data;
 import org.apache.ibatis.type.Alias;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
 @Alias("Team")
-public class Team {
+public class Team implements Serializable {
     private Integer id;
 
     private Integer cpId;

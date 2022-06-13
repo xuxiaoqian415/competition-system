@@ -5,10 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import zust.competition.sys.dto.TeamDto;
-import zust.competition.sys.dto.TeamTeacherDto;
-import zust.competition.sys.dto.UserDto;
-import zust.competition.sys.dto.UserTeamDto;
+import zust.competition.sys.dto.*;
 import zust.competition.sys.entity.Query;
 import zust.competition.sys.service.TeamService;
 import zust.competition.sys.service.UserService;
@@ -88,7 +85,7 @@ public class StudentController {
     }
 
     /**
-     * 竞赛详情-负责人进入已有团队页面
+     * 负责人进入已有团队页面
      */
     @GetMapping("/lead/{cpId}")
     public String leadTeam(@PathVariable("cpId") Integer cpId, HttpSession session, Model model) {
@@ -150,8 +147,9 @@ public class StudentController {
         if(teamDto.getLeaderId().equals(thisId)) teamDto.setIsLeader(1);
         else teamDto.setIsLeader(0);
         model.addAttribute("detail", teamDto);
+        model.addAttribute("leaderInfo", teamService.getLeader(id));
         model.addAttribute("memberList", teamService.getMember(id));
-        return "student/teamDetail";
+        return "user/teamDetail";
     }
 
     /**
@@ -160,7 +158,6 @@ public class StudentController {
     @GetMapping("/update/status/{id}")
     public String updateStatus(@PathVariable Integer id, HttpSession session,Model model) {
         teamService.updateStatus(id);
-        model.addAttribute("msg", "组队完成，可以去选择指导老师了。");
         return toTeamDetail(id,session,model);
     }
 
@@ -207,10 +204,26 @@ public class StudentController {
     public String requestTeam(HttpSession session, Model model) {
         Integer userId = ((UserDto)session.getAttribute("thisUser")).getId();
         List<UserTeamDto> dtos = teamService.requestTeam(userId);
-        System.out.println("===dtos"+dtos);
         if (dtos.size() == 0) model.addAttribute("msg", "当前没有组队申请");
         model.addAttribute("UserTeamDto", dtos);
         return "student/team_request_list";
+    }
+
+    /**
+     * 同意/拒绝组队请求
+     */
+    @GetMapping("/request/choice")
+    public String updateRequestStatus(@RequestParam("id") Integer id, @RequestParam("type") Integer type,
+                                       HttpSession session, Model model) {
+        if (type == -10) { // 请求从团队详情过来
+            teamService.updateRequestStatus(id, -1);
+            return toTeamDetail(teamService.getUserTeam(id).getTeamId(), session, model);
+        }
+        Integer code = teamService.updateRequestStatus(id, type);
+        if (code == -1) {
+            model.addAttribute("msg", "当前团队已达到最大人数");
+        }
+        return requestTeam(session, model);
     }
 
     /**

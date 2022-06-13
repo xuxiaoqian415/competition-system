@@ -9,6 +9,7 @@ import zust.competition.sys.dto.TeamDto;
 import zust.competition.sys.dto.TeamTeacherDto;
 import zust.competition.sys.dto.UserDto;
 import zust.competition.sys.dto.query.TeamQuery;
+import zust.competition.sys.entity.Team;
 import zust.competition.sys.entity.TeamTeacher;
 
 import java.util.ArrayList;
@@ -74,12 +75,22 @@ public class SelectServiceImpl implements SelectService {
     @Override
     public Integer updateRequestStatus(Integer id, Integer status) {
         TeamTeacher teamTeacher = selectDao.selectById(id);
+        Team teamModel = new Team();
+        teamModel.setId(teamTeacher.getTeamId());
+        // 取消
         if (status.equals(0)) {
             selectDao.updateFlag(teamTeacher.getTeamId(),id,0);
+            teamModel.setTeacherId(0);
+            teamModel.setStatus(1);
         }
-        else {
+        // 同意
+        if (status.equals(2)) {
             selectDao.updateFlag(teamTeacher.getTeamId(),id,1);
+            teamModel.setTeacherId(teamTeacher.getTeacherId());
+            teamModel.setStatus(2);
         }
+        System.out.println("===teamModel"+teamModel);
+        teamService.updateTeam(teamModel);
         return selectDao.updateSelectStatus(id,status);
     }
 
