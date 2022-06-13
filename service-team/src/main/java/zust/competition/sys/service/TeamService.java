@@ -6,8 +6,13 @@ import zust.competition.sys.dto.TeamTeacherDto;
 import zust.competition.sys.dto.UserDto;
 import zust.competition.sys.dto.UserTeamDto;
 import zust.competition.sys.dto.query.TeamQuery;
+import zust.competition.sys.dto.*;
+import zust.competition.sys.dto.query.CountQuery;
+import zust.competition.sys.dto.query.TeamQuery;
+import zust.competition.sys.entity.Academy;
 import zust.competition.sys.entity.Query;
 import zust.competition.sys.entity.UserTeam;
+import zust.competition.sys.entity.Team;
 
 import java.util.List;
 
@@ -45,7 +50,29 @@ public interface TeamService {
     List<UserTeamDto> getMember(Integer teamId);
 
 
+    List<CountQuery> countByAcademy(CountQuery query);
 
+    /**
+     * 根据学院查询团队获奖信息
+     */
+    List<TeamDto> getTeamByAcademy(Integer id);
+    /**
+     * 模糊查询团队
+     */
+    List<TeamDto> searchTeamAward(Query query);
+    /**
+     * 根据修改时间查询团队
+     */
+    List<TeamDto> getTeamByTime(Integer isAwarded);
+
+    /**
+     * 未获奖操作
+     */
+    Integer noAwarded(Integer teamId);
+    /**
+     * 获奖录入
+     */
+    Integer updateResult(TeamDto dto);
 
 
 
@@ -104,6 +131,12 @@ public interface TeamService {
      * 根据ID找UserTeam
      */
     UserTeam getUserTeam(Integer id);
+
+    /**
+     * 根据条件查询团队详情
+     */
+    TeamDto getTeamDto(TeamQuery query);
+
 
 
     /**

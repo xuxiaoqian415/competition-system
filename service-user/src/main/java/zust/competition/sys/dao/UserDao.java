@@ -3,6 +3,7 @@ package zust.competition.sys.dao;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import zust.competition.sys.dto.UserDto;
+import zust.competition.sys.entity.Academy;
 import zust.competition.sys.entity.Message;
 import zust.competition.sys.entity.Query;
 import zust.competition.sys.entity.User;
@@ -12,6 +13,14 @@ import java.util.List;
 
 @Mapper
 public interface UserDao {
+    /**
+     * 查询所有学院
+     */
+    List<Academy> academyList();
+    /**
+     * 根据id查询学院
+     */
+    Academy getAcademy(Integer id);
 
     /**
      * 根据主键查找唯一用户

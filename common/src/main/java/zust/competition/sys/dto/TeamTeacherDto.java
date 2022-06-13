@@ -16,6 +16,8 @@ public class TeamTeacherDto {
     private Integer teacherId;
 
     private String leaderName;
+
+    private Integer leaderId;
     /**
      * 竞赛id
      */

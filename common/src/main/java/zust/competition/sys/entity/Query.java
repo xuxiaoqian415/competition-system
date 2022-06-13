@@ -32,7 +32,14 @@ public class Query  implements Serializable {
     private Integer leaderId;
 
     private Integer cpId;
+    /**
+     * 是否评奖： 0-未评奖 1-已评奖
+     */
+    private Integer isAwarded;
 
-//    private List<Integer> ids;
+    private Integer academyId;
+
+
+
 
 }

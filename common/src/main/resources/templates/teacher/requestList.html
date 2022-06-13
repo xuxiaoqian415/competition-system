@@ -38,14 +38,15 @@
             var tableIns=table.render({
                 elem: '#request'
                 ,height:200
+                ,cellMinWidth: 'auto'
                 ,page:false
                 ,url: 'http://localhost:7000/select-serv/teacher/select/request' //数据接口
                 ,cols: [[ //表头
-                    {field: 'id', title: 'ID', fixed: 'left'},
-                    {field: 'teamName', title: '团队名称'},
-                    {field: 'cpName', title: '竞赛名称'},
-                    {field: 'leaderName', title: '负责人'},
-                    {title: '状态',
+                    {field: 'id', title: 'ID', align:'center', width:'5%'},
+                    {field: 'teamName', title: '团队名称', align:'center', width:'20%', templet:tTeam},
+                    {field: 'cpName', title: '竞赛名称', align:'center', width:'40%', templet:tCpName},
+                    {field: 'leaderName', title: '负责人', align:'center', width:'10%', templet:tLeaderName},
+                    {title: '状态', width:'10%',
                         templet: function (data) {
                             if(data.flag == 1) {
                                 return "已被其他老师选择";
@@ -63,7 +64,7 @@
                             }
                         }
                     },
-                    {title: '操作',fixed: 'right', align:'center',
+                    {title: '操作',width:'12%', align:'center',
                         templet: function (data) {
                             if(data.flag == 1) {
                                 return '<div id="choice">\n' +
@@ -85,10 +86,51 @@
                     }
                 ]]
             });
-
+            function tTeam(d) {
+                var html = '<a style="text-decoration: underline;color: #1E9FFF" lay-event="team" >'+d.teamName+'</a>';
+                return html;
+            }
+            function tCpName(d) {
+                var html = '<a style="text-decoration: underline;color: #1E9FFF" lay-event="cp" >'+d.cpName+'</a>';
+                return html;
+            }
+            function tLeaderName(d) {
+                var html = '<a style="text-decoration: underline;color: #1E9FFF" lay-event="leader" >'+d.leaderName+'</a>';
+                return html;
+            }
             table.on('tool', function(obj){
                 var data = obj.data;
                 var status = 0;
+                if (obj.event === 'team') {
+                    layer.open({
+                        type: 2,
+                        title: data.teamName,
+                        area: ['600px','400px'],
+                        shade:0.1,
+                        shadeClose:true,    //点击弹层外区域关闭
+                        content: 'http://localhost:7000/team-serv/team/detail/'+data.teamId
+                    });
+                }
+                if (obj.event === 'cp') {
+                    layer.open({
+                        type: 2,
+                        title: data.cpName,
+                        area: ['100%','100%'],
+                        shade:0.1,
+                        shadeClose:true,    //点击弹层外区域关闭
+                        content: 'http://localhost:7000/competition-serv/competition/detail/'+data.cpId
+                    });
+                }
+                if (obj.event === 'leader') {
+                    layer.open({
+                        type: 2,
+                        title: '团队负责人详情',
+                        area: ['450px','350px'],
+                        shade:0.1,
+                        shadeClose:true,    //点击弹层外区域关闭
+                        content: 'http://localhost:7000/user-serv/user/showHome?id='+data.leaderId
+                    });
+                }
                 if(obj.event === 'agree') {
                     status = 2;
                 }

@@ -62,9 +62,10 @@ public class SelectServiceImpl implements SelectService {
             Integer teamId = teamTeacher.getTeamId();
             TeamQuery query = new TeamQuery();
             query.setTeamId(teamId);
-            TeamDto teamDto = teamService.getTeam(query);
+            TeamDto teamDto = teamService.getTeamDto(query);
             teamTeacherDto.setTeamName(teamDto.getTeamName());
             teamTeacherDto.setCpName(teamDto.getCpName());
+            teamTeacherDto.setLeaderId(teamDto.getLeaderId());
             teamTeacherDto.setLeaderName(teamDto.getLeaderName());
             teamTeacherDto.setCpId(teamDto.getCpId());
             teamTeacherDtoList.add(teamTeacherDto);

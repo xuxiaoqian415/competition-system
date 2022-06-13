@@ -56,18 +56,18 @@
             ,page:false
             ,url: 'http://localhost:7000/competition-serv/competition/inform/0' //数据接口
             ,cols: [[ //表头
-                {field: 'id', title: 'ID', fixed: 'left'},
-                {field: 'title', title: '竞赛名称'},
-                {field: 'applyStart', title: '报名开始时间',
+                {field: 'id', title: ' ID', align:'center', width:'5%'},
+                {field: 'title', title: '竞赛名称', align:'center', width:'25%'},
+                {field: 'applyStart', title: '报名开始时间', align:'center', width:'10%',
                     templet : "<div>{{layui.util.toDateString(d.applyStart, 'yyyy-MM-dd')}}</div>"},
-                {field: 'applyEnd', title: '报名结束时间',
+                {field: 'applyEnd', title: '报名结束时间', align:'center', width:'10%',
                     templet : "<div>{{layui.util.toDateString(d.applyEnd, 'yyyy-MM-dd')}}</div>"},
-                {field: 'start', title: '竞赛开始时间',
+                {field: 'start', title: '竞赛开始时间', align:'center', width:'10%',
                     templet : "<div>{{layui.util.toDateString(d.start, 'yyyy-MM-dd')}}</div>"},
-                {field: 'end', title: '竞赛结束时间',
+                {field: 'end', title: '竞赛结束时间', align:'center', width:'10%',
                     templet : "<div>{{layui.util.toDateString(d.end, 'yyyy-MM-dd')}}</div>"},
-                {field: 'organizer', title: '举办方'},
-                {field: 'status', title: '状态',
+                {field: 'organizer', title: '举办方', align:'center', width:'10%'},
+                {field: 'status', title: '状态', align:'center', width:'10%',
                     templet: function (data) {
                         if (data.status == 1) {
                             return "即将开始报名";
@@ -82,7 +82,7 @@
                             return "比赛已结束";
                         }
                     }},
-                {fixed: 'right', align:'center', toolbar: '#barDemo'}
+                {align:'center', width:'8%',toolbar: '#barDemo'}
             ]]
         });
         form.on("select",function(data){

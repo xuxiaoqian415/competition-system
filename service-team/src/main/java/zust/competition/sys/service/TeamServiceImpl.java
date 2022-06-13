@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import zust.competition.sys.dao.TeamDao;
 import zust.competition.sys.dao.UserTeamDao;
 import zust.competition.sys.dto.*;
+import zust.competition.sys.dto.query.CountQuery;
 import zust.competition.sys.dto.query.TeamQuery;
 import zust.competition.sys.entity.*;
 import zust.competition.sys.dto.TeamDto;
@@ -54,6 +55,77 @@ public class TeamServiceImpl implements TeamService {
         // 删除新负责人UserTeam记录
         userTeamDao.deleteUserTeam(newLeaderId, teamId);
         return 1;
+    }
+
+
+    public List<TeamDto> changeTeamDtoList(List<Team> teams){
+        List<TeamDto> dtos=new ArrayList<>();
+        if(teams!=null && teams.size()>0){
+            for (Team t:teams) {
+                TeamDto dto=Te2d(t);
+                dto.setLeaderName(userService.selectUserById(dto.getLeaderId()).getName());
+                dto.setCpName(competitionService.getCompetitionTile(t.getCpId()));
+                dtos.add(dto);
+            }
+        }
+        return dtos;
+    }
+
+    @Override
+    public List<TeamDto> getTeamByTime(Integer isAwarded){
+        List<Team> teams=teamDao.getTeamByTime(isAwarded);
+        return changeTeamDtoList(teams);
+    }
+
+    @Override
+    public List<TeamDto> getTeamByAcademy(Integer id) {
+        List<Team> teams=teamDao.getTeamByAcademy(id);
+        return changeTeamDtoList(teams);
+    }
+
+    @Override
+    public List<CountQuery> countByAcademy(CountQuery query) {
+        return countByAcademy(query);
+    }
+
+
+    @Override
+    public List<TeamDto> searchTeamAward(Query query) {
+        List<TeamDto> teams = teamDao.selectTeamList(query);
+        if(teams!=null && teams.size()>=0){
+            for (TeamDto dto:teams) {
+                dto.setLeaderName(userService.selectUserById(dto.getLeaderId()).getName());
+                dto.setCpName(competitionService.getCompetitionTile(dto.getCpId()));
+                teams.add(dto);
+            }
+        }
+        return teams;
+    }
+
+
+    @Override
+    public TeamDto getTeamDto(TeamQuery query) {
+        return teamDao.getTeam(query);
+    }
+
+
+    @Override
+    public Integer noAwarded(Integer teamId) {
+        Team t=new Team();
+        t.setId(teamId);
+        t.setIsWin(0);
+        t.setIsAwarded(1);
+        t.setResult("未获奖");
+        return teamDao.updateTeam(t);
+    }
+
+    @Override
+    public Integer updateResult(TeamDto dto) {
+        Team t=DtoT2d(dto);
+        t.setIsWin(1);
+        t.setIsAwarded(1);
+        teamDao.updateTeam(t);
+        return teamDao.updateTeam(t);
     }
 
     @Override
@@ -165,6 +237,7 @@ public class TeamServiceImpl implements TeamService {
             return -3;
         return 1;
     }
+
     private Team DtoT2d(TeamDto dto){
         if(dto==null)
             return null;
@@ -271,11 +344,6 @@ public class TeamServiceImpl implements TeamService {
         }
         return dtos;
     }
-
-
-
-
-
 
 
     @Override

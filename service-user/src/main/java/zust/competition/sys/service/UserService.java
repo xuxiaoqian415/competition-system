@@ -1,5 +1,6 @@
 package zust.competition.sys.service;
 
+import zust.competition.sys.dto.AcademyDto;
 import zust.competition.sys.dto.LoginDto;
 import zust.competition.sys.dto.MessageDto;
 import zust.competition.sys.dto.UserDto;
@@ -58,6 +59,10 @@ public interface UserService {
      * 根据条件查询用户列表
      */
     List<UserDto> searchUser(Query query);
+    /**
+     * 查询所有学院
+     */
+    List<AcademyDto> academyList();
 
 
 }

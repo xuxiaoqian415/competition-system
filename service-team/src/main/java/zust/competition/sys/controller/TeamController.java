@@ -32,6 +32,12 @@ public class TeamController {
     }
 
     @ResponseBody
+    @RequestMapping("/getTeamDto")
+    public TeamDto getTeamDto(@RequestBody TeamQuery query) {
+        return teamService.getTeamDto(query);
+    }
+
+    @ResponseBody
     @RequestMapping("/getMyTeamByCpId")
     public Team getMyTeamByCpId(@RequestParam("userId") Integer userId, @RequestParam("cpId") Integer cpId) {
         return teamDao.getMyTeamByCpId(userId, cpId);

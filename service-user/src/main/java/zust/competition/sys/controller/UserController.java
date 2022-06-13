@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import zust.competition.sys.dto.AcademyDto;
 import zust.competition.sys.dto.LoginDto;
 import zust.competition.sys.dto.MessageDto;
 import zust.competition.sys.dto.UserDto;
+import zust.competition.sys.entity.Query;
 import zust.competition.sys.service.MessageService;
 import zust.competition.sys.service.UserService;
 
@@ -126,6 +128,38 @@ public class UserController {
         model.addAttribute("msg", msg);
         session.invalidate();
         return toUpdatePsw(model);  //返回修改密码页面
+    }
+
+    @ResponseBody
+    @RequestMapping("/getStudentList")
+    public List<UserDto> getStudentList() {
+        return userService.getStudentList();
+    }
+
+    @ResponseBody
+    @RequestMapping("/getTeacherList")
+    public List<UserDto> getTeacherList() {
+        return userService.getTeacherList();
+    }
+
+    @ResponseBody
+    @RequestMapping("/selectUserById")
+    public UserDto selectUserById(@RequestParam("id") Integer id) {
+        return userService.getUserById(id);
+    }
+
+    @ResponseBody
+    @RequestMapping("/getAcademyList")
+    public List<AcademyDto> getAcademyList() {
+        return userService.academyList();
+    }
+
+
+    @GetMapping("/showHome")
+    public String showHome(@RequestParam("id") Integer id,Model model) {
+        UserDto userDto = userService.getUserById(id);
+        model.addAttribute("userDto",userDto);
+        return "user/userHome";
     }
 
 }

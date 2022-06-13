@@ -25,9 +25,17 @@ public class UserDto implements Serializable {
      */
     private Integer status;
     /**
-     * 学院
+     * 所在学院
      */
     private String academy;
+    /**
+     * 所在学院id
+     */
+    private Integer academyId;
+    /**
+     * 操作人id
+     */
+    private Integer operatorId;
 //    直接对应user表结束
 
 //    其他字段
