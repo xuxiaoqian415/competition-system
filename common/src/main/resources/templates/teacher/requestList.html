@@ -34,7 +34,6 @@
             var table = layui.table;
             var $ = layui.$;
 
-            //第一个实例
             var tableIns=table.render({
                 elem: '#request'
                 ,height:200
@@ -45,7 +44,7 @@
                     {field: 'teamName', title: '团队名称', align:'center', width:'20%', templet:tTeam},
                     {field: 'cpName', title: '竞赛名称', align:'center', width:'40%', templet:tCpName},
                     {field: 'leaderName', title: '负责人', align:'center', width:'10%', templet:tLeaderName},
-                    {title: '状态', width:'10%',
+                    {title: '状态', width:'10%', align:'center',
                         templet: function (data) {
                             if(data.flag == 1) {
                                 return "已被其他老师选择";

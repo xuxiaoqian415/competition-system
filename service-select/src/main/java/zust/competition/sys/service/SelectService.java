@@ -24,6 +24,13 @@ public interface SelectService {
      */
     Integer updateRequestStatus(Integer id, Integer status);
 
+    /**
+     * 根据老师id查找指导团队记录
+     */
+    List<TeamDto> getAgreeList(Integer id);
+
+
+
 
     /**
      * 根据id更新选择记录

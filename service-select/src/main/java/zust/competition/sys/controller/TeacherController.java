@@ -48,6 +48,27 @@ public class TeacherController {
         return requestList(session);
     }
 
+    /**
+     * 访问指导团队
+     */
+    @GetMapping("/agree/list")
+    public String toAgreeList() {
+        return "teacher/agreeList";
+    }
+
+    /**
+     * 指导团队列表
+     */
+    @ResponseBody
+    @GetMapping("/agree")
+    public TableVo agreeList(HttpSession session) {
+        UserDto u = (UserDto) session.getAttribute("thisUser");
+        List<TeamDto> agreeList = selectService.getAgreeList(u.getId());
+        TableVo tableVo = new TableVo(0, agreeList);
+        return tableVo;
+    }
+
+
 //    @GetMapping("/agree")
 //    public String selectTeam(@RequestParam("id") Integer id, Model model, HttpSession session){
 //        selectService.updateSelect(id);

@@ -95,6 +95,20 @@ public class SelectServiceImpl implements SelectService {
         return selectDao.updateSelectStatus(id,status);
     }
 
+
+    @Override
+    public List<TeamDto> getAgreeList(Integer id) {
+        List<TeamTeacher> teamTeacherList = selectDao.getAgreeList(id);
+        List<TeamDto> teamDtoList = new ArrayList<>();
+        for (TeamTeacher teamTeacher : teamTeacherList){
+            TeamQuery query = new TeamQuery();
+            query.setTeamId(teamTeacher.getTeamId());
+            TeamDto teamDto = teamService.getTeamDto(query);
+            teamDtoList.add(teamDto);
+        }
+        return teamDtoList;
+    }
+
     public List<TeamDto> getMember(List<TeamDto> list) {
 //        for (TeamDto t : list) {
 //            StringBuffer memberNames = new StringBuffer();

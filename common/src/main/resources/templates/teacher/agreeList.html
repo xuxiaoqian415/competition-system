@@ -1,79 +1,104 @@
 <!DOCTYPE html>
-    <html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
-    <head>
-        <meta charset="UTF-8">
-        <title>指导团队</title>
-        <meta name="renderer" content="webkit">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
-        <link rel="stylesheet" th:href="@{/css/font.css}">
-        <link rel="stylesheet" th:href="@{/css/xadmin.css}">
-        <script th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>
-        <script type="text/javascript" th:src="@{/js/xadmin.js}"></script>
-    </head>
+<html class="x-admin-sm" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>指导团队</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi"/>
+    <link rel="stylesheet" th:href="@{/css/font.css}">
+    <link rel="stylesheet" th:href="@{/css/xadmin.css}">
+    <script th:src="@{/lib/layui/layui.js}" charset="utf-8"></script>
+    <script type="text/javascript" th:src="@{/js/xadmin.js}"></script>
+</head>
 <body>
 <div class="layui-fluid">
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md12">
             <div class="layui-card">
                 <div class="layui-card-body">
-                    <table class="layui-table layui-form">
-                        <thead>
-                        <tr>
-                            <th>竞赛名称</th><th>团队名称</th><th>负责人</th><th>成员</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="t:${teamDtos}">
-                            <td>
-                                <a th:text="${t.cpName}" th:href="@{/competition-serv/competition/detail/}+${t.cpId}+'?back=agreeList'"></a>
-                            </td>
-                            <td th:text="${t.teamName}"></td>
-                            <td th:text="${t.leaderName}"></td>
-                            <td th:text="${t.memberNames}"></td>
-<!--                            <td class="td-manage">-->
-<!--                                <a title="详情" href="">-->
-<!--                                    <i class="layui-icon">&#xe63c;</i>查看详情-->
-<!--                                </a>&nbsp;&nbsp;&nbsp;-->
-<!--                                <a title="删除" href="">-->
-<!--                                    删除-->
-<!--                                </a>-->
-<!--                            </td>-->
-                        </tr>
-                        </tbody>
+                    <table id="agree" class="layui-table layui-form">
                     </table>
                 </div>
-                <!--                <div class="layui-card-body ">-->
-                <!--                    <div class="page">-->
-                <!--                        <div>-->
-                <!--                            <a class="prev" href="">&lt;&lt;</a>-->
-                <!--                            <a class="num" href="">1</a>-->
-                <!--                            <span class="current">2</span>-->
-                <!--                            <a class="num" href="">3</a>-->
-                <!--                            <a class="num" href="">489</a>-->
-                <!--                            <a class="next" href="">&gt;&gt;</a></div>-->
-                <!--                    </div>-->
-                <!--                </div>-->
             </div>
         </div>
     </div>
 </div>
 </body>
 <script th:src="@{/lib/layui/layui.js}"></script>
-<script>
-    layui.use(['laydate', 'form'],
-        function() {
-            var laydate = layui.laydate;
+<script type="text/html" id="barDemo">
+</script>
+<script th:inline=none>
+    layui.use(['table', 'jquery'],
+        function () {
+            var table = layui.table;
+            var $ = layui.$;
 
-            //执行一个laydate实例
-            laydate.render({
-                elem: '#start' //指定元素
+            var tableIns = table.render({
+                elem: '#agree'
+                , height: 200
+                , page: false
+                , url: 'http://localhost:7000/select-serv/teacher/select/agree' //数据接口
+                , cols: [[ //表头
+                    {field: 'teamName', title: '团队名称', align: 'center', width: '30%', templet: tTeam},
+                    {field: 'cpName', title: '竞赛名称', align: 'center', width: '50%', templet: tCpName},
+                    {field: 'leaderName', title: '负责人', align: 'center', width: '20%', templet: tLeaderName}
+                ]]
             });
 
-            //执行一个laydate实例
-            laydate.render({
-                elem: '#end' //指定元素
+            function tTeam(d) {
+                var html = '<a style="text-decoration: underline;color: #1E9FFF" lay-event="team" >' + d.teamName + '</a>';
+                return html;
+            }
+
+            function tCpName(d) {
+                var html = '<a style="text-decoration: underline;color: #1E9FFF" lay-event="cp" >' + d.cpName + '</a>';
+                return html;
+            }
+
+            function tLeaderName(d) {
+                var html = '<a style="text-decoration: underline;color: #1E9FFF" lay-event="leader" >' + d.leaderName + '</a>';
+                return html;
+            }
+
+            table.on('tool', function (obj) {
+                var data = obj.data;
+                var status = 0;
+                if (obj.event === 'team') {
+                    layer.open({
+                        type: 2,
+                        title: data.teamName,
+                        area: ['100%', '100%'],
+                        shade: 0.1,
+                        shadeClose: true,    //点击弹层外区域关闭
+                        content: 'http://localhost:7000/team-serv/team/detail/' + data.id
+                    });
+
+                }
+                if (obj.event === 'cp') {
+                    layer.open({
+                        type: 2,
+                        title: data.cpName,
+                        area: ['100%', '100%'],
+                        shade: 0.1,
+                        shadeClose: true,    //点击弹层外区域关闭
+                        content: 'http://localhost:7000/competition-serv/competition/detail/' + data.cpId
+                    });
+                }
+                if (obj.event === 'leader') {
+                    layer.open({
+                        type: 2,
+                        title: '团队负责人详情',
+                        area: ['450px', '350px'],
+                        shade: 0.1,
+                        shadeClose: true,    //点击弹层外区域关闭
+                        content: 'http://localhost:7000/user-serv/user/showHome?id=' + data.leaderId
+                    });
+                }
             });
         });
 </script>
+</html>
+</body>
 </html>
