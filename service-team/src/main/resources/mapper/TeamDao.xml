@@ -22,12 +22,27 @@
         from academy
     </select>
 
-    <select id="getTeamByTime" resultType="Team">
-        select *
-        from team
-        where is_awarded=#{isAwarded} and is_delete=0
+    <select id="searchTeamAward" resultType="Team">
+        SELECT team.*
+        FROM team LEFT JOIN user u on u.id = team.leader_id
+                    LEFT JOIN competition c on team.cp_id = c.id
+        <where>
+            team.is_delete = 0 AND team.status = 2 AND team.is_awarded = 1
+            <if test="leaderAcademyId != null">
+                AND u.academy_id = #{leaderAcademyId}
+            </if>
+            <if test="leaderNumber != null and leaderNumber != ''">
+                AND u.number = #{leaderNumber}
+            </if>
+            <if test="keyword != null and keyword != ''">
+                <bind name="_keyword" value="'%' + keyword + '%'"/>
+                AND (team.team_name LIKE #{_keyword} or u.name LIKE #{_keyword} or c.title LIKE #{_keyword} or u.number LIKE #{_keyword})
+            </if>
+        </where>
         ORDER BY update_time DESC
     </select>
+
+
 
     <select id="getTeamByAcademy" resultType="Team">
         select *
@@ -40,19 +55,24 @@
     </select>
 
     <select id="countByAcademy" resultType="CountQuery" parameterType="CountQuery">
-        SELECT academy.name as `academy`,count(*) as `count`
-        from academy LEFT JOIN
-        (SELECT user.* from team LEFT JOIN `user` ON leader_id=`user`.id WHERE team.is_delete=0
+        SELECT academy.id as academyId, academy.name as `academy`, count(*) as `count`
+        from academy RIGHT JOIN
+        (SELECT user.* from team LEFT JOIN `user` ON leader_id=`user`.id
         <where>
-            is_delete = 0
+            team.is_delete=0
             <if test="isWin != null">
                 AND is_win = #{isWin}
             </if>
         </where>
         ) u
-        on academy.id=u.academy
+        on academy.id = u.academy_id
         GROUP BY academy.name
     </select>
+
+<!--    <select id="countByAcademy" resultType="CountQuery" parameterType="CountQuery">-->
+<!--        SELECT -->
+<!--        FROM team LEFT JOIN user u on team.leader_id = u.id-->
+<!--    </select>-->
 
     <insert id="insertMessage" parameterType="Message"  useGeneratedKeys="true" keyProperty="id">
         insert into message (sender_id,receiver_id,content,operator_id,jump_type)
@@ -183,6 +203,7 @@
             </if>
             AND team.is_delete = 0
         </where>
+        ORDER BY update_time DESC
     </select>
 
     <select id="ownLead" resultType="Team">
@@ -218,7 +239,7 @@
             <if test="isWin != null">
                 `is_win` = #{isWin},
             </if>
-            <if test="result != null">
+            <if test="result != null and result != ''">
                 `result` = #{result},
             </if>
         </set>

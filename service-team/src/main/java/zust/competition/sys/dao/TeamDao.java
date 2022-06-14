@@ -30,9 +30,9 @@ public interface TeamDao {
 
 
     /**
-     * 按照修改时间次序查询未评奖团队
+     * 查询已评奖的团队
      */
-    List<Team> getTeamByTime(Integer isAwarded);
+    List<Team> searchTeamAward(TeamQuery query);
 
     /**
      *  message

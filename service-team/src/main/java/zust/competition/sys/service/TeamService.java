@@ -60,10 +60,11 @@ public interface TeamService {
      * 模糊查询团队
      */
     List<TeamDto> searchTeamAward(TeamQuery query);
+
     /**
-     * 根据修改时间查询团队
+     * 获取已评奖的全部团队
      */
-    List<TeamDto> getTeamByTime(Integer isAwarded);
+    List<TeamDto> getAllAwardedTeam();
 
     /**
      * 未获奖操作

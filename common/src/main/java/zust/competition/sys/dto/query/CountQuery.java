@@ -4,12 +4,16 @@ import lombok.Data;
 
 @Data
 public class CountQuery {
+
+    /**
+     * 学院id
+     */
     private Integer academyId;
 
     /**
      * 学院名称
      */
-    private Integer academy;
+    private String academy;
     /**
      * 学院竞赛参赛情况数量
      */

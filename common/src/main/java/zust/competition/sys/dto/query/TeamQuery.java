@@ -47,6 +47,16 @@ public class TeamQuery implements Serializable {
     private Integer status;
 
     /**
+     * 负责人所在学院id
+     */
+    private Integer leaderAcademyId;
+
+    /**
+     * 负责人学号
+     */
+    private String leaderNumber;
+
+    /**
      * 模糊查询关键字
      */
     private String keyword;

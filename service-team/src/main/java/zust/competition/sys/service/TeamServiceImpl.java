@@ -72,12 +72,6 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public List<TeamDto> getTeamByTime(Integer isAwarded){
-        List<Team> teams=teamDao.getTeamByTime(isAwarded);
-        return changeTeamDtoList(teams);
-    }
-
-    @Override
     public List<TeamDto> getTeamByAcademy(Integer id) {
         List<Team> teams=teamDao.getTeamByAcademy(id);
         return changeTeamDtoList(teams);
@@ -85,23 +79,22 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public List<CountQuery> countByAcademy(CountQuery query) {
-        return countByAcademy(query);
+        return teamDao.countByAcademy(query);
     }
 
 
     @Override
     public List<TeamDto> searchTeamAward(TeamQuery query) {
-        List<TeamDto> teams = teamDao.selectTeamList(query);
-        if(teams!=null && teams.size()>=0){
-            for (TeamDto dto:teams) {
-                dto.setLeaderName(userService.selectUserById(dto.getLeaderId()).getName());
-                dto.setCpName(competitionService.getCompetitionDetail(dto.getCpId()).getTitle());
-                teams.add(dto);
-            }
-        }
-        return teams;
+        List<Team> teams = teamDao.searchTeamAward(query);
+        return changeTeamDtoList(teams);
     }
 
+    @Override
+    public List<TeamDto> getAllAwardedTeam() {
+        TeamQuery query = new TeamQuery();
+        List<Team> teams = teamDao.searchTeamAward(query);
+        return changeTeamDtoList(teams);
+    }
 
     @Override
     public TeamDto getTeamDto(TeamQuery query) {

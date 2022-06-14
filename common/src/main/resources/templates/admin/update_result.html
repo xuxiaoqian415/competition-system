@@ -13,10 +13,11 @@
 </head>
 <body>
 <div class="layui-fluid">
+    <button class="layui-btn layui-btn-primary"><a th:href="@{/team-serv/admin/team/award/entry/list}">返回</a></button>
     <div class="layui-row">
         <h1>获奖信息录入</h1>
-        <form class="layui-form" th:action="@{/competition-serv/admin/team/updateResult}" method="post">
-            <input type="hidden" name="teamId" th:value="${teamId}">
+        <form class="layui-form" th:action="@{/team-serv/admin/team/award/entry/update/result}" method="post">
+            <input type="hidden" name="id" th:value="${teamId}">
             <div class="layui-form-item">
                 <div class="layui-input-inline">
                     <input type="text" name="result" required  lay-verify="required" class="layui-input">

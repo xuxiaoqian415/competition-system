@@ -17,29 +17,38 @@
         <div class="layui-col-md12">
             <div class="layui-card">
                 <div class="layui-card-body ">
-                    <form class="layui-form layui-col-space5" th:action="@{/competition-serv/admin/team/searchWinList}" method="post">
+                    <form class="layui-form layui-col-space5" th:action="@{/team-serv/admin/team/award/info/search}" method="post">
                         <div class="layui-input-inline layui-show-xs-block">
-                            <input type="text" name="keyword" placeholder="搜索关键词" autocomplete="off" class="layui-input">
+                            <input type="text" name="keyword" placeholder="团队/负责人/竞赛名关键词" autocomplete="off" class="layui-input">
                         </div>
                         <div class="layui-input-inline layui-show-xs-block">
-                            <button class="layui-btn">
-                                <i class="layui-icon">&#xe615;</i></button>
+                            <select name="leaderAcademyId">
+                                <option value="">负责人所在学院</option>
+                                <option th:each="a:${academyList}" th:value="${a.id}" th:text="${a.name}"></option>
+                            </select>
                         </div>
-                    </form>
-                    <form class="layui-form layui-col-space5" th:action="@{/competition-serv/admin/team/getTeamByAcademy}" method="post">
-                        <div class="layui-form-item">
-                            <div class="layui-input-inline">
-                                <select name="academyId" required>
-                                    <option value="">请选择学院</option>
-                                    <option th:each="t:${academyList}" th:value="${t.id}" th:text="${t.name}"></option>
-                                </select>
-                            </div>
+                        <div class="layui-input-inline layui-show-xs-block">
+                            <input type="text" name="leaderNumber" placeholder="负责人学号" autocomplete="off" class="layui-input">
                         </div>
                         <div class="layui-input-inline layui-show-xs-block">
                             <button class="layui-btn">
                                 <i class="layui-icon">&#xe615;</i></button>
                         </div>
                     </form>
+<!--                    <form class="layui-form layui-col-space5" th:action="@{/competition-serv/admin/team/getTeamByAcademy}" method="post">-->
+<!--                        <div class="layui-form-item">-->
+<!--                            <div class="layui-input-inline">-->
+<!--                                <select name="academyId" required>-->
+<!--                                    <option value="">请选择学院</option>-->
+<!--                                    <option th:each="t:${academyList}" th:value="${t.id}" th:text="${t.name}"></option>-->
+<!--                                </select>-->
+<!--                            </div>-->
+<!--                        </div>-->
+<!--                        <div class="layui-input-inline layui-show-xs-block">-->
+<!--                            <button class="layui-btn">-->
+<!--                                <i class="layui-icon">&#xe615;</i></button>-->
+<!--                        </div>-->
+<!--                    </form>-->
                 </div>
                 <div class="layui-card-body">
                     <table class="layui-table layui-form">
@@ -59,17 +68,6 @@
                     </table>
                     <div style="color: red" th:text = "${msg}" th:if="${not #strings.isEmpty(msg)}"></div>
                 </div>
-                <!--                <div class="layui-card-body ">-->
-                <!--                    <div class="page">-->
-                <!--                        <div>-->
-                <!--                            <a class="prev" href="">&lt;&lt;</a>-->
-                <!--                            <a class="num" href="">1</a>-->
-                <!--                            <span class="current">2</span>-->
-                <!--                            <a class="num" href="">3</a>-->
-                <!--                            <a class="num" href="">489</a>-->
-                <!--                            <a class="next" href="">&gt;&gt;</a></div>-->
-                <!--                    </div>-->
-                <!--                </div>-->
             </div>
         </div>
     </div>

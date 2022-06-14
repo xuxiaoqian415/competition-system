@@ -17,9 +17,16 @@
         <div class="layui-col-md12">
             <div class="layui-card">
                 <div class="layui-card-body ">
-                    <form class="layui-form layui-col-space5" th:action="@{/competition-serv/admin/team/searchNoAward}" method="post">
+                    <form class="layui-form layui-col-space5" th:action="@{/team-serv/admin/team/award/entry/search}" method="post">
                         <div class="layui-input-inline layui-show-xs-block">
-                            <input type="text" name="keyword" placeholder="搜索关键词" autocomplete="off" class="layui-input">
+                            <input type="text" name="keyword" placeholder="团队/负责人/竞赛名关键词" autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-input-inline layui-show-xs-block">
+                            <select name="isAwarded">
+                                <option value="">是否评奖</option>
+                                <option value="0">未评奖</option>
+                                <option value="1">已评奖</option>
+                            </select>
                         </div>
                         <div class="layui-input-inline layui-show-xs-block">
                             <button class="layui-btn">
@@ -31,7 +38,7 @@
                     <table class="layui-table layui-form">
                         <thead>
                         <tr>
-                            <th>团队名</th><th>竞赛名称</th><th>负责人</th><th>操作</th>
+                            <th>团队名</th><th>竞赛名称</th><th>负责人</th><th>获奖信息</th><th>操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -39,11 +46,12 @@
                             <td th:text="${t.teamName}"></td>
                             <td th:text="${t.cpName}"></td>
                             <td th:text="${t.leaderName}"></td>
+                            <td th:text="${t.result}"></td>
                             <td class="td-manage">
-                                <a title="未获奖" th:href="@{/competition-serv/admin/team/noWin/}+${t.id}">
+                                <a title="未获奖" th:href="@{/team-serv/admin/team/award/entry/noWin/}+${t.id}">
                                     未获奖
                                 </a>&nbsp;&nbsp;&nbsp;
-                                <a title="获奖信息录入" th:href="@{/competition-serv/admin/team/updateResult/}+${t.id}">
+                                <a title="获奖信息录入" th:href="@{/team-serv/admin/team/award/entry/update/result/}+${t.id}">
                                     <i class="layui-icon">&#xe63c;</i>获奖信息录入
                                 </a>
                             </td>
