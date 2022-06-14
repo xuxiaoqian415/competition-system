@@ -23,13 +23,4 @@ public class StudentController {
     SelectService selectService;
     @Autowired
     UserService userService;
-
-    @GetMapping("/teacher")
-    public String toChoose(HttpSession session, Model model){
-        List<UserDto> teacherList = userService.getTeacherList();
-        Integer teamId = (Integer) session.getAttribute("teamId");
-        model.addAttribute("teacherList",teacherList);
-        model.addAttribute("teamId",teamId);
-        return "student/choose_teacher";
-    }
 }

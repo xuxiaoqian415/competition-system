@@ -67,19 +67,4 @@ public class TeacherController {
         TableVo tableVo = new TableVo(0, agreeList);
         return tableVo;
     }
-
-
-//    @GetMapping("/agree")
-//    public String selectTeam(@RequestParam("id") Integer id, Model model, HttpSession session){
-//        selectService.updateSelect(id);
-//        return toRequestList(session, model);
-//    }
-
-//    @GetMapping("/agree/list")
-//    public String agreeTeam( Model model, HttpSession session){
-//        UserDto u=(UserDto) session.getAttribute("thisUser");
-//        List<TeamDto> teamDtos = selectService.selectTeams(u.getId());
-//        model.addAttribute("teamDtos",teamDtos);
-//        return "teacher/agreeList";
-//    }
 }

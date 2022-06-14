@@ -100,15 +100,14 @@
                 var data = obj.data;
                 var status = 0;
                 if (obj.event === 'team') {
-                    // layer.open({
-                    //     type: 2,
-                    //     title: data.teamName,
-                    //     area: ['600px','400px'],
-                    //     shade:0.1,
-                    //     shadeClose:true,    //点击弹层外区域关闭
-                    //     content: 'http://localhost:7000/team-serv/team/detail/'+data.teamId
-                    // });
-                    parent.xadmin.add_tab('团队详情', 'http://localhost:7000/team-serv/team/detail/'+data.teamId, true);
+                    layer.open({
+                        type: 2,
+                        title: data.teamName,
+                        area: ['100%', '100%'],
+                        shade:0.1,
+                        shadeClose:true,    //点击弹层外区域关闭
+                        content: 'http://localhost:7000/team-serv/team/detail/'+data.teamId
+                    });
                 }
                 if (obj.event === 'cp') {
                     layer.open({
