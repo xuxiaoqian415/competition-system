@@ -56,6 +56,15 @@
         UPDATE `team_teacher` SET flag=1 WHERE team_id=#{id}
     </update>
 
+    <select id="getAgreeList" parameterType="Integer" resultType="TeamTeacher" >
+        select *
+        from `team_teacher`
+        where teacher_id=#{id}
+        and status = 2
+        and is_delete = 0
+    </select>
+
+
 <!--    <select id="selectTeams" resultType="TeamDto" parameterType="Integer">-->
 <!--        select *-->
 <!--        from `team_teacher`-->

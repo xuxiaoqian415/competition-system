@@ -33,6 +33,12 @@ public interface SelectDao {
     Integer updateFlag(Integer teamId, Integer id, Integer flag);
 
     /**
+     * 根据老师id查找指导团队记录
+     */
+    List<TeamTeacher> getAgreeList(Integer id);
+
+
+    /**
      * 添加一条互选记录
      */
 //    Integer insertSelect(TeamTeacher teamTeacher);
