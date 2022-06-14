@@ -45,9 +45,10 @@
                             <tbody>
                             <tr th:if="${leaderInfo != null}">
                                 <td>
-                                    <a th:onclick="|parent.xadmin.add_tab('负责人个人主页',[['/user-serv/user/showhome/'+${leaderInfo.id}]],true)|"
-                                       href="javascript:;" th:text="${leaderInfo.name}">
-                                    </a>
+<!--                                    <a th:onclick="|parent.xadmin.add_tab('负责人个人主页',[['/user-serv/user/showHome?id='+${leaderInfo.id}]],true)|"-->
+<!--                                       href="javascript:;" th:text="${leaderInfo.name}">-->
+<!--                                    </a>-->
+                                    <a style="text-decoration: underline;color: #1E9FFF" lay-event="leader" th:text="${leaderInfo.name}"></a>
                                 </td>
                                 <td th:text="${leaderInfo.academy}"></td>
                                 <td th:text="${leaderInfo.mobile}"></td>
@@ -55,7 +56,7 @@
                             </tr>
                             <tr th:each="a:${memberList}" th:if="${memberList.size() != 0}">
                                 <td>
-                                    <a th:onclick="|parent.xadmin.add_tab('成员个人主页',[['/user-serv/user/showhome/'+${a.studentId}]],true)|"
+                                    <a th:onclick="|parent.xadmin.add_tab('成员个人主页',[['/user-serv/user/showHome?id='+${a.studentId}]],true)|"
                                        href="javascript:;" th:text="${a.studentName}">
                                     </a>
                                 </td>
@@ -88,4 +89,25 @@
 </div>
 </body>
 <script th:src="@{/lib/layui/layui.js}"></script>
+<script type="text/html" id="barDemo">
+<script th:inline=none>
+    layui.use(['table','jquery'],
+        function() {
+            var table = layui.table;
+            table.on('tool', function(obj) {
+                var data = obj.data;
+                console.log(data);
+                if (obj.event === 'leader') {
+                    layer.open({
+                        type: 2,
+                        title: '团队负责人详情',
+                        area: ['450px','350px'],
+                        shade:0.1,
+                        shadeClose:true,    //点击弹层外区域关闭
+                        content: 'http://localhost:7000/user-serv/user/showHome?id='+data.leaderId
+                    });
+                }
+            });
+        });
+</script>
 </html>

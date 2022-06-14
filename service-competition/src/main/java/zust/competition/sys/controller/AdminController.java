@@ -120,7 +120,7 @@ public class AdminController {
 
     /**
      * 搜索竞赛信息
-     * 模糊查询：名称、内容、组织机构
+     * 模糊查询：标题、内容、组织机构
      */
     @PostMapping("/search")
     public String searchCompetition(Query query, Model model) {

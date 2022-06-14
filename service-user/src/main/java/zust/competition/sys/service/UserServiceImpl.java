@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import zust.competition.sys.dao.UserDao;
 import zust.competition.sys.dto.*;
+import zust.competition.sys.dto.query.UserQuery;
 import zust.competition.sys.entity.*;
 
 import java.util.ArrayList;
@@ -50,15 +51,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public Integer updateUser(UserDto userDto) {
         User user = new User();
-        user.setId(userDto.getId());
-        user.setName(userDto.getName());
-        user.setMobile(userDto.getMobile());
-        user.setEmail(userDto.getEmail());
-        user.setEmail(userDto.getEmail());
-        user.setIntro(userDto.getIntro());
-        if (userDto.getNumber() != null) {
-            user.setNumber(userDto.getNumber());
-        }
+        BeanUtils.copyProperties(userDto, user);
         Integer i;
         try {
             i = userDao.updateUser(user);
@@ -89,19 +82,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Integer deleteUser(Integer id) {
-        Integer i;
-        try {
-            i = userDao.deleteUser(id);
-        } catch (Exception e) {
-            i = -1;
-        }
-        return i;
-    }
-
-    @Override
     public List<UserDto> getAllUser() {
-        Query query = new Query();
+        UserQuery query = new UserQuery();
         return userDao.selectUsers(query);
     }
 
@@ -109,7 +91,8 @@ public class UserServiceImpl implements UserService {
     public Integer addUser(UserDto userDto){
         User u=User2d(userDto);
         u.setAcademy(userDao.getAcademy(u.getAcademyId()).getName());
-        return userDao.insertUser(User2d(userDto));
+        u.setPassword(userDto.getRpsw());
+        return userDao.insertUser(u);
     }
 
     @Override
@@ -127,7 +110,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public List<UserDto> searchUser(Query query) {
+    public List<UserDto> searchUser(UserQuery query) {
         List<UserDto> list = userDao.selectUsers(query);
         return list;
     }

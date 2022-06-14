@@ -4,6 +4,7 @@ import zust.competition.sys.dto.AcademyDto;
 import zust.competition.sys.dto.LoginDto;
 import zust.competition.sys.dto.MessageDto;
 import zust.competition.sys.dto.UserDto;
+import zust.competition.sys.dto.query.UserQuery;
 import zust.competition.sys.entity.Query;
 
 import java.util.List;
@@ -41,11 +42,6 @@ public interface UserService {
     Integer updatePsw(UserDto userDto);
 
     /**
-     * 根据学号/工号删除用户
-     */
-    Integer deleteUser(Integer id);
-
-    /**
      * 获取所有用户
      */
     List<UserDto> getAllUser();
@@ -58,7 +54,7 @@ public interface UserService {
     /**
      * 根据条件查询用户列表
      */
-    List<UserDto> searchUser(Query query);
+    List<UserDto> searchUser(UserQuery query);
     /**
      * 查询所有学院
      */

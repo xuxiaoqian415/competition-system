@@ -38,7 +38,6 @@
             var tableIns=table.render({
                 elem: '#request'
                 ,height:200
-                ,cellMinWidth: 'auto'
                 ,page:false
                 ,url: 'http://localhost:7000/select-serv/teacher/select/request' //数据接口
                 ,cols: [[ //表头
@@ -102,14 +101,15 @@
                 var data = obj.data;
                 var status = 0;
                 if (obj.event === 'team') {
-                    layer.open({
-                        type: 2,
-                        title: data.teamName,
-                        area: ['600px','400px'],
-                        shade:0.1,
-                        shadeClose:true,    //点击弹层外区域关闭
-                        content: 'http://localhost:7000/team-serv/team/detail/'+data.teamId
-                    });
+                    // layer.open({
+                    //     type: 2,
+                    //     title: data.teamName,
+                    //     area: ['600px','400px'],
+                    //     shade:0.1,
+                    //     shadeClose:true,    //点击弹层外区域关闭
+                    //     content: 'http://localhost:7000/team-serv/team/detail/'+data.teamId
+                    // });
+                    parent.xadmin.add_tab('团队详情', 'http://localhost:7000/team-serv/team/detail/'+data.teamId, true);
                 }
                 if (obj.event === 'cp') {
                     layer.open({

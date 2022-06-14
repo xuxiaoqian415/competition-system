@@ -19,7 +19,15 @@
                 <div class="layui-card-body ">
                     <form class="layui-form layui-col-space5" th:action="@{/team-serv/admin/team/search}" method="post">
                         <div class="layui-input-inline layui-show-xs-block">
-                            <input type="text" name="keyword" placeholder="搜索关键词" autocomplete="off" class="layui-input">
+                            <input type="text" name="keyword" placeholder="团队/负责人/竞赛名关键词" autocomplete="off" class="layui-input">
+                        </div>
+                        <div class="layui-input-inline layui-show-xs-block">
+                            <select name="status">
+                                <option value="">队伍状态</option>
+                                <option value="0">组队中</option>
+                                <option value="1">组队完成</option>
+                                <option value="2">报名成功</option>
+                            </select>
                         </div>
                         <div class="layui-input-inline layui-show-xs-block">
                             <button class="layui-btn">

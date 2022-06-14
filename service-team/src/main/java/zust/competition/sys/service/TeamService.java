@@ -59,7 +59,7 @@ public interface TeamService {
     /**
      * 模糊查询团队
      */
-    List<TeamDto> searchTeamAward(Query query);
+    List<TeamDto> searchTeamAward(TeamQuery query);
     /**
      * 根据修改时间查询团队
      */

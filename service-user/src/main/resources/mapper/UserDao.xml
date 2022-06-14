@@ -46,13 +46,19 @@
         where number=#{number}
     </select>
 
-    <select id="selectUsers" parameterType="Query" resultType="UserDto">
-        select
-        <include refid="Base_Column_List"/>
+    <select id="selectUsers" parameterType="UserQuery" resultType="UserDto">
+        select id, number, name, mobile, email, intro, type, status, academy_id, academy
         from user
         <where>
+            is_delete = 0
             <if test="type != null">
-                type = #{type}
+                AND type = #{type}
+            </if>
+            <if test="academyId != null">
+                AND academy_id = #{academyId}
+            </if>
+            <if test="status != null">
+                AND `status` = #{status}
             </if>
             <if test="keyword != null and keyword != ''">
                 <bind name="_keyword" value="'%' + keyword + '%'"/>
@@ -63,8 +69,8 @@
 
 
     <insert id="insertUser" parameterType="User">
-        insert into user (`number`,`name`,`password`,`mobile`,`email`,`intro`,`type`,academy_id,academy,operator_id,create_time)
-        values (#{number},#{name},#{password},#{mobile},#{email},#{intro},#{type},#{academyId},#{academy},#{operatorId},now())
+        insert into user (`number`,`name`,`password`,`mobile`,`email`,`intro`,`type`,academy_id,academy,operator_id)
+        values (#{number},#{name},#{password},#{mobile},#{email},#{intro},#{type},#{academyId},#{academy},#{operatorId})
     </insert>
 
     <update id="updateUser" parameterType="User">
@@ -86,7 +92,10 @@
                 `email` = #{email},
             </if>
             <if test="intro != null and intro != ''">
-                `intro` = #{intro}
+                `intro` = #{intro},
+            </if>
+            <if test="status != null">
+                `status` = #{status}
             </if>
         </set>
         where id = #{id}
@@ -103,10 +112,5 @@
         from user
         where type = 2
     </select>
-
-    <delete id="deleteUser"  parameterType="int">
-        delete from user
-        where id = #{id}
-    </delete>
 
 </mapper>

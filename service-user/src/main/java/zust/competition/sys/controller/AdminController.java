@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import zust.competition.sys.dto.AcademyDto;
 import zust.competition.sys.dto.UserDto;
+import zust.competition.sys.dto.query.UserQuery;
 import zust.competition.sys.entity.Query;
 import zust.competition.sys.service.UserService;
 
@@ -22,7 +23,7 @@ public class AdminController {
     @Autowired
     UserService userService;
 
-    @GetMapping("/toAdd")
+    @GetMapping("/add")
     public String toAddUser(Model model) {
         List<AcademyDto> academyList =userService.academyList();
         model.addAttribute("academyList",academyList);
@@ -35,64 +36,53 @@ public class AdminController {
         if(!userDto.getNowpsw().equals(userDto.getRpsw())) {
             msg = "两次密码不一致!";
             model.addAttribute("msg", msg);
-            return "admin/addUser";
+            return toAddUser(model);
         }
         Integer id = ((UserDto) session.getAttribute("thisUser")).getId();
         userDto.setOperatorId(id);
         userService.addUser(userDto);
         msg = "添加用户成功!";
         model.addAttribute("msg", msg);
-        return "admin/addUser";
-    }
-
-    @GetMapping("/delete/{id}")
-    public String deleteUser(@PathVariable("id") Integer id, Model model){
-        String msg = "";
-        if(-1 == userService.deleteUser(id)){
-            msg = "删除失败!";
-            model.addAttribute("msg", msg);
-        }
-        else{
-            msg = "删除成功!";
-            model.addAttribute("msg", msg);
-        }
-        return toUserList(model);
+        return toAddUser(model);
     }
 
     @GetMapping("/list")
     public String toUserList(Model model) {
         List<UserDto> userList = userService.getAllUser();
         model.addAttribute("userList",userList);
+        List<AcademyDto> academyList =userService.academyList();
+        model.addAttribute("academyList",academyList);
         return "admin/userList";
     }
 
     @PostMapping("/search")
-    public String searchUser(Query query, Model model) {
+    public String searchUser(UserQuery query, Model model) {
         List<UserDto> userList = userService.searchUser(query);
         model.addAttribute("userList",userList);
+        List<AcademyDto> academyList =userService.academyList();
+        model.addAttribute("academyList",academyList);
         return "admin/userList";
     }
 
     @GetMapping("/update/{id}")
     public String toUpdateUser(@PathVariable("id") Integer userId, Model model){
         UserDto thisUser = userService.getUserById(userId);
-        model.addAttribute("userInfo",thisUser);
+        model.addAttribute("thisUser",thisUser);
+        List<AcademyDto> academyList =userService.academyList();
+        model.addAttribute("academyList",academyList);
         return "admin/adminUpdateUser";
     }
 
     @PostMapping("/update")
     public String updateUser(UserDto userDto, HttpSession session, Model model){
-        String msg = "";
         Integer flag = userService.updateUser(userDto);
         if(-1 == flag){
-            msg = "修改信息失败!";
-            model.addAttribute("msg", msg);
+            model.addAttribute("msg", "修改信息失败!");
             return toUpdateUser(userDto.getId(),model);
         }
-        msg = "修改信息成功!";
         UserDto thisUser = userService.getUserById(userDto.getId());
         session.setAttribute("thisUser", thisUser);
-        model.addAttribute("msg", msg);
+        model.addAttribute("msg", "修改信息成功!");
         return toUpdateUser(userDto.getId(),model);
     }
 }

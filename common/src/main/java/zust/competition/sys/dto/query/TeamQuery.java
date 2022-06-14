@@ -42,6 +42,11 @@ public class TeamQuery implements Serializable {
     private Integer isAwarded;
 
     /**
+     * 状态：0-组队中 1-组队完成 2-报名成功
+     */
+    private Integer status;
+
+    /**
      * 模糊查询关键字
      */
     private String keyword;

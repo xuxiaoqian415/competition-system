@@ -25,7 +25,7 @@
     <select id="getTeamByTime" resultType="Team">
         select *
         from team
-        where is_awarded=#{isAwarded} and and is_delete=0
+        where is_awarded=#{isAwarded} and is_delete=0
         ORDER BY update_time DESC
     </select>
 
@@ -173,6 +173,9 @@
             </if>
             <if test="isAwarded != null">
                 AND team.is_awarded = #{isAwarded}
+            </if>
+            <if test="status != null">
+                AND team.status = #{status}
             </if>
             <if test="keyword != null and keyword != ''">
                 <bind name="_keyword" value="'%' + keyword + '%'"/>

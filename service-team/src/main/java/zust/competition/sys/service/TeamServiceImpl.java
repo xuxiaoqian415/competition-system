@@ -64,7 +64,7 @@ public class TeamServiceImpl implements TeamService {
             for (Team t:teams) {
                 TeamDto dto=Te2d(t);
                 dto.setLeaderName(userService.selectUserById(dto.getLeaderId()).getName());
-                dto.setCpName(competitionService.getCompetitionTile(t.getCpId()));
+                dto.setCpName(competitionService.getCompetitionDetail(dto.getCpId()).getTitle());
                 dtos.add(dto);
             }
         }
@@ -90,12 +90,12 @@ public class TeamServiceImpl implements TeamService {
 
 
     @Override
-    public List<TeamDto> searchTeamAward(Query query) {
+    public List<TeamDto> searchTeamAward(TeamQuery query) {
         List<TeamDto> teams = teamDao.selectTeamList(query);
         if(teams!=null && teams.size()>=0){
             for (TeamDto dto:teams) {
                 dto.setLeaderName(userService.selectUserById(dto.getLeaderId()).getName());
-                dto.setCpName(competitionService.getCompetitionTile(dto.getCpId()));
+                dto.setCpName(competitionService.getCompetitionDetail(dto.getCpId()).getTitle());
                 teams.add(dto);
             }
         }

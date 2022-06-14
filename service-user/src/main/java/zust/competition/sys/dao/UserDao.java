@@ -3,6 +3,7 @@ package zust.competition.sys.dao;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import zust.competition.sys.dto.UserDto;
+import zust.competition.sys.dto.query.UserQuery;
 import zust.competition.sys.entity.Academy;
 import zust.competition.sys.entity.Message;
 import zust.competition.sys.entity.Query;
@@ -40,7 +41,7 @@ public interface UserDao {
     /**
      * 根据条件查询所有用户
      */
-    List<UserDto> selectUsers(Query query);
+    List<UserDto> selectUsers(UserQuery query);
 
     /**
      * 增加用户

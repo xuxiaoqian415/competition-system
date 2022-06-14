@@ -17,35 +17,50 @@
   <div class="layui-row">
     <h1>修改个人信息</h1>
     <form class="layui-form" th:action="@{/user-serv/admin/user/update}" method="post">
-      <input type="hidden" name="id" th:value="${userInfo.id}">
+      <input type="hidden" name="id" th:value="${thisUser.id}">
       <div class="layui-form-item">
-        <label class="layui-form-label" th:text="${userInfo.type==1?'工号：':'学号：'}"></label>
+        <label class="layui-form-label">学号/工号：</label>
         <div class="layui-input-inline">
-          <input type="text" name="number" required  lay-verify="required" class="layui-input" th:value="${userInfo.number}">
+          <input th:value="${thisUser.number}" type="text" name="number" required  lay-verify="required" class="layui-input">
         </div>
       </div>
       <div class="layui-form-item">
         <label class="layui-form-label">真实姓名：</label>
         <div class="layui-input-inline">
-          <input type="text" name="name" required  lay-verify="required" class="layui-input" th:value="${userInfo.name}">
+          <input th:value="${thisUser.name}" type="text" name="name" required  lay-verify="required" class="layui-input">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <label class="layui-form-label">所在学院：</label>
+        <div class="layui-input-inline">
+          <input disabled readonly class="layui-input layui-disabled" th:value="${thisUser.academy}">
+        </div>
+      </div>
+      <div class="layui-form-item">
+        <div class="layui-input-inline">
+          <select name="status">
+            <option value="">请选择状态</option>
+            <option value="0">在读</option>
+            <option value="1">毕业</option>
+          </select>
         </div>
       </div>
       <div class="layui-form-item">
         <label class="layui-form-label">手机号：</label>
         <div class="layui-input-inline">
-          <input type="text" name="mobile" required  lay-verify="required" class="layui-input" th:value="${userInfo.mobile}">
+          <input th:value="${thisUser.mobile}" type="text" name="mobile" required  lay-verify="required" class="layui-input">
         </div>
       </div>
       <div class="layui-form-item">
         <label class="layui-form-label">邮箱：</label>
         <div class="layui-input-inline">
-          <input type="text" name="email" required  lay-verify="required" class="layui-input" th:value="${userInfo.email}">
+          <input th:value="${thisUser.email}" type="text" name="email" required  lay-verify="required" class="layui-input">
         </div>
       </div>
       <div class="layui-form-item">
-        <label class="layui-form-label">个人介绍：</label>
+        <label class="layui-form-label">个人简介：</label>
         <div class="layui-input-inline">
-          <input type="text" name="intro" class="layui-input" th:value="${userInfo.intro}">
+          <input th:value="${thisUser.intro}" type="text" name="intro" class="layui-input">
         </div>
       </div>
       <div class="layui-form-item">

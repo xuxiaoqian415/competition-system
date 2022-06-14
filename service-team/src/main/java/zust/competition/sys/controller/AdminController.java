@@ -38,11 +38,12 @@ public class AdminController {
         model.addAttribute("teamList",teamList);
         return "admin/no_isAwarded";
     }
+
     /**
      * 查询未评奖团队
      */
     @PostMapping("/searchNoAward")
-    public String searchNoAward(Query query, Model model) {
+    public String searchNoAward(TeamQuery query, Model model) {
         query.setIsAwarded(0);
         List<TeamDto> teamList = teamService.searchTeamAward(query);
         model.addAttribute("teamList",teamList);
@@ -98,7 +99,7 @@ public class AdminController {
      * 模糊查询已评奖团队
      */
     @PostMapping("/searchWinList")
-    public String searchWinList(Query query, Model model) {
+    public String searchWinList(TeamQuery query, Model model) {
         query.setIsAwarded(1);
         List<TeamDto> teamList = teamService.searchTeamAward(query);
         List<AcademyDto> academyList=userService.getAcademyList();

@@ -38,7 +38,7 @@
                                 </a>
                             </td>
                             <td>
-                                <a th:onclick="|parent.xadmin.add_tab('负责人个人主页',[['/user-serv/user/showhome/'+${a.leaderId}]],true)|"
+                                <a th:onclick="|parent.xadmin.add_tab('负责人个人主页',[['/user-serv/user/showHome?id='+${a.leaderId}]],true)|"
                                    href="javascript:;" th:text="${a.leaderName}">
                                 </a>
                             </td>
