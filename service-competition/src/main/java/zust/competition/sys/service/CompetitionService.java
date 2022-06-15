@@ -5,6 +5,7 @@ import zust.competition.sys.entity.Competition;
 import zust.competition.sys.entity.Query;
 import zust.competition.sys.entity.UserTeam;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 public interface CompetitionService {
@@ -50,31 +51,19 @@ public interface CompetitionService {
     CompetitionDto getCompetitionDetail(Integer id);
 
     /**
+     * 用户根据竞赛id获取竞赛附件路径
+     */
+    String getSupplement(Integer id);
+
+    /**
      * 判断当前用户的类型
      * return：0-不可报名（教师）1-未报名过该竞赛 2-已创建团队 3-已加入团队
      */
     Integer getUserType(Integer userId, Integer cpId);
 
-
-
-
-
-
-
-
     /**
-     * 根据学生id获取已报名竞赛
+     * 下载文件
      */
-    List<CompetitionDto> getApplyList(Integer id);
-
-    /**
-     * 查看学生是否已报名某竞赛
-     */
-    Integer ifHaveApply(UserTeam stuComp);
-
-    /**
-     * 增加一条student-competition记录
-     */
-    void insertUserTeam(UserTeam stuComp);
+    void download(String filePath, HttpServletResponse response);
 
 }

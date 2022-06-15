@@ -1,6 +1,8 @@
 package zust.competition.sys.controller;
 
+import cn.hutool.core.util.StrUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +14,9 @@ import zust.competition.sys.entity.Competition;
 import zust.competition.sys.entity.UserTeam;
 import zust.competition.sys.service.CompetitionService;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.util.List;
 
 @Controller
@@ -21,6 +25,8 @@ public class UserController {
 
     @Autowired
     CompetitionService competitionService;
+    @Value("${upload.location.files}")
+    private String uploadFilesPath;
 
     /**
      * 访问竞赛信息列表
@@ -60,24 +66,20 @@ public class UserController {
         return "user/competitionDetail";
     }
 
-
-
-
-
-
-
-
-
-
     /**
-     * 已报名竞赛列表
+     * 下载附件
      */
-    @GetMapping("/applied/list")
-    public String toApplyList(HttpSession session, Model model) {
-        UserDto thisUser = (UserDto) session.getAttribute("thisUser");
-        List<CompetitionDto> list = competitionService.getApplyList(thisUser.getId());
-        model.addAttribute("applyList",list);
-        return "student/applyList";
+    @GetMapping("/download/{id}")
+    public String download(@PathVariable("id") Integer id,
+                           HttpServletResponse response, Model model, HttpSession session) {
+        String fileName = competitionService.getSupplement(id);
+        if (StrUtil.isBlank(fileName)) {
+            model.addAttribute("msg", "文件不能为空");
+            return competitionDetail(id, model, session);
+        }
+        String filePath = uploadFilesPath + File.separator +fileName;
+        competitionService.download(filePath, response);
+        model.addAttribute("msg", "文件下载成功");
+        return competitionDetail(id, model, session);
     }
-
 }

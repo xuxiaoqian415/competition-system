@@ -33,8 +33,12 @@ public class AdminController {
     private CompetitionService competitionService;
     @Value("${upload.location.pics}")
     private String uploadPicsPath;
+    @Value("${upload.location.files}")
+    private String uploadFilesPath;
     @Value("${upload.route.pics}")
     private String uploadPicsRoute;
+    @Value("${upload.route.files}")
+    private String uploadFilesRoute;
     @Value("${gateway.route.name}")
     private String gatewayRoute;
 
@@ -102,10 +106,40 @@ public class AdminController {
      * 上传竞赛附件
      */
     @PostMapping("/post/supplement")
-    public String postSupplement(Model model) {
-
-        model.addAttribute("msg3", "文件上传成功");
-        return "admin/postCompetition";
+    public String postSupplement(HttpServletRequest request, Model model, HttpSession session) {
+        Integer userId = ((UserDto) session.getAttribute("thisUser")).getId();
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+        File fileDir = new File(uploadFilesPath);
+        if (!fileDir.exists()) fileDir.mkdirs();
+        //页面控件的文件流
+        MultipartFile multipartFile = multipartRequest.getFile("supplement");
+        Integer cpId = 0;
+        if (multipartFile.getOriginalFilename() != null && !multipartFile.getOriginalFilename().equals("")) {
+            //生成文件名称
+            String oldFileName = multipartFile.getOriginalFilename();
+            String newFileName = (new Date()).getTime() + oldFileName;
+            //拼成完整的文件保存路径加文件
+            String firePath = uploadFilesPath + File.separator + newFileName;
+            File file = new File(firePath);
+            try {
+                multipartFile.transferTo(file);
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            // 将文件信息保存到数据库
+            CompetitionDto dto = new CompetitionDto();
+            cpId = Integer.parseInt(request.getParameter("cpId"));
+            dto.setId(cpId);
+            dto.setSupplement(oldFileName);
+            dto.setSupplementPath(newFileName);
+            dto.setOperatorId(userId);
+            competitionService.updateCompetition(dto);
+            model.addAttribute("cpId", cpId);
+            model.addAttribute("msg3", "文件上传成功");
+        }
+        return toUpdateCompetition(cpId, model);
     }
 
     /**

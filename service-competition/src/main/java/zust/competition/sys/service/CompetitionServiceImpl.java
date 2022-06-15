@@ -13,6 +13,9 @@ import zust.competition.sys.entity.Query;
 import zust.competition.sys.entity.Team;
 import zust.competition.sys.entity.UserTeam;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -146,6 +149,15 @@ public class CompetitionServiceImpl implements CompetitionService {
     }
 
     @Override
+    public String getSupplement(Integer id) {
+        Competition detail = competitionDao.getCompetitionDetail(id);
+        if (detail == null) {
+            return null;
+        }
+        return detail.getSupplementPath();
+    }
+
+    @Override
     public Integer getUserType(Integer userId, Integer cpId) {
         // 查看该竞赛下是否有当前用户为负责人的团队
         TeamQuery query = new TeamQuery();
@@ -161,40 +173,45 @@ public class CompetitionServiceImpl implements CompetitionService {
         return 1;
     }
 
-
-
-
-
-
-
-
     @Override
-    public List<CompetitionDto> getApplyList(Integer id) {
-        List<CompetitionDto> list = competitionDao.getApplyList(id);
-//        for (CompetitionDto c : list) {
-//            Integer teamId = c.getTeamId();
-//            List<SelectDto> teachers = selectService.getTeacherByTeamId(teamId);
-//            if (teachers!=null && teachers.size()!=0) {
-//                c.setHaveChoose(1);
-//                c.setTeacherName(teachers.get(0).getTeacherName());
-//            }
-//            else {
-//                c.setHaveChoose(0);
-//            }
-//        }
-        return list;
-    }
+    public void download(String filePath, HttpServletResponse response) {
+        File file = new File(filePath);
+        if (!file.exists()) {
+            System.out.println("文件不存在！");
+            return;
+        }
+        InputStream is = null;
+        OutputStream os = null;
+        try {
+            is = new FileInputStream(file);
+            // 防止下载的文件名称乱码
+            String filename = URLEncoder.encode(file.getName(), "UTF-8");
+            response.setContentType("application/octet-stream;charset=UTF-8");
+            response.setHeader("Content-Disposition", "attachment; filename=\"" + filename + "\"");
 
-    @Override
-    public Integer ifHaveApply(UserTeam stuComp) {
-        if (competitionDao.ifHaveApply(stuComp) == null || competitionDao.ifHaveApply(stuComp).size() == 0)
-            return 0;
-        else
-            return 1;
-    }
-
-    @Override
-    public void insertUserTeam(UserTeam stuComp) {
-        competitionDao.insertUserTeam(stuComp);
+            os = response.getOutputStream();
+            byte[] bytes = new byte[1024 * 10];
+            int len;
+            while ((len = is.read(bytes)) != -1) {
+                os.write(bytes, 0, len);
+            }
+            os.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            // 记得关闭流
+            try {
+                if (null != os) {
+                    os.close();
+                    System.out.println("os流关闭");
+                }
+                if (null != is) {
+                    is.close();
+                    System.out.println("is流关闭");
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

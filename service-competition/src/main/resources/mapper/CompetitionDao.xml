@@ -40,6 +40,9 @@
             <if test="supplement != null and supplement != ''">
                 supplement = #{supplement},
             </if>
+            <if test="supplementPath != null and supplementPath != ''">
+                supplement_path = #{supplementPath},
+            </if>
             operator_id = #{operatorId}
         </set>
         where id = #{id}
@@ -77,10 +80,6 @@
           AND is_delete = 0
     </select>
 
-
-
-
-
     <select id="getCompetitionByApply" resultType="Competition">
         select *
         from competition
@@ -88,13 +87,5 @@
           and apply_end &gt;= #{currentTime}
           AND is_delete = 0
     </select>
-
-<!--    <select id="getApplyList" parameterType="int" resultType="CompetitionDto">-->
-<!--        select c.id as id, c.cp_name as cpName, t.id as teamId, t.team_name as teamName, u.name as leaderName-->
-<!--        from student_competition sc left join competition c on sc.competition_id = c.id-->
-<!--                                    left join team t on sc.team_id = t.id-->
-<!--                                    left join user u on t.leader_id = u.id-->
-<!--        where sc.student_id = #{id}-->
-<!--    </select>-->
 
 </mapper>

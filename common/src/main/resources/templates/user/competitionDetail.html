@@ -92,8 +92,8 @@
                         </li>
                     </ul>
                     <hr>
-                    <ul style="text-align:right;margin-right: 300px;" th:if='${detail.supplement != ""}'>
-                        附件：
+                    <ul style="text-align:right;margin-right: 300px;" th:if='${detail.supplement != null}'>
+                        附件：<a th:text="${detail.supplement}" th:href="@{/competition-serv/competition/download/}+${detail.id}"/>
                     </ul>
                 </div>
             </div>
