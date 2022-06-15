@@ -38,13 +38,13 @@
 
         table.render({
             elem: '#myTable'
-            ,height:200
-            ,page:false
+            ,height: 150
+            ,page: false
             ,url: 'http://localhost:7000/team-serv/admin/team/count/participate2' //数据接口
             ,cols:
                 [
                     [ //表头
-                        {field: 'academyId', title: ' 学院ID', align:'center', width:'5%'},
+                        {field: 'academyId', title: ' 学院ID', align:'center', width:'10%'},
                         {field: 'academy', title: '学院名称', align:'center', width:'15%'},
                         {field: 'count', title: '参赛团队总数量', align:'center', width:'10%'}
                     ]

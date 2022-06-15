@@ -5,22 +5,6 @@
         id,team_id,teacher_id,select_type,flag
     </sql>
 
-<!--    <insert id="insertSelect" parameterType="Select">-->
-<!--        insert into `team_teacher` (team_id,teacher_id,select_type,flag)-->
-<!--        values (#{teamId},#{teacherId},#{selectType},#{flag})-->
-<!--    </insert>-->
-
-<!--    <select id="noSelectTeams" parameterType="Integer" resultType="TeamDto" >-->
-<!--        select *-->
-<!--        from `team_teacher`-->
-<!--                 LEFT JOIN-->
-<!--             (	select team.id as team_id,cp_id,team_name,cp_name,leader_id, name as leaderName ,member,team_intro-->
-<!--                  from team LEFT JOIN user on user.id=leader_id-->
-<!--                            LEFT JOIN competition on cp_id=competition.id ) as teamDto-->
-<!--             on `team_teacher`.team_id=teamDto.team_id-->
-<!--        where teacher_id=#{id} and flag = 0-->
-<!--    </select>-->
-
     <select id="getRequestList" parameterType="Integer" resultType="TeamTeacher" >
         select *
         from `team_teacher`

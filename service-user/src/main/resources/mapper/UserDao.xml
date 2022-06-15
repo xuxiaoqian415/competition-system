@@ -15,28 +15,28 @@
     </select>
 
     <select id="selectUser" parameterType="Query" resultType="UserDto">
-        select id, number, name, mobile, email, intro, type, status, academy
-        from user
+        select user.id, number, user.name, mobile, email, intro, type, status, academy_id, a.name as academy
+        from user LEFT JOIN academy a on a.id = user.academy_id
         <where>
             <if test="id != null">
-                id = #{id}
+                `user`.id = #{id}
             </if>
             <if test="number != null">
-                AND number = #{number}
+                AND `user`.number = #{number}
             </if>
             <if test="password != null">
-                AND password = #{password}
+                AND `user`.password = #{password}
             </if>
             <if test="type != null">
-                AND type = #{type}
+                AND `user`.type = #{type}
             </if>
         </where>
     </select>
 
     <select id="selectUserById" resultType="User">
-        select *
-        from user
-        where id=#{id}
+        select user.id, number, user.name, mobile, email, intro, type, status, academy_id, a.name as academy
+        from user LEFT JOIN academy a on a.id = user.academy_id
+        where user.id=#{id}
     </select>
 
     <select id="selectUserByNumber" resultType="User">
@@ -47,30 +47,30 @@
     </select>
 
     <select id="selectUsers" parameterType="UserQuery" resultType="UserDto">
-        select id, number, name, mobile, email, intro, type, status, academy_id, academy
-        from user
+        select user.id, number, user.name, mobile, email, intro, type, status, academy_id, a.name as academy
+        from user LEFT JOIN academy a on a.id = user.academy_id
         <where>
-            is_delete = 0
+            `user`.is_delete = 0
             <if test="type != null">
-                AND type = #{type}
+                AND `user`.type = #{type}
             </if>
             <if test="academyId != null">
-                AND academy_id = #{academyId}
+                AND `user`.academy_id = #{academyId}
             </if>
             <if test="status != null">
-                AND `status` = #{status}
+                AND `user`.`status` = #{status}
             </if>
             <if test="keyword != null and keyword != ''">
                 <bind name="_keyword" value="'%' + keyword + '%'"/>
-                AND (name LIKE #{_keyword} or number LIKE #{_keyword})
+                AND (`user`.name LIKE #{_keyword} or `user`.number LIKE #{_keyword})
             </if>
         </where>
     </select>
 
 
     <insert id="insertUser" parameterType="User">
-        insert into user (`number`,`name`,`password`,`mobile`,`email`,`intro`,`type`,academy_id,academy,operator_id)
-        values (#{number},#{name},#{password},#{mobile},#{email},#{intro},#{type},#{academyId},#{academy},#{operatorId})
+        insert into user (`number`,`name`,`password`,`mobile`,`email`,`intro`,`type`,academy_id,operator_id)
+        values (#{number},#{name},#{password},#{mobile},#{email},#{intro},#{type},#{academyId},#{operatorId})
     </insert>
 
     <update id="updateUser" parameterType="User">
@@ -102,15 +102,15 @@
     </update>
 
     <select id="getTeacherList" resultType="UserDto">
-        select <include refid="Base_Column_List"/>
-        from user
-        where type = 1
+        select user.id, number, user.name, mobile, email, intro, type, status, academy_id, a.name as academy
+        from user LEFT JOIN academy a on a.id = user.academy_id
+        where user.type = 1
     </select>
 
     <select id="getStudentList" resultType="UserDto">
-        select <include refid="Base_Column_List"/>
-        from user
-        where type = 2
+        select user.id, number, user.name, mobile, email, intro, type, status, academy_id, a.name as academy
+        from user LEFT JOIN academy a on a.id = user.academy_id
+        where user.type = 2
     </select>
 
 </mapper>

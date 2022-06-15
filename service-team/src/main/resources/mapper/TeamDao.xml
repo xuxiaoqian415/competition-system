@@ -1,22 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="zust.competition.sys.dao.TeamDao">
-    <!--    <resultMap id="BaseResultMap" type="com.info.competition.model.Team">-->
-    <!--        <result column="id" jdbcType="INTEGER" property="id"/>-->
-    <!--        <result column="cp_id" jdbcType="INTEGER" property="cpId"/>-->
-    <!--        <result column="team_name" jdbcType="VARCHAR" property="teamName"/>-->
-    <!--        <result column="lead_id" jdbcType="INTEGER" property="leaderId"/>-->
-    <!--        <result column="team_intro" jdbcType="VARCHAR" property="teamIntro"/>-->
-    <!--        <result column="member" jdbcType="VARCHAR" property="member"/>-->
-    <!--    </resultMap>-->
-<!--    <resultMap id="BaseResultMap" type="com.info.competition.model.Team">-->
-<!--        <result column="id" jdbcType="INTEGER" property="id"/>-->
-<!--        <result column="cp_id" jdbcType="INTEGER" property="cpId"/>-->
-<!--        <result column="team_name" jdbcType="VARCHAR" property="teamName"/>-->
-<!--        <result column="lead_id" jdbcType="INTEGER" property="leaderId"/>-->
-<!--        <result column="team_intro" jdbcType="VARCHAR" property="teamIntro"/>-->
-<!--        <result column="member" jdbcType="VARCHAR" property="member"/>-->
-<!--    </resultMap>-->
+
     <select id="academyList" resultType="Academy" >
         SELECT *
         from academy
@@ -50,7 +35,7 @@
         WHERE is_delete=0 AND is_awarded=1 AND
                 leader_id IN
                 (select `user`.id
-                 from `user` LEFT JOIN academy ON `user`.academy=academy.`name`
+                 from `user` LEFT JOIN academy ON `user`.academy_id=academy.id
                  WHERE academy.id=#{id})
     </select>
 
@@ -66,13 +51,8 @@
         </where>
         ) u
         on academy.id = u.academy_id
-        GROUP BY academy.name
+        GROUP BY academy.id
     </select>
-
-<!--    <select id="countByAcademy" resultType="CountQuery" parameterType="CountQuery">-->
-<!--        SELECT -->
-<!--        FROM team LEFT JOIN user u on team.leader_id = u.id-->
-<!--    </select>-->
 
     <insert id="insertMessage" parameterType="Message"  useGeneratedKeys="true" keyProperty="id">
         insert into message (sender_id,receiver_id,content,operator_id,jump_type)
@@ -167,8 +147,9 @@
     </insert>
 
     <select id="getMember" resultType="UserTeamDto">
-        SELECT user_team.*, u.name as studentName, u.academy as academy, u.mobile as mobile
+        SELECT user_team.*, u.name as studentName, a.name as academy, u.mobile as mobile
         from user_team LEFT JOIN user u on user_team.student_id = u.id
+            LEFT JOIN academy a on u.academy_id = a.id
         WHERE user_team.team_id=#{teamId} AND user_team.status = 1
             AND user_team.is_delete = 0
     </select>
