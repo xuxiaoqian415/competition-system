@@ -16,7 +16,7 @@
     <button class="layui-btn layui-btn-primary"><a th:href="@{/competition-serv/competition/detail/}+${cpId}">返回</a></button>
     <div class="layui-row">
         <h1>加入团队</h1>
-        <form class="layui-form" th:action="@{/team-serv/team/join}" method="post">
+        <form class="layui-form" th:action="@{/select-serv/student/join}" method="post">
             <input type="hidden" name="cpId" th:value="${cpId}">
             <div class="layui-form-item">
                 <label class="layui-form-label">邀请码：</label>

@@ -9,15 +9,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import zust.competition.sys.dao.TeamDao;
 import zust.competition.sys.dto.TeamDto;
+import zust.competition.sys.dto.TeamTeacherDto;
+import zust.competition.sys.dto.UserTeamDto;
 import zust.competition.sys.dto.query.TeamQuery;
 import zust.competition.sys.entity.Query;
 import zust.competition.sys.entity.Team;
+import zust.competition.sys.entity.UserTeam;
 import zust.competition.sys.service.TeamService;
 
 import java.util.List;
 
 @Controller
-@RequestMapping("/dao")
+@RequestMapping("/service")
 public class TeamController {
 
     @Autowired
@@ -53,5 +56,53 @@ public class TeamController {
     @RequestMapping("/updateTeam")
     public Integer updateTeam(@RequestBody Team team) {
         return teamDao.updateTeam(team);
+    }
+
+    @ResponseBody
+    @RequestMapping("/joinTeam")
+    public Integer joinTeam(@RequestBody UserTeamDto userTeamDto) {
+        return teamService.joinTeam(userTeamDto);
+    }
+
+    @ResponseBody
+    @RequestMapping("/getLeaderTeam")
+    public TeamDto getLeaderTeam(@RequestParam("leaderId") Integer leaderId, @RequestParam("cpId") Integer cpId) {
+        return teamService.getLeaderTeam(leaderId, cpId);
+    }
+
+    @ResponseBody
+    @RequestMapping("/getInviteTeacher")
+    public List<String> getInviteTeacher(@RequestParam("teamId") Integer teamId) {
+        return teamService.getInviteTeacher(teamId);
+    }
+
+    @ResponseBody
+    @RequestMapping("/inviteTeacher")
+    public Integer inviteTeacher(@RequestBody TeamTeacherDto dto) {
+        return teamService.inviteTeacher(dto);
+    }
+
+    @ResponseBody
+    @RequestMapping("/requestTeam")
+    public List<UserTeamDto> requestTeam(@RequestParam("id") Integer id) {
+        return teamService.requestTeam(id);
+    }
+
+    @ResponseBody
+    @RequestMapping("/updateRequestStatus")
+    public Integer updateRequestStatus(@RequestParam("id") Integer id, @RequestParam("type") Integer type) {
+        return teamService.updateRequestStatus(id, type);
+    }
+
+    @ResponseBody
+    @RequestMapping("/getUserTeam")
+    public UserTeam getUserTeam(@RequestParam("id") Integer id) {
+        return teamService.getUserTeam(id);
+    }
+
+    @ResponseBody
+    @RequestMapping("/ownRequest")
+    public List<UserTeamDto> ownRequest(@RequestParam("id") Integer id) {
+        return teamService.ownRequest(id);
     }
 }

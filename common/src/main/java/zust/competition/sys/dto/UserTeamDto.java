@@ -2,9 +2,10 @@ package zust.competition.sys.dto;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 @Data
-public class UserTeamDto {
+public class UserTeamDto implements Serializable {
     private Integer id;
 
     private Integer studentId;

@@ -14,9 +14,6 @@ public interface UserService {
     @RequestMapping("/dao/getTeacherList")
     List<UserDto> getTeacherList();
 
-    @RequestMapping("/dao/getStudentList")
-    List<UserDto> getStudentList();
-
     @RequestMapping("/dao/selectUserById")
     UserDto selectUserById(@RequestParam("id") Integer id);
 

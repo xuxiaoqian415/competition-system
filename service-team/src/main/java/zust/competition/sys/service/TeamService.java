@@ -49,13 +49,11 @@ public interface TeamService {
      */
     List<UserTeamDto> getMember(Integer teamId);
 
-
+    /**
+     * 按学院统计团队情况
+     */
     List<CountQuery> countByAcademy(CountQuery query);
 
-    /**
-     * 根据学院查询团队获奖信息
-     */
-    List<TeamDto> getTeamByAcademy(Integer id);
     /**
      * 模糊查询团队
      */
@@ -70,13 +68,11 @@ public interface TeamService {
      * 未获奖操作
      */
     Integer noAwarded(Integer teamId);
+
     /**
      * 获奖录入
      */
     Integer updateResult(TeamDto dto);
-
-
-
 
     /**
      * 创建团队
@@ -96,7 +92,7 @@ public interface TeamService {
     /**
      * 负责人查看某竞赛下的已有团队
      */
-    TeamDto getLeaderTeam(Integer leaderId,Integer cpId) ;
+    TeamDto getLeaderTeam(Integer leaderId,Integer cpId);
 
     /**
      * 根据TeamId找已邀请的老师
@@ -138,13 +134,6 @@ public interface TeamService {
      */
     TeamDto getTeamDto(TeamQuery query);
 
-
-
-    /**
-     * 获取自己负责的团队
-     */
-    List<TeamDto> getOwnTeam(Integer id);
-
     /**
      * 获取所有团队信息
      */
@@ -154,10 +143,12 @@ public interface TeamService {
      * 查询我负责的团队
      */
     List<TeamDto> ownLead(Integer id);
+
     /**
      * 修改team
      */
    Integer updateTeam(TeamDto dto);
+
     /**
      * 查询我负责的团队的组队申请
      */

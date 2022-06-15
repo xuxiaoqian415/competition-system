@@ -13,12 +13,12 @@ import java.util.List;
 @FeignClient("service-team")
 public interface TeamService {
 
-    @RequestMapping("/dao/selectTeamList")
+    @RequestMapping("/service/selectTeamList")
     List<TeamDto> selectTeamList(TeamQuery query);
 
-    @RequestMapping("/dao/getTeam")
+    @RequestMapping("/service/getTeam")
     TeamDto getTeam(TeamQuery query);
 
-    @RequestMapping("/dao/getMyTeamByCpId")
+    @RequestMapping("/service/getMyTeamByCpId")
     Team getMyTeamByCpId(@RequestParam("userId") Integer userId, @RequestParam("cpId") Integer cpId);
 }

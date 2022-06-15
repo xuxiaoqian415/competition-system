@@ -66,9 +66,9 @@
                                 <td th:text="${a.academy}"></td>
                                 <td th:text="${a.mobile}"></td>
                                 <td th:text="${a.role}"></td>
-                                <td th:if="${a.status == 1 && detail.status == 0}">
+                                <td th:if="${detail.isLeader == 1 && a.status == 1 && detail.status == 0}">
                                     <a class="layui-btn layui-btn-warm" lay-event="cancel" th:text="'取消同意'"
-                                       th:href="@{/team-serv/team/request/choice?id=}+${a.id}+@{&type=-10}"></a>
+                                       th:href="@{/select-serv/student/request/choice?id=}+${a.id}+@{&type=-10}"></a>
                                 </td>
                             </tr>
                             </tbody>

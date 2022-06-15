@@ -72,12 +72,6 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public List<TeamDto> getTeamByAcademy(Integer id) {
-        List<Team> teams=teamDao.getTeamByAcademy(id);
-        return changeTeamDtoList(teams);
-    }
-
-    @Override
     public List<CountQuery> countByAcademy(CountQuery query) {
         return teamDao.countByAcademy(query);
     }
@@ -343,7 +337,7 @@ public class TeamServiceImpl implements TeamService {
     public List<TeamDto> getAllTeam() {
         TeamQuery query = new TeamQuery();
         List<TeamDto> list = teamDao.selectTeamList(query);
-        return getMember(list);
+        return list;
     }
     @Override
     public TeamDto getTeamDetail(Integer id) {
@@ -466,7 +460,7 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public List<TeamDto> searchTeam(TeamQuery query) {
         List<TeamDto> list = teamDao.selectTeamList(query);
-        return getMember(list);
+        return list;
     }
 
 
@@ -497,33 +491,6 @@ public class TeamServiceImpl implements TeamService {
         TeamQuery query = new TeamQuery();
         query.setTeamId(id);
         return teamDao.getTeam(query);
-    }
-
-    @Override
-    public List<TeamDto> getOwnTeam(Integer id) {
-        TeamQuery query = new TeamQuery();
-        query.setLeaderId(id);
-        List<TeamDto> list = teamDao.selectTeamList(query);
-        return getMember(list);
-    }
-
-    public List<TeamDto> getMember(List<TeamDto> list) {
-//        for (TeamDto t : list) {
-//            StringBuffer memberNames = new StringBuffer();
-//            if (t.getMember() != null && !t.getMember().equals("")) {
-//                String[] members = t.getMember().split(";");
-//                for (String m : members) {
-//                    UserDto u = userService.selectUserById(Integer.parseInt(m));
-//                    if (u != null) {
-//                        memberNames.append(u.getName() + ",");
-//                    }
-//                }
-//                t.setMemberNames(memberNames.toString());
-//            }
-//            else
-//                t.setMemberNames("");
-//        }
-        return list;
     }
 
     @Override

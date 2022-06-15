@@ -25,17 +25,17 @@
                         </button>
                         <button type="button" class="layui-btn layui-btn-primary layui-btn-radius"
                                 th:if="${detail.userType == 1}">
-                            <a th:href="@{/team-serv/team/join/}+${detail.id}" th:text="'加入团队'"></a>
+                            <a th:href="@{/select-serv/student/join/}+${detail.id}" th:text="'加入团队'"></a>
                         </button>
                         <button type="button" class="layui-btn layui-btn-primary layui-btn-radius"
                                 th:if="${detail.userType == 2}">
-                            <a th:onclick="|parent.xadmin.add_tab('已有团队',[['/team-serv/team/lead/'+${detail.id}]],true)|"
+                            <a th:onclick="|parent.xadmin.add_tab('已有团队',[['/select-serv/student/lead/'+${detail.id}]],true)|"
                                href="javascript:;" th:text="'您已报名并创建团队'">
                             </a>
                         </button>
                         <button type="button" class="layui-btn layui-btn-primary layui-btn-radius"
                                 th:if="${detail.userType == 3}">
-                            <a th:onclick="|parent.xadmin.add_tab('我发送的组队请求','/team-serv/team/my/request',true)|"
+                            <a th:onclick="|parent.xadmin.add_tab('我发送的组队请求','/select-serv/student/my/request',true)|"
                                href="javascript:;" th:text="'您已报名并组队，点击查看详情 >>'">
                             </a>
                         </button>

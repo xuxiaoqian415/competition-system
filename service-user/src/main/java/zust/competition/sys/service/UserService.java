@@ -22,16 +22,6 @@ public interface UserService {
     UserDto getUserById(Integer userId);
 
     /**
-     * 获取学生列表
-     */
-    List<UserDto> getStudentList();
-
-    /**
-     * 获取所有老师信息
-     */
-    List<UserDto> getTeacherList();
-
-    /**
      * 更新用户
      */
     Integer updateUser(UserDto userDto);
@@ -55,6 +45,7 @@ public interface UserService {
      * 根据条件查询用户列表
      */
     List<UserDto> searchUser(UserQuery query);
+
     /**
      * 查询所有学院
      */

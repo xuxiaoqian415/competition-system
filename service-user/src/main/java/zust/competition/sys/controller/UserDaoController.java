@@ -23,12 +23,6 @@ public class UserDaoController {
     private UserService userService;
 
     @ResponseBody
-    @RequestMapping("/getStudentList")
-    public List<UserDto> getStudentList() {
-        return userDao.getStudentList();
-    }
-
-    @ResponseBody
     @RequestMapping("/getTeacherList")
     public List<UserDto> getTeacherList() {
         return userDao.getTeacherList();

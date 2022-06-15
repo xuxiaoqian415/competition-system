@@ -14,6 +14,7 @@ import java.util.List;
 
 @Mapper
 public interface UserDao {
+
     /**
      * 查询所有学院
      */
@@ -62,10 +63,5 @@ public interface UserDao {
      * 获取老师列表
      */
     List<UserDto> getTeacherList();
-
-    /**
-     * 根据id删除用户
-     */
-    Integer deleteUser(@Param("id") Integer id);
 
 }

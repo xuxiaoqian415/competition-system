@@ -40,7 +40,7 @@
                     <div th:if="${not #strings.isEmpty(inviteTeacher)}" style="margin: 20px">
                         <h3 th:text="${inviteTeacher}"></h3>
                     </div>
-                    <form class="layui-form" th:action="@{/team-serv/team/invite}" method="post">
+                    <form class="layui-form" th:action="@{/select-serv/student/invite}" method="post">
                         <input type="hidden" name="teamId" th:value="${teamDto.id}">
                         <input type="hidden" name="cpId" th:value="${teamDto.cpId}">
                         <div class="layui-form-item">

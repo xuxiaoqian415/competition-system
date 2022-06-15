@@ -96,6 +96,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<UserDto> searchUser(UserQuery query) {
+        List<UserDto> list = userDao.selectUsers(query);
+        return list;
+    }
+
+    @Override
     public List<AcademyDto> academyList() {
         List<AcademyDto> dtos=new ArrayList<>();
         List<Academy> academies=userDao.academyList();
@@ -106,23 +112,6 @@ public class UserServiceImpl implements UserService {
             }
         }
         return dtos;
-    }
-
-
-    @Override
-    public List<UserDto> searchUser(UserQuery query) {
-        List<UserDto> list = userDao.selectUsers(query);
-        return list;
-    }
-
-    @Override
-    public List<UserDto> getStudentList() {
-        return userDao.getStudentList();
-    }
-
-    @Override
-    public List<UserDto> getTeacherList(){
-        return userDao.getTeacherList();
     }
 
     private AcademyDto academy2d(Academy a){

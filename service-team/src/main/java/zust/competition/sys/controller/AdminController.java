@@ -106,7 +106,7 @@ public class AdminController {
      * 学院参赛信息统计
      */
     @GetMapping("/count/participate")
-    public String toCountParticipate(Model model) {
+    public String toCountParticipate() {
         return "user/participate_count";
     }
     @ResponseBody
@@ -122,12 +122,7 @@ public class AdminController {
      * 学院获奖信息统计
      */
     @GetMapping("/count/win")
-    public String toCountWin(Model model) {
-//        CountQuery query=new CountQuery();
-//        query.setIsWin(1);
-//        List<CountQuery> result = teamService.countByAcademy(query);
-//        model.addAttribute("result", result);
-//        System.out.println(result);
+    public String toCountWin() {
         return "user/win_count";
     }
     @ResponseBody

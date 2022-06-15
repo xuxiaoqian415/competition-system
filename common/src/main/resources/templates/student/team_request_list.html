@@ -39,17 +39,17 @@
                             <td th:text="${a.role}"></td>
                             <td th:if="${a.status == 0 && a.teamStatus == 0}">
                                 <a class="layui-btn layui-btn-xs" lay-event="agree" th:text="'同意'"
-                                   th:href="@{/team-serv/team/request/choice?id=}+${a.id}+@{&type=1}"></a>
+                                   th:href="@{/select-serv/student/request/choice?id=}+${a.id}+@{&type=1}"></a>
                                 <a class="layui-btn layui-btn-danger" lay-event="reject" th:text="'拒绝'"
-                                   th:href="@{/team-serv/team/request/choice?id=}+${a.id}+@{&type=2}"></a>
+                                   th:href="@{/select-serv/student/request/choice?id=}+${a.id}+@{&type=2}"></a>
                             </td>
                             <td th:if="${a.status == 1 && a.teamStatus == 0}">
                                 <a class="layui-btn layui-btn-warm" lay-event="cancel" th:text="'取消同意'"
-                                   th:href="@{/team-serv/team/request/choice?id=}+${a.id}+@{&type=-1}"></a>
+                                   th:href="@{/select-serv/student/request/choice?id=}+${a.id}+@{&type=-1}"></a>
                             </td>
                             <td th:if="${a.status == 2 && a.teamStatus == 0}">
                                 <a class="layui-btn layui-btn-warm" lay-event="cancel" th:text="'取消拒绝'"
-                                   th:href="@{/team-serv/team/request/choice?id=}+${a.id}+@{&type=-2}"></a>
+                                   th:href="@{/select-serv/student/request/choice?id=}+${a.id}+@{&type=-2}"></a>
                             </td>
                             <td th:if="${a.teamStatus != 0}">
                                 <a class="layui-btn layui-btn-disabled layui-btn-xs" lay-event="cancel"
