@@ -113,7 +113,7 @@
         from user_team
                  LEFT JOIN team on team.id=team_id
         WHERE student_id=#{id} AND user_team.status = 1
-          AND team.is_delete = 0
+          AND team.is_delete = 0 and user_team.is_delete = 0
     </select>
 
     <select id="getMyTeamByCpId" parameterType="int" resultType="team">
@@ -250,7 +250,7 @@
     <select id="requestTeam" resultType="UserTeam">
         SELECT user_team.*
         FROM user_team LEFT JOIN team ON team.id=team_id
-        WHERE leader_id=#{id}
+        WHERE leader_id=#{id} and user_team.is_delete = 0
     </select>
 
     <update id="deleteTeam" parameterType="int">

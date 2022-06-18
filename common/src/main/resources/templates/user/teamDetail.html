@@ -68,7 +68,7 @@
                                 <td th:text="${a.role}"></td>
                                 <td th:if="${detail.isLeader == 1 && a.status == 1 && detail.status == 0}">
                                     <a class="layui-btn layui-btn-warm" lay-event="cancel" th:text="'取消同意'"
-                                       th:href="@{/select-serv/student/request/choice?id=}+${a.id}+@{&type=-10}"></a>
+                                       th:href="@{/team-serv/team/request/choice?id=}+${a.id}+@{&type=-10}"></a>
                                 </td>
                             </tr>
                             </tbody>
@@ -79,7 +79,7 @@
                                 th:href="@{/team-serv/team/update/status/}+${detail.id}"></a></div>
                     </div>
                     <div th:if="${detail.isLeader == 1 && detail.status == 1}">
-                        <a style="color: red" th:href="@{/team-serv/team/lead/}+${detail.cpId}"
+                        <a style="color: red" th:href="@{/select-serv/student/lead/}+${detail.cpId}"
                            th:text="'已完成组队,可以去选指导老师了 >>'"></a>
                     </div>
                     <div th:if="${detail.status == 2}">

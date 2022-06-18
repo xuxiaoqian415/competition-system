@@ -211,22 +211,23 @@ public class StudentController {
 //        return "student/team_request_list";
 //    }
 
-//    /**
-//     * 同意/拒绝组队请求
-//     */
-//    @GetMapping("/request/choice")
-//    public String updateRequestStatus(@RequestParam("id") Integer id, @RequestParam("type") Integer type,
-//                                       HttpSession session, Model model) {
-//        if (type == -10) { // 请求从团队详情过来
-//            teamService.updateRequestStatus(id, -1);
-//            return toTeamDetail(teamService.getUserTeam(id).getTeamId(), session, model);
-//        }
+    /**
+     * 同意/拒绝组队请求
+     */
+    @GetMapping("/request/choice")
+    public String updateRequestStatus(@RequestParam("id") Integer id, @RequestParam("type") Integer type,
+                                       HttpSession session, Model model) {
+        if (type == -10) { // 请求从团队详情过来
+            teamService.updateRequestStatus(id, -1);
+            return toTeamDetail(teamService.getUserTeam(id).getTeamId(), session, model);
+        }
 //        Integer code = teamService.updateRequestStatus(id, type);
 //        if (code == -1) {
 //            model.addAttribute("msg", "当前团队已达到最大人数");
 //        }
 //        return requestTeam(session, model);
-//    }
+        return toTeamDetail(teamService.getUserTeam(id).getTeamId(), session, model);
+    }
 
 //    /**
 //     * 我发送的组队请求
